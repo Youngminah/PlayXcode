@@ -10,6 +10,9 @@
 		0391051528163493001E129E /* ExViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051428163493001E129E /* ExViewController.swift */; };
 		03910517281634A3001E129E /* Ex2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03910516281634A3001E129E /* Ex2ViewController.swift */; };
 		0391051928165A1F001E129E /* ExCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051828165A1F001E129E /* ExCell.swift */; };
+		0391051B28178327001E129E /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051A28178327001E129E /* BadgeView.swift */; };
+		0391051D28178941001E129E /* BackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051C28178941001E129E /* BackgroundDecorationView.swift */; };
+		0391051F28178FC0001E129E /* ExHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051E28178FC0001E129E /* ExHeaderFooterView.swift */; };
 		039EBBD02810E8B900F676A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EBBCF2810E8B900F676A8 /* AppDelegate.swift */; };
 		039EBBD22810E8B900F676A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EBBD12810E8B900F676A8 /* SceneDelegate.swift */; };
 		039EBBD42810E8B900F676A8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EBBD32810E8B900F676A8 /* ViewController.swift */; };
@@ -22,6 +25,9 @@
 		0391051428163493001E129E /* ExViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewController.swift; sourceTree = "<group>"; };
 		03910516281634A3001E129E /* Ex2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ex2ViewController.swift; sourceTree = "<group>"; };
 		0391051828165A1F001E129E /* ExCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCell.swift; sourceTree = "<group>"; };
+		0391051A28178327001E129E /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		0391051C28178941001E129E /* BackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDecorationView.swift; sourceTree = "<group>"; };
+		0391051E28178FC0001E129E /* ExHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExHeaderFooterView.swift; sourceTree = "<group>"; };
 		039EBBCC2810E8B900F676A8 /* PlayXcode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayXcode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		039EBBCF2810E8B900F676A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		039EBBD12810E8B900F676A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,9 +60,12 @@
 		0391051328163461001E129E /* CollectionEx */ = {
 			isa = PBXGroup;
 			children = (
-				0391051428163493001E129E /* ExViewController.swift */,
 				03910516281634A3001E129E /* Ex2ViewController.swift */,
+				0391051428163493001E129E /* ExViewController.swift */,
 				0391051828165A1F001E129E /* ExCell.swift */,
+				0391051A28178327001E129E /* BadgeView.swift */,
+				0391051C28178941001E129E /* BackgroundDecorationView.swift */,
+				0391051E28178FC0001E129E /* ExHeaderFooterView.swift */,
 			);
 			path = CollectionEx;
 			sourceTree = "<group>";
@@ -164,8 +173,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0391051928165A1F001E129E /* ExCell.swift in Sources */,
+				0391051B28178327001E129E /* BadgeView.swift in Sources */,
 				03910517281634A3001E129E /* Ex2ViewController.swift in Sources */,
+				0391051F28178FC0001E129E /* ExHeaderFooterView.swift in Sources */,
 				039EBBD42810E8B900F676A8 /* ViewController.swift in Sources */,
+				0391051D28178941001E129E /* BackgroundDecorationView.swift in Sources */,
 				0391051528163493001E129E /* ExViewController.swift in Sources */,
 				039EBBD02810E8B900F676A8 /* AppDelegate.swift in Sources */,
 				039EBBD22810E8B900F676A8 /* SceneDelegate.swift in Sources */,
