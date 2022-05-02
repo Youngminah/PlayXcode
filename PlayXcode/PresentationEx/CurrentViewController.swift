@@ -11,6 +11,8 @@ class CurrentViewController: UIViewController {
     
     lazy var customTransitioningDelegate = CustomPresentationManager()
     
+    var isShortFormEnabled = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
