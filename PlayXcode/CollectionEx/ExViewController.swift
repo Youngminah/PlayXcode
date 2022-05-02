@@ -100,7 +100,7 @@ final class ExViewController: UIViewController {
                     subitems: [item]
                 )
                 let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuous
+                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary 
                 return section
                 
             default:
@@ -264,11 +264,11 @@ extension ExViewController: UICollectionViewDataSource {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! ExHeaderFooterView
-            header.configure(text: "스포츠 헤더라능")
+            header.configure(text: "스포츠헤더라능")
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FooterView", for: indexPath) as! ExHeaderFooterView
-            footer.configure(text: "스포츠 푸터라능")
+            footer.configure(text: "스포츠푸터라능")
             return footer
         case "LeftView":
             let leftView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "LeftView", for: indexPath) as! ExHeaderFooterView
