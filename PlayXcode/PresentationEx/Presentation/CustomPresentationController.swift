@@ -8,12 +8,30 @@
 import UIKit
 
 enum PresentationType {
-    case none
+    case none(CGFloat)
     case max
     case high
     case medium
     case low
     case min
+    
+    var positionY: CGFloat {
+        let screenHeight = UIScreen.main.bounds.height
+        switch self {
+        case .none(let fractionY):
+            return screenHeight*(fractionY)
+        case .max:
+            return screenHeight*(0.1/1.0)
+        case .high:
+            return screenHeight*(0.25/1.0)
+        case .medium:
+            return screenHeight*(0.5/1.0)
+        case .low:
+            return screenHeight*(0.75/1.0)
+        case .min:
+            return screenHeight*(0.85/1.0)
+        }
+    }
 }
 
 final class CustomPresentationController: UIPresentationController {
@@ -22,7 +40,7 @@ final class CustomPresentationController: UIPresentationController {
         case shortForm
         case longForm
     }
-
+    
     struct Constants {
         static let indicatorYOffset = CGFloat(8.0)
         static let snapMovementSensitivity = CGFloat(0.7)
@@ -35,8 +53,9 @@ final class CustomPresentationController: UIPresentationController {
     private var originalPosition: CGPoint?
     
     private lazy var defaultHeight: CGFloat = presentedView.frame.height
+    private lazy var newY = presentedView.frame.origin.y
     private let dismissibleHeight: CGFloat = 100
-    private let maximumContainerHeight: CGFloat = UIScreen.main.bounds.height - 64
+    private let minimumContainerY: CGFloat = 64
     private lazy var currentContainerHeight = presentedView.frame.height
     
     init(presentedViewController: UIViewController,
@@ -50,12 +69,12 @@ final class CustomPresentationController: UIPresentationController {
         setupView()
     }
     
-   private lazy var panContainerView: PanContainerView = {
-       let frame = containerView?.frame ?? .zero
-       return PanContainerView(presentedView: presentedViewController.view, frame: frame)
-   }()
+    private lazy var panContainerView: PanContainerView = {
+        let frame = containerView?.frame ?? .zero
+        return PanContainerView(presentedView: presentedViewController.view, frame: frameOfPresentedViewInContainerView)
+    }()
     
-    public override var presentedView: UIView {
+    override var presentedView: UIView {
         return panContainerView
     }
     
@@ -64,39 +83,37 @@ final class CustomPresentationController: UIPresentationController {
     }
     
     override var frameOfPresentedViewInContainerView: CGRect {
+        guard let containerView = containerView else { return .zero}
         var frame: CGRect = .zero
         frame.size = size(forChildContentContainer: presentedViewController,
-                          withParentContainerSize: containerView!.bounds.size)
-        switch type {
-        case .none:
-            frame.origin.y = containerView!.frame.height*(frameOfPresentedViewOriginY)
-        case .max:
-            frame.origin.y = containerView!.frame.height*(0.1/1.0)
-        case .high:
-            frame.origin.y = containerView!.frame.height*(0.25/1.0)
-        case .medium:
-            frame.origin.y = containerView!.frame.height*(0.5/1.0)
-        case .low:
-            frame.origin.y = containerView!.frame.height*(0.75/1.0)
-        case .min:
-            frame.origin.y = containerView!.frame.height*(0.85/1.0)
-        }
+                          withParentContainerSize: containerView.bounds.size)
+        frame.origin.y = type.positionY
         return frame
     }
     
+    override func containerViewWillLayoutSubviews() {
+        super.containerViewWillLayoutSubviews()
+        presentedView.frame = frameOfPresentedViewInContainerView
+        presentedView.layer.cornerRadius = 20
+    }
+    
     override func presentationTransitionWillBegin() {
+        guard let containerView = containerView
+            else { return }
         guard let dimmingView = dimmingView else { return }
-        containerView?.insertSubview(dimmingView, at: 0)
+        containerView.addSubview(dimmingView)
+        dimmingView.translatesAutoresizingMaskIntoConstraints = false
+        dimmingView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        dimmingView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        dimmingView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        dimmingView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[dimmingView]|",
-                                                                   options: [],
-                                                                   metrics: nil,
-                                                                   views: ["dimmingView": dimmingView]))
-        
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[dimmingView]|",
-                                                                   options: [],
-                                                                   metrics: nil,
-                                                                   views: ["dimmingView": dimmingView]))
+        containerView.addSubview(presentedView)
+        let panRecognizer = UIPanGestureRecognizer(target: self,
+                                                action: #selector(panScroll(recognizer:)))
+        panRecognizer.delaysTouchesBegan = false
+        panRecognizer.delaysTouchesEnded = false
+        presentedView.addGestureRecognizer(panRecognizer)
         
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = 1.0
@@ -106,6 +123,11 @@ final class CustomPresentationController: UIPresentationController {
         coordinator.animate(alongsideTransition: { _ in
             self.dimmingView.alpha = 1.0
         })
+    }
+    
+    override public func presentationTransitionDidEnd(_ completed: Bool) {
+        if completed { return }
+        dimmingView.removeFromSuperview()
     }
     
     override func dismissalTransitionWillBegin() {
@@ -119,120 +141,125 @@ final class CustomPresentationController: UIPresentationController {
         })
     }
     
-    override func containerViewWillLayoutSubviews() {
-        guard let containerView = containerView
-            else { return }
-        containerView.addSubview(presentedView)
-        presentedView.frame = frameOfPresentedViewInContainerView
-        containerView.layer.cornerRadius = 20
-    }
-    
     override func size(forChildContentContainer container: UIContentContainer,
                        withParentContainerSize parentSize: CGSize) -> CGSize {
-        switch type {
-        case .none:
-            return CGSize(width: parentSize.width, height: parentSize.height*(fractionalHeight))
-        case .max:
-            return CGSize(width: parentSize.width, height: parentSize.height*(0.9/1.0))
-        case .high:
-            return CGSize(width: parentSize.width, height: parentSize.height*(0.75/1.0))
-        case .medium:
-            return CGSize(width: parentSize.width, height: parentSize.height*(0.5/1.0))
-        case .low:
-            return CGSize(width: parentSize.width, height: parentSize.height*(0.25/1.0))
-        case .min:
-            return CGSize(width: parentSize.width, height: parentSize.height*(0.15/1.0))
-        }
+        return CGSize(width: parentSize.width, height: parentSize.height*(0.9/1.0))
     }
     
     private func setupView() {
         dimmingView = DimmingView()
+        dimmingView.translatesAutoresizingMaskIntoConstraints = false
         dimmingView.didTap = { [weak self] _ in
             self?.presentedViewController.dismiss(animated: true)
         }
-
-        let panRecognizer = UIPanGestureRecognizer(target: self,
-                                                action: #selector(panScroll(recognizer:)))
-        panRecognizer.delaysTouchesBegan = false
-        panRecognizer.delaysTouchesEnded = false
-        presentedView.addGestureRecognizer(panRecognizer)
     }
 
     
     @objc func panScroll(recognizer: UIPanGestureRecognizer) {
+        
 //        guard recognizer.state == .began || recognizer.state == .changed,
-//              let piece = recognizer.view, let superview = piece.superview  else {
+//              let piece = recognizer.view else {
 //            return
 //        }
-//        let translation = recognizer.translation(in: superview)
-//
-//        superview.frame.origin.y = superview.frame.origin.y + translation.y
-//        superview.frame.size.height = superview.frame.size.height - translation.y
-        //superview.layoutIfNeeded()
-        //recognizer.setTranslation(.zero, in: superview)
+//        let translation = recognizer.translation(in: piece)
+//        piece.center = CGPoint(x: piece.center.x, y: piece.center.y + translation.y)
+//        piece.layoutIfNeeded()
+//        recognizer.setTranslation(.zero, in: piece)
         
-        guard let piece = recognizer.view, let superview = piece.superview  else {
+        guard let piece = recognizer.view else {
             return
         }
-        
-        let translation = recognizer.translation(in: superview)
-        // Drag to top will be minus value and vice versa
-        print("Pan gesture y offset: \(translation.y)")
-
-        // Get drag direction
+        let translation = recognizer.translation(in: piece)
+        newY = piece.frame.origin.y + translation.y
         let isDraggingDown = translation.y > 0
-        print("Dragging direction: \(isDraggingDown ? "going down" : "going up")")
-
-        // New height is based on value of dragging plus current container height
-
-        let newHeight = currentContainerHeight - translation.y
-
-        // Handle based on gesture state
+        
         switch recognizer.state {
-        case .changed:
-            if newHeight < maximumContainerHeight {
-                //superview.frame.origin.y = superview.frame.origin.y + translation.y
-                print("newHeight", newHeight)
-                superview.panContainerView?.frame.size.height = newHeight
-                //superview.panContainerView?.layoutIfNeeded()
-                
+        case .began, .changed:
+            if minimumContainerY < newY {
+                piece.center = CGPoint(x: piece.center.x, y: piece.center.y + translation.y)
+                piece.layoutIfNeeded()
+                //recognizer.setTranslation(.zero, in: piece)
             }
-            print("changed")
-            
+        
         case .ended:
-            if newHeight < 100 {
+            let visibleHeight = UIScreen.main.bounds.height - newY
+            
+            if visibleHeight < 100 {
                 self.animateDismissView()
             }
-            else if newHeight < defaultHeight {
-                // Condition 2: If new height is below default, animate back to default
-                animateContainerHeight(defaultHeight)
+            else if isDraggingDown {
+                animateContainerY(.min)
             }
-            else if newHeight < maximumContainerHeight && isDraggingDown {
-                // Condition 3: If new height is below max and going down, set to default height
-                animateContainerHeight(defaultHeight)
+            else if !isDraggingDown {
+                animateContainerY(.max)
             }
-            else if newHeight > defaultHeight && !isDraggingDown {
-                // Condition 4: If new height is below max and going up, set to max height at top
-                animateContainerHeight(maximumContainerHeight)
-            }
-            print("ended")
         default:
             break
         }
+        //recognizer.setTranslation(.zero, in: piece)
+
+//        let translation = recognizer.translation(in: piece)
+//        // Drag to top will be minus value and vice versa
+//        print("Pan gesture y offset: \(translation.y)")
+//
+//        // Get drag direction
+//        let isDraggingDown = translation.y > 0
+//        print("Dragging direction: \(isDraggingDown ? "going down" : "going up")")
+//
+//        // New height is based on value of dragging plus current container height
+//
+//        let newHeight = piece.frame.origin.y - translation.y
+//
+//        // Handle based on gesture state
+//        switch recognizer.state {
+//        case .changed:
+//            if newHeight < maximumContainerHeight {
+//                piece.center = CGPoint(x: piece.center.x, y: piece.center.y + translation.y)
+//                print("newHeight", newHeight)
+//                piece.layoutIfNeeded()
+//                //print("superview", piece.superview)
+//
+//
+//                recognizer.setTranslation(.zero, in: piece)
+//            }
+//            print("changed")
+//
+//        case .ended:
+//            if newHeight < 100 {
+//                self.animateDismissView()
+//            }
+//            else if newHeight < defaultHeight {
+//                // Condition 2: If new height is below default, animate back to default
+//                animateContainerHeight(defaultHeight)
+//            }
+//            else if newHeight < maximumContainerHeight && isDraggingDown {
+//                // Condition 3: If new height is below max and going down, set to default height
+//                animateContainerHeight(defaultHeight)
+//            }
+//            else if newHeight > defaultHeight && !isDraggingDown {
+//                // Condition 4: If new height is below max and going up, set to max height at top
+//                animateContainerHeight(maximumContainerHeight)
+//            }
+//            print("ended")
+//        default:
+//            break
+//        }
     }
 
-    func animateContainerHeight(_ height: CGFloat) {
-        UIView.animate(withDuration: 0.4) {
-            self.presentedView.frame.size.height = height
-            self.presentedView.layoutIfNeeded()
-        }
-        currentContainerHeight = height
+    func animateContainerY(_ type: PresentationType) {
+        UIView.animate(
+            withDuration: 0.2,
+            animations: {
+                self.presentedView.frame.origin.y = type.positionY
+                self.presentedView.layoutIfNeeded()
+            })
+        newY = type.positionY
     }
     
     
     func animateDismissView() {
-        UIView.animate(withDuration: 0.3) {
-            self.presentedView.frame.size.height = self.defaultHeight
+        UIView.animate(withDuration: 3) {
+            self.presentedView.frame.origin.y = UIScreen.main.bounds.height
             self.presentedView.layoutIfNeeded()
         }
         self.presentedViewController.dismiss(animated: false)

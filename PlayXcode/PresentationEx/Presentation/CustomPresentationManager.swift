@@ -15,7 +15,7 @@ final class CustomPresentationManager: NSObject {
     private var fractionalHeight: CGFloat = 0.9 / 1.0
     
     func setFractionalContainerViewHeight(height : CGFloat) {
-        type = .none
+        type = .none(fractionalHeight)
         fractionalHeight = height
     }
 }
@@ -33,7 +33,7 @@ extension CustomPresentationManager: UIViewControllerTransitioningDelegate {
             type: type,
             fractionalHeight: fractionalHeight
         )
-        //presentationController.delegate = self
+        presentationController.delegate = self
         return presentationController
     }
     
@@ -52,25 +52,25 @@ extension CustomPresentationManager: UIViewControllerTransitioningDelegate {
     }
 }
 
-//// MARK: - UIAdaptivePresentationControllerDelegate
-//extension CustomPresentationManager: UIAdaptivePresentationControllerDelegate {
-//    func adaptivePresentationStyle(
-//        for controller: UIPresentationController,
-//        traitCollection: UITraitCollection
-//    ) -> UIModalPresentationStyle {
-//        if traitCollection.verticalSizeClass == .compact && disableCompactHeight {
-//            return .overFullScreen
-//        } else {
-//            return .none
-//        }
-//    }
-//
-//    func presentationController(
-//        _ controller: UIPresentationController,
-//        viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle
-//    ) -> UIViewController? {
-//        guard case(.overFullScreen) = style else { return nil }
-//        return UIStoryboard(name: "Main", bundle: nil)
-//            .instantiateViewController(withIdentifier: "RotateViewController")
-//    }
-//}
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension CustomPresentationManager: UIAdaptivePresentationControllerDelegate {
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        if traitCollection.verticalSizeClass == .compact && disableCompactHeight {
+            return .overFullScreen
+        } else {
+            return .none
+        }
+    }
+
+    func presentationController(
+        _ controller: UIPresentationController,
+        viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle
+    ) -> UIViewController? {
+        guard case(.overFullScreen) = style else { return nil }
+        return UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "RotateViewController")
+    }
+}

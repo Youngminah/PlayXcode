@@ -29,30 +29,37 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let key: UITransitionContextViewControllerKey = isPresentation ? .to : .from
         guard let controller = transitionContext.viewController(forKey: key) else { return }
-
-        if isPresentation {
-            transitionContext.containerView.addSubview(controller.view)
-        }
+        controller.beginAppearanceTransition(true, animated: true)
+        
+        let panView: UIView = transitionContext.containerView.panContainerView ?? controller.view
         
         let presentedFrame = transitionContext.finalFrame(for: controller)
-
         var dismissedFrame = presentedFrame
-        dismissedFrame.origin.y = transitionContext.containerView.frame.size.height
-        
+        dismissedFrame.origin.y = panView.frame.size.height
         
         let initialFrame = isPresentation ? dismissedFrame : presentedFrame
         let finalFrame = isPresentation ? presentedFrame : dismissedFrame
         
         let animationDuration = transitionDuration(using: transitionContext)
-        controller.view.frame = initialFrame
+        
+        if isPresentation {
+            panView.frame = initialFrame
+        }
+        
+        let animaor = UIViewPropertyAnimator()
+        animaor.fractionComplete = 1.0
         UIView.animate(
             withDuration: animationDuration,
+            delay: 0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 0,
             animations: {
-                controller.view.frame = finalFrame
+                panView.frame = finalFrame
             }, completion: { finished in
                 if !self.isPresentation {
-                    //controller.view.removeFromSuperview()
+                    controller.view.removeFromSuperview()
                 }
+                controller.endAppearanceTransition()
                 transitionContext.completeTransition(finished)
             })
     }
