@@ -29,7 +29,7 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let key: UITransitionContextViewControllerKey = isPresentation ? .to : .from
         guard let controller = transitionContext.viewController(forKey: key) else { return }
-        controller.beginAppearanceTransition(true, animated: true)
+        //controller.beginAppearanceTransition(true, animated: true)
         
         let panView: UIView = transitionContext.containerView.panContainerView ?? controller.view
         
@@ -46,8 +46,6 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
             panView.frame = initialFrame
         }
         
-        let animaor = UIViewPropertyAnimator()
-        animaor.fractionComplete = 1.0
         UIView.animate(
             withDuration: animationDuration,
             delay: 0,
@@ -59,7 +57,7 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
                 if !self.isPresentation {
                     controller.view.removeFromSuperview()
                 }
-                controller.endAppearanceTransition()
+                //controller.endAppearanceTransition()
                 transitionContext.completeTransition(finished)
             })
     }

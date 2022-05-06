@@ -159,15 +159,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="19V-jM-dD0">
-                                <rect key="frame" x="160" y="365" width="67" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                            </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fXU-et-JbV">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2KN-Vq-Pbe">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YmR-KG-l3e">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6Yh-fN-7m2">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5pv-OI-9lb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="5pv-OI-9lb" firstAttribute="bottom" secondItem="fXU-et-JbV" secondAttribute="bottom" id="8nC-6I-bfs"/>
+                            <constraint firstItem="fXU-et-JbV" firstAttribute="leading" secondItem="5pv-OI-9lb" secondAttribute="leading" id="9hd-hN-ubs"/>
+                            <constraint firstItem="5pv-OI-9lb" firstAttribute="trailing" secondItem="fXU-et-JbV" secondAttribute="trailing" id="D5z-hV-haF"/>
+                            <constraint firstItem="fXU-et-JbV" firstAttribute="top" secondItem="5pv-OI-9lb" secondAttribute="top" id="b2r-wZ-WR8"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e3Y-7c-UKh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -177,7 +197,7 @@
         <!--Ex View Controller-->
         <scene sceneID="NR0-q8-FbG">
             <objects>
-                <viewController id="gSN-5o-vF3" customClass="ExViewController" customModule="PlayXcode" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExViewController" id="gSN-5o-vF3" customClass="ExViewController" customModule="PlayXcode" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zDG-Ta-4yz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -239,7 +259,7 @@
         <!--Ex2 View Controller-->
         <scene sceneID="yft-hT-Yu0">
             <objects>
-                <collectionViewController id="9pZ-H1-9IJ" customClass="Ex2ViewController" customModule="PlayXcode" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="Ex2ViewController" id="9pZ-H1-9IJ" customClass="Ex2ViewController" customModule="PlayXcode" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="OXG-BF-jgq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

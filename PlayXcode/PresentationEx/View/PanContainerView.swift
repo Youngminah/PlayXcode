@@ -11,6 +11,7 @@ final class PanContainerView: UIView {
 
     init(presentedView: UIView, frame: CGRect) {
         super.init(frame: frame)
+        layer.masksToBounds = true
         addSubview(presentedView)
     }
 

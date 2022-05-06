@@ -7,7 +7,11 @@
 
 import UIKit
 
-class NextViewController: UIViewController {
+class NextViewController: UIViewController, CustomPanModalPresentable {
+    
+    var panScrollable: UIScrollView? {
+        return nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

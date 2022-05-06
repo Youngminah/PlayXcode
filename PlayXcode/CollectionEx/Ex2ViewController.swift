@@ -9,12 +9,14 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class Ex2ViewController: UICollectionViewController {
+class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
     
     private let array = ["Lemon🍋", "Orange🍊", "StrawBerry🍓", "WaterMelon🍉", "Apple🍎"]
-
+    var isShortFormEnabled = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.bounce
     }
     
     // MARK: UICollectionViewDataSource
@@ -30,6 +32,26 @@ class Ex2ViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ExCell.identifier, for: indexPath) as! ExCell
         cell.configure(with: array[indexPath.row])
         return cell
+    }
+    
+    var panScrollable: UIScrollView? {
+        return collectionView
+    }
+
+    var shortFormHeight: PanModalHeight {
+        return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
+    }
+
+    var anchorModalToLongForm: Bool {
+        return false
+    }
+
+    func willTransition(to state: CustomPresentationController.PresentationState) {
+        guard isShortFormEnabled, case .longForm = state
+            else { return }
+
+        isShortFormEnabled = false
+        panModalSetNeedsLayoutUpdate()
     }
 }
 

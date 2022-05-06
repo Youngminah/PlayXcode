@@ -16,6 +16,8 @@
 		037DA772281FBF4600D065C0 /* PanContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA771281FBF4600D065C0 /* PanContainerView.swift */; };
 		037DA774281FC22000D065C0 /* CustomPanModalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA773281FC22000D065C0 /* CustomPanModalPresentable.swift */; };
 		037DA776281FC6AF00D065C0 /* CustomModalAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA775281FC6AF00D065C0 /* CustomModalAnimator.swift */; };
+		037DA7782824C03D00D065C0 /* CustomPanModalPresentable+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA7772824C03D00D065C0 /* CustomPanModalPresentable+Defaults.swift */; };
+		037DA77A282519C800D065C0 /* CustomPanModalPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA779282519C800D065C0 /* CustomPanModalPresentationDelegate.swift */; };
 		0391051528163493001E129E /* ExViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051428163493001E129E /* ExViewController.swift */; };
 		03910517281634A3001E129E /* Ex2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03910516281634A3001E129E /* Ex2ViewController.swift */; };
 		0391051928165A1F001E129E /* ExCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051828165A1F001E129E /* ExCell.swift */; };
@@ -40,6 +42,8 @@
 		037DA771281FBF4600D065C0 /* PanContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanContainerView.swift; sourceTree = "<group>"; };
 		037DA773281FC22000D065C0 /* CustomPanModalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPanModalPresentable.swift; sourceTree = "<group>"; };
 		037DA775281FC6AF00D065C0 /* CustomModalAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomModalAnimator.swift; sourceTree = "<group>"; };
+		037DA7772824C03D00D065C0 /* CustomPanModalPresentable+Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomPanModalPresentable+Defaults.swift"; sourceTree = "<group>"; };
+		037DA779282519C800D065C0 /* CustomPanModalPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPanModalPresentationDelegate.swift; sourceTree = "<group>"; };
 		0391051428163493001E129E /* ExViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewController.swift; sourceTree = "<group>"; };
 		03910516281634A3001E129E /* Ex2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ex2ViewController.swift; sourceTree = "<group>"; };
 		0391051828165A1F001E129E /* ExCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCell.swift; sourceTree = "<group>"; };
@@ -85,7 +89,9 @@
 				037DA76A281BA42600D065C0 /* CustomPresentationAnimator.swift */,
 				037DA76C281BA64F00D065C0 /* CustomPresentationManager.swift */,
 				037DA773281FC22000D065C0 /* CustomPanModalPresentable.swift */,
+				037DA7772824C03D00D065C0 /* CustomPanModalPresentable+Defaults.swift */,
 				037DA775281FC6AF00D065C0 /* CustomModalAnimator.swift */,
+				037DA779282519C800D065C0 /* CustomPanModalPresentationDelegate.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -224,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				037DA76D281BA64F00D065C0 /* CustomPresentationManager.swift in Sources */,
+				037DA77A282519C800D065C0 /* CustomPanModalPresentationDelegate.swift in Sources */,
 				037DA764281A54E200D065C0 /* CurrentViewController.swift in Sources */,
 				0391051928165A1F001E129E /* ExCell.swift in Sources */,
 				0391051B28178327001E129E /* BadgeView.swift in Sources */,
@@ -231,6 +238,7 @@
 				037DA776281FC6AF00D065C0 /* CustomModalAnimator.swift in Sources */,
 				0391051F28178FC0001E129E /* ExHeaderFooterView.swift in Sources */,
 				037DA766281A54EF00D065C0 /* NextViewController.swift in Sources */,
+				037DA7782824C03D00D065C0 /* CustomPanModalPresentable+Defaults.swift in Sources */,
 				039EBBD42810E8B900F676A8 /* ViewController.swift in Sources */,
 				0391051D28178941001E129E /* BackgroundDecorationView.swift in Sources */,
 				037DA769281A8BB500D065C0 /* CustomPresentationController.swift in Sources */,

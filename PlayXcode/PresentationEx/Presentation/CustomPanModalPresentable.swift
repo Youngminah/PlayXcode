@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol PanModalPresentable: AnyObject {
+protocol CustomPanModalPresentable: AnyObject {
 
     
     var panScrollable: UIScrollView? { get }

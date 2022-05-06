@@ -14,7 +14,7 @@ struct PanModalAnimator {
     }
 
     static func animate(_ animations: @escaping () -> Void,
-                        config: PanModalPresentable?,
+                        config: CustomPanModalPresentable?,
                         _ completion: ((Bool) -> Void)? = nil) {
 
         let transitionDuration = config?.transitionDuration ?? Constants.defaultTransitionDuration

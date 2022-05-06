@@ -23,7 +23,11 @@ enum ExSection {
     }
 }
 
-final class ExViewController: UIViewController {
+final class ExViewController: UIViewController, CustomPanModalPresentable {
+    
+    var panScrollable: UIScrollView? {
+        return nil
+    }
     
     private let dataSource: [ExSection] = [
         .first(
