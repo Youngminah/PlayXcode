@@ -25,9 +25,7 @@ enum ExSection {
 
 final class ExViewController: UIViewController, CustomPanModalPresentable {
     
-    var panScrollable: UIScrollView? {
-        return nil
-    }
+    var isShortFormEnabled = true
     
     private let dataSource: [ExSection] = [
         .first(
@@ -201,6 +199,7 @@ final class ExViewController: UIViewController, CustomPanModalPresentable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //collectionView.backgroundColor = .red
         collectionView.register(ExHeaderFooterView.self,
                       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                       withReuseIdentifier: "HeaderView")
@@ -227,6 +226,24 @@ final class ExViewController: UIViewController, CustomPanModalPresentable {
                                 withReuseIdentifier: BadgeView.identifier)
         collectionView.collectionViewLayout = self.compositionalLayout
         collectionView.dataSource = self
+    }
+    
+    var panScrollable: UIScrollView? {
+        return collectionView
+    }
+
+    var shortFormHeight: PanModalHeight {
+        return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
+    }
+
+    var anchorModalToLongForm: Bool {
+        return false
+    }
+
+    func willTransition(to state: CustomPresentationController.PresentationState) {
+        guard isShortFormEnabled, case .longForm = state else { return }
+        isShortFormEnabled = true
+        panModalSetNeedsLayoutUpdate()
     }
 }
 
@@ -255,10 +272,10 @@ extension ExViewController: UICollectionViewDataSource {
             cell.setBackgoundColor(with: .orange)
             cell.configure(with: items[indexPath.item].value)
         case let .second(items):
-            cell.setBackgoundColor(with: .systemMint)
+            cell.setBackgoundColor(with: .purple)
             cell.configure(with: items[indexPath.item].value)
         case let .third(items):
-            cell.setBackgoundColor(with: .systemPink)
+            cell.setBackgoundColor(with: .link)
             cell.configure(with: items[indexPath.item].value)
         }
         return cell

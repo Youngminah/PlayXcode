@@ -9,7 +9,6 @@ import UIKit
 
 protocol CustomPanModalPresentable: AnyObject {
 
-    
     var panScrollable: UIScrollView? { get }
 
     var topOffset: CGFloat { get }
@@ -18,7 +17,7 @@ protocol CustomPanModalPresentable: AnyObject {
     
     var longFormHeight: PanModalHeight { get }
 
-    var cornerRadius: CGFloat { get }
+    //var cornerRadius: CGFloat { get }
 
     var springDamping: CGFloat { get }
 
@@ -27,8 +26,6 @@ protocol CustomPanModalPresentable: AnyObject {
     var transitionAnimationOptions: UIView.AnimationOptions { get }
 
     var panModalBackgroundColor: UIColor { get }
-
-    var dragIndicatorBackgroundColor: UIColor { get }
 
     var scrollIndicatorInsets: UIEdgeInsets { get }
 
@@ -42,11 +39,7 @@ protocol CustomPanModalPresentable: AnyObject {
 
     var isUserInteractionEnabled: Bool { get }
 
-    var isHapticFeedbackEnabled: Bool { get }
-
     var shouldRoundTopCorners: Bool { get }
-
-    var showDragIndicator: Bool { get }
 
     func shouldRespond(to panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool
 

@@ -11,7 +11,7 @@ private let reuseIdentifier = "Cell"
 
 class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
     
-    private let array = ["Lemon🍋", "Orange🍊", "StrawBerry🍓", "WaterMelon🍉", "Apple🍎"]
+    private let array = ["Lemon🍋", "Orange🍊"]
     var isShortFormEnabled = true
     
     override func viewDidLoad() {
@@ -19,9 +19,9 @@ class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
         //self.bounce
     }
     
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 5
+        return 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -37,6 +37,10 @@ class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
     var panScrollable: UIScrollView? {
         return collectionView
     }
+    
+    var longFormHeight: PanModalHeight {
+        return .intrinsicHeight
+    }
 
     var shortFormHeight: PanModalHeight {
         return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
@@ -50,7 +54,7 @@ class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
         guard isShortFormEnabled, case .longForm = state
             else { return }
 
-        isShortFormEnabled = false
+        isShortFormEnabled = true
         panModalSetNeedsLayoutUpdate()
     }
 }

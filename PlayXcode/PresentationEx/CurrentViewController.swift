@@ -53,10 +53,8 @@ class CurrentViewController: UIViewController {
         guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "ExViewController") else {
             return
         }
-        customTransitioningDelegate.type = .medium
-        customTransitioningDelegate.disableCompactHeight = false
-        vc.transitioningDelegate = customTransitioningDelegate
         vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = PanModalPresentationDelegate.default
         self.present(vc, animated: true)
     }
     
@@ -64,8 +62,6 @@ class CurrentViewController: UIViewController {
         guard let vc : CustomPanModalPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "Ex2ViewController") as? Ex2ViewController else {
             return
         }
-        //customTransitioningDelegate.type = .low
-        //customTransitioningDelegate.disableCompactHeight = false
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = PanModalPresentationDelegate.default
         self.present(vc, animated: true)

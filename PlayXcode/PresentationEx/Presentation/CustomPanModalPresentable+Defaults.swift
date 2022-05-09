@@ -19,10 +19,8 @@ extension CustomPanModalPresentable where Self: UIViewController {
 
     var longFormHeight: PanModalHeight {
 
-        guard let scrollView = panScrollable
-            else { return .maxHeight }
+        guard let scrollView = panScrollable else { return .maxHeight }
 
-        // called once during presentation and stored
         scrollView.layoutIfNeeded()
         return .contentHeight(scrollView.contentSize.height)
     }
@@ -47,10 +45,6 @@ extension CustomPanModalPresentable where Self: UIViewController {
         return UIColor.black.withAlphaComponent(0.7)
     }
 
-    var dragIndicatorBackgroundColor: UIColor {
-        return UIColor.lightGray
-    }
-
     var scrollIndicatorInsets: UIEdgeInsets {
         let top = shouldRoundTopCorners ? cornerRadius : 0
         return UIEdgeInsets(top: CGFloat(top), left: 0, bottom: bottomLayoutOffset, right: 0)
@@ -62,8 +56,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
 
     var allowsExtendedPanScrolling: Bool {
 
-        guard let scrollView = panScrollable
-            else { return false }
+        guard let scrollView = panScrollable else { return false }
 
         scrollView.layoutIfNeeded()
         return scrollView.contentSize.height > (scrollView.frame.height - bottomLayoutOffset)
@@ -81,16 +74,8 @@ extension CustomPanModalPresentable where Self: UIViewController {
         return true
     }
 
-    var isHapticFeedbackEnabled: Bool {
-        return true
-    }
-
     var shouldRoundTopCorners: Bool {
         return isPanModalPresented
-    }
-
-    var showDragIndicator: Bool {
-        return shouldRoundTopCorners
     }
 
     func shouldRespond(to panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
@@ -114,7 +99,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 
     func panModalWillDismiss() {
-
+        
     }
 
     func panModalDidDismiss() {
@@ -129,29 +114,20 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
     
     var topLayoutOffset: CGFloat {
-
-        guard let rootVC = rootViewController
-            else { return 0}
-
-        if #available(iOS 11.0, *) { return rootVC.view.safeAreaInsets.top } else { return rootVC.topLayoutGuide.length }
+        guard let rootVC = rootViewController else { return 0 }
+        return rootVC.view.safeAreaInsets.top
     }
     
     var bottomLayoutOffset: CGFloat {
-
-       guard let rootVC = rootViewController
-            else { return 0}
-
-        if #available(iOS 11.0, *) { return rootVC.view.safeAreaInsets.bottom } else { return rootVC.bottomLayoutGuide.length }
+       guard let rootVC = rootViewController else { return 0 }
+        return rootVC.view.safeAreaInsets.bottom
     }
 
     var shortFormYPos: CGFloat {
 
-        guard !UIAccessibility.isVoiceOverRunning
-            else { return longFormYPos }
+        guard !UIAccessibility.isVoiceOverRunning else { return longFormYPos }
 
         let shortFormYPos = topMargin(from: shortFormHeight) + topOffset
-
-        // shortForm shouldn't exceed longForm
         return max(shortFormYPos, longFormYPos)
     }
 
@@ -160,10 +136,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 
     var bottomYPos: CGFloat {
-
-        guard let container = presentedVC?.containerView
-            else { return view.bounds.height }
-
+        guard let container = presentedVC?.containerView else { return view.bounds.height }
         return container.bounds.size.height - topOffset
     }
 
@@ -179,6 +152,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
             return bottomYPos - height
         case .intrinsicHeight:
             view.layoutIfNeeded()
+            
             let targetSize = CGSize(width: (presentedVC?.containerView?.bounds ?? UIScreen.main.bounds).width,
                                     height: UIView.layoutFittingCompressedSize.height)
             let intrinsicHeight = view.systemLayoutSizeFitting(targetSize).height
@@ -190,7 +164,6 @@ extension CustomPanModalPresentable where Self: UIViewController {
 
         guard let application = UIApplication.value(forKeyPath: #keyPath(UIApplication.shared)) as? UIApplication
             else { return nil }
-
         return application.keyWindow?.rootViewController
     }
 }
@@ -221,15 +194,8 @@ extension CustomPanModalPresentable where Self: UIViewController {
 
 protocol CustomPanModalPresenter: AnyObject {
 
-    /**
-     A flag that returns true if the current presented view controller
-     is using the PanModalPresentationDelegate
-     */
     var isPanModalPresented: Bool { get }
 
-    /**
-     Presents a view controller that conforms to the PanModalPresentable protocol
-     */
 //    func presentPanModal(_ viewControllerToPresent: CustomPanModalPresentable.LayoutType,
 //                         sourceView: UIView?,
 //                         sourceRect: CGRect,

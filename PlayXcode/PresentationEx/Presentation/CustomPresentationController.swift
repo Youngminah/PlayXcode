@@ -34,6 +34,11 @@ enum PresentationType {
     }
 }
 
+/**
+ ContainerView : UITransitionView
+ Presented VIew :
+ */
+
 final class CustomPresentationController: UIPresentationController {
     
     enum PresentationState {
@@ -44,27 +49,49 @@ final class CustomPresentationController: UIPresentationController {
     struct Constants {
         static let indicatorYOffset = CGFloat(8.0)
         static let snapMovementSensitivity = CGFloat(0.7)
-        static let dragIndicatorSize = CGSize(width: 36.0, height: 5.0)
     }
     
+    // MARK: - Properties
     private var dimmingView: DimmingView!
-    private var type: PresentationType
+    //private var type: PresentationType
     private var fractionalHeight: CGFloat
-    private var originalPosition: CGPoint?
     
-    private var scrollViewYOffset: CGFloat = 0.0
-    private let dismissibleHeight: CGFloat = 100
-    private let minimumContainerY: CGFloat = 64
-    private var shortFormYPosition: CGFloat = 0
-    private var longFormYPosition: CGFloat = 0.0
+    private var isPresentedViewAnimating = false
     private var extendsPanScrolling = true
     private var anchorModalToLongForm = true
-    private var isPresentedViewAnimating = false
+    
+    private var scrollViewYOffset: CGFloat = 0.0
     private var scrollObserver: NSKeyValueObservation?
     
-    private lazy var defaultHeight: CGFloat = presentedView.frame.height
-    private lazy var currentContainerHeight = presentedView.frame.height
-    private lazy var newY = presentedView.frame.origin.y
+    private var shortFormYPosition: CGFloat = 0
+    private var longFormYPosition: CGFloat = 0
+    
+    private var frameOfPresentedViewOriginY: CGFloat {
+        return (1.0 - self.fractionalHeight)
+    }
+    
+    private var anchoredYPosition: CGFloat {
+        let defaultTopOffset = presentable?.topOffset ?? 0
+        return anchorModalToLongForm ? longFormYPosition : defaultTopOffset
+    }
+    
+    // CustomPresentationController의 Configuration 객체
+    private var presentable: CustomPanModalPresentable? {
+        return presentedViewController as? CustomPanModalPresentable
+    }
+    
+    override var presentedView: UIView {
+        return panContainerView
+    }
+    
+    // presented view 를 래핑하는 뷰로, 원하는 대로 뷰의 모양 등등을 조정할 수 있게 함
+    private lazy var panContainerView: PanContainerView = {
+        let frame = containerView?.frame ?? .zero
+        return PanContainerView(
+            presentedView: presentedViewController.view,
+            frame: frame
+        )
+    }()
     
     deinit {
         scrollObserver?.invalidate()
@@ -75,73 +102,41 @@ final class CustomPresentationController: UIPresentationController {
          type: PresentationType,
          fractionalHeight: CGFloat
     ) {
-        self.type = type
+        //self.type = type
         self.fractionalHeight = fractionalHeight
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
-        setupView()
+        setupDimmingView()
     }
     
-    private var presentable: CustomPanModalPresentable? {
-        return presentedViewController as? CustomPanModalPresentable
-    }
+    // MARK: - Lifecycle
     
-    private var anchoredYPosition: CGFloat {
-        let defaultTopOffset = presentable?.topOffset ?? 0
-        return anchorModalToLongForm ? longFormYPosition : defaultTopOffset
-    }
+    // 애니메이션이 끝난 뒤 presented view의 프레임
+//    override var frameOfPresentedViewInContainerView: CGRect {
+//        guard let containerView = containerView else { return .zero }
+//        var frame: CGRect = .zero
+//        frame.size = size(forChildContentContainer: presentedViewController,
+//                          withParentContainerSize: containerView.bounds.size)
+//        frame.origin.y = type.positionY
+//        return frame
+//    }
+//
+//    override func size(forChildContentContainer container: UIContentContainer,
+//                       withParentContainerSize parentSize: CGSize) -> CGSize {
+//        return CGSize(width: parentSize.width, height: parentSize.height)
+//    }
     
-    private lazy var panContainerView: PanContainerView = {
-        let frame = containerView?.frame ?? .zero
-        return PanContainerView(presentedView: presentedViewController.view, frame: frameOfPresentedViewInContainerView)
-    }()
-    
-    override var presentedView: UIView {
-        return panContainerView
-    }
-    
-    private var frameOfPresentedViewOriginY: CGFloat {
-        return (1.0 - self.fractionalHeight)
-    }
-    
-    var isPresentedViewAnchored: Bool {
-        if !isPresentedViewAnimating
-            && extendsPanScrolling
-            && presentedView.frame.minY.rounded() <= anchoredYPosition.rounded() {
-            return true
-        }
-        return false
-    }
-    
-    override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { return .zero}
-        var frame: CGRect = .zero
-        frame.size = size(forChildContentContainer: presentedViewController,
-                          withParentContainerSize: containerView.bounds.size)
-        frame.origin.y = type.positionY
-        return frame
-    }
-    
-    override func containerViewWillLayoutSubviews() {
-        super.containerViewWillLayoutSubviews()
-        presentedView.frame = frameOfPresentedViewInContainerView
-        presentedView.layer.cornerRadius = 20
-        shortFormYPosition = type.positionY
-        longFormYPosition = type.positionY
-    }
-    
+    // 띄우는 화면 전환 애니메이션이 시작하려 할 때 실행되는 함수
     override func presentationTransitionWillBegin() {
-        guard let containerView = containerView
-            else { return }
+        guard let containerView = containerView else { return }
         guard let dimmingView = dimmingView else { return }
+        
         layoutBackgroundView(in: containerView)
         layoutPresentedView(in: containerView)
-        
-        
+        configureScrollViewInsets()
         //shortFormYPosition = type.positionY
-        longFormYPosition = type.positionY
-        adjustPresentedViewFrame()
+        //longFormYPosition = type.positionY
+        //adjustPresentedViewFrame()
 
-        
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = 1.0
             return
@@ -152,12 +147,25 @@ final class CustomPresentationController: UIPresentationController {
         })
     }
     
+    // 띄우는 화면 전환 애니메이션이 끝났을 때 실행되는 함수
     override public func presentationTransitionDidEnd(_ completed: Bool) {
         if completed { return }
         dimmingView.removeFromSuperview()
     }
     
+    // 컨테이너뷰의 뷰들이 레이아웃을 시작하려할 때 실행되는 함수. containerViewDidLayoutSubviews도 있음.
+    override func containerViewWillLayoutSubviews() {
+        super.containerViewWillLayoutSubviews()
+        //presentedView.frame = frameOfPresentedViewInContainerView
+        presentedView.layer.cornerRadius = 8
+        //shortFormYPosition = type.positionY
+        //longFormYPosition = type.positionY
+        configureViewLayout()
+    }
+    
+    // 사라지는 화면 전환 애니메이션이 시작되려할 때 실행되는 함수
     override func dismissalTransitionWillBegin() {
+        presentable?.panModalWillDismiss()
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = 0.0
             return
@@ -168,14 +176,16 @@ final class CustomPresentationController: UIPresentationController {
         })
     }
     
-    override public func dismissalTransitionDidEnd(_ completed: Bool) {
+    // 사라지는 화면 전환 애니메이션이 끝났을 때 실행되는 함수
+    override func dismissalTransitionDidEnd(_ completed: Bool) {
         if !completed { return }
         presentable?.panModalDidDismiss()
     }
     
-    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    // 컨테이너의 루트 뷰의 크기가 변경되려고 하면 실행되는 함수.
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-
+        print("viewWillTransition 실행!! ", viewWillTransition)
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
 //            guard
@@ -189,42 +199,118 @@ final class CustomPresentationController: UIPresentationController {
 //            }
         })
     }
+}
+
+// MARK: - Common Layout Update Methods
+
+extension CustomPresentationController {
     
-    func configureViewLayout() {
-        guard let layoutPresentable = presentedViewController as? CustomPanModalPresentable.LayoutType else { return }
-        shortFormYPosition = layoutPresentable.shortFormYPos
-        longFormYPosition = layoutPresentable.longFormYPos
-        anchorModalToLongForm = layoutPresentable.anchorModalToLongForm
-        extendsPanScrolling = layoutPresentable.allowsExtendedPanScrolling
-        containerView?.isUserInteractionEnabled = layoutPresentable.isUserInteractionEnabled
+    // PresentationState 값에 따른 전환
+    func transition(to state: PresentationState) {
+        guard presentable?.shouldTransition(to: state) == true else { return }
+        presentable?.willTransition(to: state)
+
+        switch state {
+        case .shortForm:
+            snap(toYPosition: shortFormYPosition)
+        case .longForm:
+            snap(toYPosition: longFormYPosition)
+        }
+    }
+
+    /**
+     스크롤 관련 작업에서, 콘텐츠의 높이가 변경되거나, 행의 삽입 삭제가 이루어지면 모달이 점프 할 수 있음.
+     이러한 현상을 막기위해, 이 함수를 불러 스크롤 observation을 일시적으로 사용불가능하게 만들고, 스크롤뷰의 업데이트를 진행함.
+     */
+    func performUpdates(_ updates: () -> Void) {
+        
+        guard let scrollView = presentable?.panScrollable else { return }
+        scrollObserver?.invalidate()
+        scrollObserver = nil
+        updates()
+        trackScrolling(scrollView)
+        observe(scrollView: scrollView)
     }
     
+    /**
+     PanModalPresentable에 값을 가지고
+     CustomPresentationControllerdml 레이아웃을 업데이트 하기 위한 함수.
+     */
+    func setNeedsLayoutUpdate() {
+        configureViewLayout()
+        adjustPresentedViewFrame()
+        observe(scrollView: presentable?.panScrollable)
+        configureScrollViewInsets()
+    }
+}
+
+// MARK: - Presented View Layout Configuration
+
+extension CustomPresentationController {
+    
+    // presented view가 고정되어있는지 여부를 나타내는 Boolean 값
+    var isPresentedViewAnchored: Bool {
+        if !isPresentedViewAnimating
+            && extendsPanScrolling
+            && presentedView.frame.minY.rounded() <= anchoredYPosition.rounded() {
+            return true
+        }
+        return false
+    }
+    
+    private func setupDimmingView() {
+        dimmingView = DimmingView()
+        dimmingView.translatesAutoresizingMaskIntoConstraints = false
+        dimmingView.didTap = { [weak self] _ in
+            self?.presentedViewController.dismiss(animated: true)
+        }
+    }
+    
+    // 컨테이너 뷰에 presented view를 추가하고, 팬 제스쳐 달고, Layout 업데이트
+    func layoutPresentedView(in containerView: UIView) {
+        containerView.addSubview(presentedView)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self,
+                                                action: #selector(didPanScrollOnPresentedView(recognizer:)))
+        panGestureRecognizer.minimumNumberOfTouches = 1
+        panGestureRecognizer.maximumNumberOfTouches = 1
+        panGestureRecognizer.delaysTouchesBegan = false
+        panGestureRecognizer.delaysTouchesEnded = false
+        panGestureRecognizer.delegate = self
+        containerView.addGestureRecognizer(panGestureRecognizer)
+
+        setNeedsLayoutUpdate()
+        adjustPanContainerBackgroundColor()
+    }
+    
+    // 화면의 맨 아래에 위치하도록 presentView의 높이를 줄이는 함수.
     func adjustPresentedViewFrame() {
         presentedView.isUserInteractionEnabled = true
-
         guard let frame = containerView?.frame else { return }
 
-
         let adjustedSize = CGSize(width: frame.size.width, height: frame.size.height - anchoredYPosition)
-    
         let panFrame = panContainerView.frame
         panContainerView.frame.size = frame.size
-
         if ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
             let yPosition = panFrame.origin.y - panFrame.height + frame.height
             presentedView.frame.origin.y = max(yPosition, anchoredYPosition)
         }
-        
         panContainerView.frame.origin.x = frame.origin.x
-        
         presentedViewController.view.frame = CGRect(origin: .zero, size: adjustedSize)
     }
     
-    override func size(forChildContentContainer container: UIContentContainer,
-                       withParentContainerSize parentSize: CGSize) -> CGSize {
-        return CGSize(width: parentSize.width, height: parentSize.height)
+    /**
+     Long Form 형태로 띄워지면서, 바닥에 바운스가 일어날 때,
+     배경색을 줌으로써 바닥 부분에 갭이 보이지 않도록
+     panContainerView의 배경색을 띄워질 뷰의 배경색과 맞춰줌.
+     */
+    func adjustPanContainerBackgroundColor() {
+        panContainerView.backgroundColor = presentedViewController.view.backgroundColor
+            ?? presentable?.panScrollable?.backgroundColor
     }
     
+    
+    // Dimming View를 뷰 계층에 추가하고, 오토레이아웃 잡아주는 메소드.
     func layoutBackgroundView(in containerView: UIView) {
         containerView.addSubview(dimmingView)
         dimmingView.translatesAutoresizingMaskIntoConstraints = false
@@ -234,108 +320,50 @@ final class CustomPresentationController: UIPresentationController {
         dimmingView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }
     
-    func layoutPresentedView(in containerView: UIView) {
-        
-        containerView.addSubview(presentedView)
-        
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self,
-                                                action: #selector(panScroll(recognizer:)))
-        panGestureRecognizer.minimumNumberOfTouches = 1
-        panGestureRecognizer.maximumNumberOfTouches = 1
-        panGestureRecognizer.delaysTouchesBegan = false
-        panGestureRecognizer.delaysTouchesEnded = false
-        panGestureRecognizer.delegate = self
-        containerView.addGestureRecognizer(panGestureRecognizer)
-
-        setNeedsLayoutUpdate()
-        //adjustPanContainerBackgroundColor()
+    // 레이아웃 고정 포인트 프로퍼티들에 CustomPanModalPresentable을 기반으로 값을 계산하고 저장하는 메소드.
+    func configureViewLayout() {
+        guard let layoutPresentable = presentedViewController as? CustomPanModalPresentable.LayoutType else { return }
+        shortFormYPosition = layoutPresentable.shortFormYPos
+        longFormYPosition = layoutPresentable.longFormYPos
+        anchorModalToLongForm = layoutPresentable.anchorModalToLongForm
+        extendsPanScrolling = layoutPresentable.allowsExtendedPanScrolling
+        containerView?.isUserInteractionEnabled = layoutPresentable.isUserInteractionEnabled
     }
     
-    private func setupView() {
-        dimmingView = DimmingView()
-        dimmingView.translatesAutoresizingMaskIntoConstraints = false
-        dimmingView.didTap = { [weak self] _ in
-            self?.presentedViewController.dismiss(animated: true)
-        }
-    }
-    
+    // 스크롤 뷰의 인셋 값을 주는 메소드.
     func configureScrollViewInsets() {
-
-        guard
-            let scrollView = presentable?.panScrollable,
-            !scrollView.isScrolling
+        guard let scrollView = presentable?.panScrollable, !scrollView.isScrolling
             else { return }
-
         scrollView.showsVerticalScrollIndicator = false
         scrollView.scrollIndicatorInsets = presentable?.scrollIndicatorInsets ?? .zero
-        //scrollView.contentInset.bottom = presentingViewController.view.safeAreaLayoutGuide.bottomAnchor
-        scrollView.contentInsetAdjustmentBehavior = .never
-        
+        scrollView.contentInset.bottom = presentingViewController.view.safeAreaInsets.bottom
+        scrollView.contentInsetAdjustmentBehavior = .never // 스크롤뷰의 인셋 조절해 주지 않음. adjustContentInset값은 .zero임.
     }
+}
+ 
+// MARK: - Pan Gesture Event Handler
 
+extension CustomPresentationController {
     
-    @objc func panScroll(recognizer: UIPanGestureRecognizer) {
+    @objc func didPanScrollOnPresentedView(recognizer: UIPanGestureRecognizer) {
         
-//        guard recognizer.state == .began || recognizer.state == .changed,
-//              let piece = recognizer.view else {
-//            return
-//        }
-//        let translation = recognizer.translation(in: piece)
-//        piece.center = CGPoint(x: piece.center.x, y: piece.center.y + translation.y)
-//        piece.layoutIfNeeded()
-//        recognizer.setTranslation(.zero, in: piece)
-        
-        guard
-            shouldRespond(to: recognizer),
-            let containerView = containerView
-            else {
-                recognizer.setTranslation(.zero, in: recognizer.view)
-                return
-        }
-        
-        guard let piece = recognizer.view else {
+        guard shouldRespond(to: recognizer), let containerView = containerView else {
+            recognizer.setTranslation(.zero, in: recognizer.view)
             return
         }
-        let translation = recognizer.translation(in: piece)
-        newY = piece.frame.origin.y + translation.y
-        let isDraggingDown = translation.y > 0
         
         switch recognizer.state {
         case .began, .changed:
             respond(to: recognizer)
-            
-//            if minimumContainerY < newY {
-//                piece.center = CGPoint(x: piece.center.x, y: piece.center.y + translation.y)
-//                piece.layoutIfNeeded()
-//                //recognizer.setTranslation(.zero, in: piece)
-//            }
             if presentedView.frame.origin.y == anchoredYPosition && extendsPanScrolling {
                 presentable?.willTransition(to: .longForm)
             }
         
-        case .ended:
-//            let visibleHeight = UIScreen.main.bounds.height - newY
-//
-//            if visibleHeight < 100 {
-//                self.animateDismissView()
-//            }
-//            else if isDraggingDown {
-//                animateContainerY(.min)
-//            }
-//            else if !isDraggingDown {
-//                animateContainerY(.max)
-//            }
+        default:
             let velocity = recognizer.velocity(in: presentedView)
 
             if isVelocityWithinSensitivityRange(velocity.y) {
 
-                /**
-                 If velocity is within the sensitivity range,
-                 transition to a presentation state or dismiss entirely.
-
-                 This allows the user to dismiss directly from long form
-                 instead of going to the short form state first.
-                 */
                 if velocity.y < 0 {
                     transition(to: .longForm)
 
@@ -349,10 +377,6 @@ final class CustomPresentationController: UIPresentationController {
 
             } else {
 
-                /**
-                 The `containerView.bounds.height` is used to determine
-                 how close the presented view is to the bottom of the screen
-                 */
                 let position = nearest(to: presentedView.frame.minY, inValues: [containerView.bounds.height, shortFormYPosition, longFormYPosition])
 
                 if position == longFormYPosition {
@@ -365,59 +389,14 @@ final class CustomPresentationController: UIPresentationController {
                     presentedViewController.dismiss(animated: true)
                 }
             }
-        default:
-            break
         }
-        //recognizer.setTranslation(.zero, in: piece)
-
-//        let translation = recognizer.translation(in: piece)
-//        // Drag to top will be minus value and vice versa
-//        print("Pan gesture y offset: \(translation.y)")
-//
-//        // Get drag direction
-//        let isDraggingDown = translation.y > 0
-//        print("Dragging direction: \(isDraggingDown ? "going down" : "going up")")
-//
-//        // New height is based on value of dragging plus current container height
-//
-//        let newHeight = piece.frame.origin.y - translation.y
-//
-//        // Handle based on gesture state
-//        switch recognizer.state {
-//        case .changed:
-//            if newHeight < maximumContainerHeight {
-//                piece.center = CGPoint(x: piece.center.x, y: piece.center.y + translation.y)
-//                print("newHeight", newHeight)
-//                piece.layoutIfNeeded()
-//                //print("superview", piece.superview)
-//
-//
-//                recognizer.setTranslation(.zero, in: piece)
-//            }
-//            print("changed")
-//
-//        case .ended:
-//            if newHeight < 100 {
-//                self.animateDismissView()
-//            }
-//            else if newHeight < defaultHeight {
-//                // Condition 2: If new height is below default, animate back to default
-//                animateContainerHeight(defaultHeight)
-//            }
-//            else if newHeight < maximumContainerHeight && isDraggingDown {
-//                // Condition 3: If new height is below max and going down, set to default height
-//                animateContainerHeight(defaultHeight)
-//            }
-//            else if newHeight > defaultHeight && !isDraggingDown {
-//                // Condition 4: If new height is below max and going up, set to max height at top
-//                animateContainerHeight(maximumContainerHeight)
-//            }
-//            print("ended")
-//        default:
-//            break
-//        }
     }
     
+    /**
+     판 모달이 제스처에 응답해야하는지를 결정해주는 메소드.
+     판 모달이 이미 드래그 되고 있거나, 델리게이트 false 반환을 하면, 제스처가 다시 .began상태가 될 때까지 무시함.
+     판 모달 제스처를 취소해야하는 유일한 경우임.
+     */
     func shouldRespond(to panGestureRecognizer: UIPanGestureRecognizer) -> Bool {
         guard
             presentable?.shouldRespond(to: panGestureRecognizer) == true ||
@@ -430,18 +409,12 @@ final class CustomPresentationController: UIPresentationController {
         return !shouldFail(panGestureRecognizer: panGestureRecognizer)
     }
 
-    /**
-     Communicate intentions to presentable and adjust subviews in containerView
-     */
+    // 컨테이너뷰의 서브뷰들을 조정하고, 표시하기 위한 메소드.
     func respond(to panGestureRecognizer: UIPanGestureRecognizer) {
         presentable?.willRespond(to: panGestureRecognizer)
 
         var yDisplacement = panGestureRecognizer.translation(in: presentedView).y
 
-        /**
-         If the presentedView is not anchored to long form, reduce the rate of movement
-         above the threshold
-         */
         if presentedView.frame.origin.y < longFormYPosition {
             yDisplacement /= 2.0
         }
@@ -451,23 +424,13 @@ final class CustomPresentationController: UIPresentationController {
     }
 
     /**
-     Determines if we should fail the gesture recognizer based on certain conditions
-
-     We fail the presented view's pan gesture recognizer if we are actively scrolling on the scroll view.
-     This allows the user to drag whole view controller from outside scrollView touch area.
-
-     Unfortunately, cancelling a gestureRecognizer means that we lose the effect of transition scrolling
-     from one view to another in the same pan gesture so don't cancel
+     특정 조건에 따라 제스처를 실패해야 하는지 여부를 결정.
+     만약에 스크롤 중이면 실패.
+     이를 통해 사용자는 스크롤뷰 바깥 부분 뷰컨트롤러에 대한 드래그를 할 수 있도록 함.
+     그리고, 어떤 뷰에서 다른 뷰로 팬 제스처를 이동하며 제스처를 취소하면, 스크롤 전환에 대한 효과를 주지 않는것임.
      */
     func shouldFail(panGestureRecognizer: UIPanGestureRecognizer) -> Bool {
 
-        /**
-         Allow api consumers to override the internal conditions &
-         decide if the pan gesture recognizer should be prioritized.
-
-         ⚠️ This is the only time we should be cancelling the panScrollable recognizer,
-         for the purpose of ensuring we're no longer tracking the scrollView
-         */
         guard !shouldPrioritize(panGestureRecognizer: panGestureRecognizer) else {
             presentable?.panScrollable?.panGestureRecognizer.isEnabled = false
             presentable?.panScrollable?.panGestureRecognizer.isEnabled = true
@@ -486,15 +449,14 @@ final class CustomPresentationController: UIPresentationController {
         return (scrollView.frame.contains(loc) || scrollView.isScrolling)
     }
 
-    /**
-     Determine if the presented view's panGestureRecognizer should be prioritized over
-     embedded scrollView's panGestureRecognizer.
-     */
+
+    // Presented View의 팬 제스처가 스크롤뷰의 팬 제스처 보다 우선순위가 먼저되어야 하는지 결정하는 메소드.
     func shouldPrioritize(panGestureRecognizer: UIPanGestureRecognizer) -> Bool {
         return panGestureRecognizer.state == .began &&
             presentable?.shouldPrioritize(panModalGestureRecognizer: panGestureRecognizer) == true
     }
     
+    // 주어진 속도가 정해진 감도 범위 내에 있는지 체크하는 메소드.
     func isVelocityWithinSensitivityRange(_ velocity: CGFloat) -> Bool {
         return (abs(velocity) - (1000 * (1 - Constants.snapMovementSensitivity))) > 0
     }
@@ -508,7 +470,7 @@ final class CustomPresentationController: UIPresentationController {
         }
     }
 
-    
+    // Presented View의 Y포지션을 Dimming view를 기준으로 조정하는 메소드.
     func adjust(toYPosition yPos: CGFloat) {
         presentedView.frame.origin.y = max(yPos, anchoredYPosition)
         
@@ -516,91 +478,39 @@ final class CustomPresentationController: UIPresentationController {
             dimmingView.alpha = 1.0
             return
         }
-        dimmingView.alpha = 0.7
+        
+        // Presented View가 shortForm 아래로 내려가면 화면 하단을 기준으로 yPos를 계산하고 DimmingView 알파에 백분율을 적용
+        let yDisplacementFromShortForm = presentedView.frame.origin.y - shortFormYPosition
+        dimmingView.alpha = 1.0 - (yDisplacementFromShortForm / presentedView.frame.height)
     }
     
+    // 배열에 있는 CGFloat 값 중에서, 주어진 숫자과 가까운 값을 찾는 함수.
     func nearest(to number: CGFloat, inValues values: [CGFloat]) -> CGFloat {
         guard let nearestVal = values.min(by: { abs(number - $0) < abs(number - $1) })
             else { return number }
         return nearestVal
     }
-
-    func animateContainerY(_ type: PresentationType) {
-        UIView.animate(
-            withDuration: 0.2,
-            animations: {
-                self.presentedView.frame.origin.y = type.positionY
-                self.presentedView.layoutIfNeeded()
-            })
-        newY = type.positionY
-    }
-    
-    
-    func animateDismissView() {
-        UIView.animate(withDuration: 3) {
-            self.presentedView.frame.origin.y = UIScreen.main.bounds.height
-            self.presentedView.layoutIfNeeded()
-        }
-        self.presentedViewController.dismiss(animated: false)
-    }
 }
+
+// MARK: - UIScrollView Observer
 
 extension CustomPresentationController {
 
-    func transition(to state: PresentationState) {
-
-        guard presentable?.shouldTransition(to: state) == true
-            else { return }
-
-        presentable?.willTransition(to: state)
-
-        switch state {
-        case .shortForm:
-            snap(toYPosition: shortFormYPosition)
-        case .longForm:
-            snap(toYPosition: longFormYPosition)
-        }
-    }
-
-    func performUpdates(_ updates: () -> Void) {
-
-        guard let scrollView = presentable?.panScrollable
-            else { return }
-
-        // Pause scroll observer
-        scrollObserver?.invalidate()
-        scrollObserver = nil
-
-        // Perform updates
-        updates()
-
-        // Resume scroll observer
-        trackScrolling(scrollView)
-        observe(scrollView: scrollView)
-    }
-
-    func setNeedsLayoutUpdate() {
-        configureViewLayout()
-        adjustPresentedViewFrame()
-        observe(scrollView: presentable?.panScrollable)
-        configureScrollViewInsets()
-    }
-
-}
-
-extension CustomPresentationController {
-
+    
+    // 주어진 스크롤뷰의 콘텐츠 offest에 옵저버를 만들고 저장함. 스크롤뷰의 델리게이트없이 스크롤링을 추적할 수 있음.
     func observe(scrollView: UIScrollView?) {
         scrollObserver?.invalidate()
         scrollObserver = scrollView?.observe(\.contentOffset, options: .old) { [weak self] scrollView, change in
-
-            guard self?.containerView != nil
-                else { return }
-
+            guard self?.containerView != nil else { return }
             self?.didPanOnScrollView(scrollView, change: change)
         }
     }
-
+    
+    /**
+     Scroll View 콘텐츠 offset의 이벤트 핸들링
+     스크롤이 top까지 스크롤 되면 scroll indicator를 disable해주어야 함. 아니면 글리치 발생
+     panContainerView에서 scrollView로 스크롤을 원활하게 전환할 수 있게 됨.
+     */
     func didPanOnScrollView(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>) {
 
         guard
@@ -629,20 +539,27 @@ extension CustomPresentationController {
         }
     }
 
+    // 스크롤이 scrollViewYOffset값에 도달하면 스크롤 멈추는 메소드.
     func haltScrolling(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(CGPoint(x: 0, y: scrollViewYOffset), animated: false)
         scrollView.showsVerticalScrollIndicator = false
     }
 
+    // 유저가 스크롤 할 때, 스크롤의 Y offset값을 추적하는 메소드. 스크롤이 제자리에서 유지하고 있을 때, 스크롤을 멈추는데 도움이 됨.
     func trackScrolling(_ scrollView: UIScrollView) {
         scrollViewYOffset = max(scrollView.contentOffset.y, 0)
         scrollView.showsVerticalScrollIndicator = true
     }
     
+    /**
+     scrollView와 모달 사이의 스크롤 전환이 매끄럽게 되려면 콘텐츠 오프셋이 음수인 경우를 처리해야 함.
+     이 경우 스크롤 뷰의 감속 커브를 따라야함.
+     이를 통해 스크롤 뷰와 모달 뷰가 완전히 하나라는 효과를 줄 수 있음.
+     */
     func handleScrollViewTopBounce(scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>) {
 
-        guard let oldYValue = change.oldValue?.y, scrollView.isDecelerating
-            else { return }
+        // isDecelerating : 유저가 스크롤 뷰를 당기고 나서 움직이고 있을 때 리턴되는 불리언 값.
+        guard let oldYValue = change.oldValue?.y, scrollView.isDecelerating else { return }
 
         let yOffset = scrollView.contentOffset.y
         let presentedSize = containerView?.frame.size ?? .zero
@@ -660,19 +577,32 @@ extension CustomPresentationController {
     }
 }
 
+// MARK: - UIGestureRecognizerDelegate
+
 extension CustomPresentationController: UIGestureRecognizerDelegate {
 
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false
-    }
+    /**
+     현재의 gesture recognizer가 다른 gesture recognizer가 제스처에 의해 인식이 실패해야 하는지. default값 false
+     true : 다른 gesture recognizer가 인식 할 수 있음
+     false : 현재 gesture recognizer가 인식할 수 있음
+    */
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+//                           shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return false
+//    }
 
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    // 두 개의 gestureRecognizer가 동시에 제스처를 인식해야하는지를 결정.
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return otherGestureRecognizer.view == presentable?.panScrollable
     }
 }
 
+// MARK: - Helper Extensions
+
 private extension UIScrollView {
 
+    // 현재 스크롤이 되고 있는지를 나타내는 Boolean 프로퍼티.
     var isScrolling: Bool {
         return isDragging && !isDecelerating || isTracking
     }

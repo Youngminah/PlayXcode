@@ -21,7 +21,9 @@ final class CustomPresentationManager: NSObject {
 }
 
 // MARK: - UIViewControllerTransitioningDelegate
+
 extension CustomPresentationManager: UIViewControllerTransitioningDelegate {
+    
     func presentationController(
         forPresented presented: UIViewController,
         presenting: UIViewController?,
@@ -53,6 +55,7 @@ extension CustomPresentationManager: UIViewControllerTransitioningDelegate {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension CustomPresentationManager: UIAdaptivePresentationControllerDelegate {
     func adaptivePresentationStyle(
         for controller: UIPresentationController,

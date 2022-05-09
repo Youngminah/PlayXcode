@@ -8,6 +8,7 @@
 import UIKit
 
 final class CustomPresentationAnimator: NSObject {
+    
     // MARK: - Properties
     let isPresentation: Bool
     
@@ -19,11 +20,13 @@ final class CustomPresentationAnimator: NSObject {
 }
 
 // MARK: - UIViewControllerAnimatedTransitioning
+
 extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
+    
     func transitionDuration(
         using transitionContext: UIViewControllerContextTransitioning?
     ) -> TimeInterval {
-        return 0.3
+        return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -33,17 +36,21 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
         
         let panView: UIView = transitionContext.containerView.panContainerView ?? controller.view
         
+        let presentable = transitionContext.viewController(forKey: .to) as? CustomPanModalPresentable.LayoutType
+        let yPos: CGFloat = presentable?.shortFormYPos ?? 0.0
+        
         let presentedFrame = transitionContext.finalFrame(for: controller)
         var dismissedFrame = presentedFrame
         dismissedFrame.origin.y = panView.frame.size.height
         
         let initialFrame = isPresentation ? dismissedFrame : presentedFrame
-        let finalFrame = isPresentation ? presentedFrame : dismissedFrame
+        var finalFrame = isPresentation ? presentedFrame : dismissedFrame
         
         let animationDuration = transitionDuration(using: transitionContext)
         
         if isPresentation {
             panView.frame = initialFrame
+            finalFrame.origin.y = yPos
         }
         
         UIView.animate(
@@ -51,6 +58,7 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
             delay: 0,
             usingSpringWithDamping: 1.0,
             initialSpringVelocity: 0,
+            options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
             animations: {
                 panView.frame = finalFrame
             }, completion: { finished in
