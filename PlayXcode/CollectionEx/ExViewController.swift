@@ -23,7 +23,7 @@ enum ExSection {
     }
 }
 
-final class ExViewController: UIViewController, CustomPanModalPresentable {
+final class ExViewController: UIViewController, SheetPresentable {
     
     var isShortFormEnabled = true
     
@@ -228,11 +228,11 @@ final class ExViewController: UIViewController, CustomPanModalPresentable {
         collectionView.dataSource = self
     }
     
-    var panScrollable: UIScrollView? {
+    var sheetScrollView: UIScrollView? {
         return collectionView
     }
 
-    var shortFormHeight: PanModalHeight {
+    var shortFormHeight: SheetHeight {
         return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
     }
 
@@ -240,10 +240,10 @@ final class ExViewController: UIViewController, CustomPanModalPresentable {
         return false
     }
 
-    func willTransition(to state: CustomPresentationController.PresentationState) {
+    func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
         isShortFormEnabled = true
-        panModalSetNeedsLayoutUpdate()
+        sheetModalSetNeedsLayoutUpdate()
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  PanContainerView.swift
+//  SheetContainerView.swift
 //  PlayXcode
 //
 //  Created by Mint Kim on 2022/05/02.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PanContainerView: UIView {
+final class SheetContainerView: UIView {
 
     init(presentedView: UIView, frame: CGRect) {
         super.init(frame: frame)
@@ -23,9 +23,9 @@ final class PanContainerView: UIView {
 
 extension UIView {
 
-    var panContainerView: PanContainerView? {
+    var sheetContainerView: SheetContainerView? {
         return subviews.first(where: { view -> Bool in
-            view is PanContainerView
-        }) as? PanContainerView
+            view is SheetContainerView
+        }) as? SheetContainerView
     }
 }

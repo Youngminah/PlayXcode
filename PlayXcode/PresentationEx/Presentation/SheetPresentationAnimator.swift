@@ -1,5 +1,5 @@
 //
-//  CustomModalAnimator.swift
+//  SheetPresentationAnimator.swift
 //  PlayXcode
 //
 //  Created by Mint Kim on 2022/05/02.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-struct PanModalAnimator {
+struct SheetPresentationAnimator {
 
     struct Constants {
         static let defaultTransitionDuration: TimeInterval = 0.5
     }
 
     static func animate(_ animations: @escaping () -> Void,
-                        config: CustomPanModalPresentable?,
+                        config: SheetPresentable?,
                         _ completion: ((Bool) -> Void)? = nil) {
 
         let transitionDuration = config?.transitionDuration ?? Constants.defaultTransitionDuration

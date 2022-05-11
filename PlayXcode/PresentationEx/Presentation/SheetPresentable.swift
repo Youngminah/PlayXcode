@@ -1,5 +1,5 @@
 //
-//  CustomPanModalPresentable.swift
+//  SheetPresentable.swift
 //  PlayXcode
 //
 //  Created by Mint Kim on 2022/05/02.
@@ -7,20 +7,19 @@
 
 import UIKit
 
-protocol CustomPanModalPresentable: AnyObject {
+protocol SheetPresentable: AnyObject {
 
-    var panScrollable: UIScrollView? { get }
+    var sheetScrollView: UIScrollView? { get }
 
-    // view의 safearea top inset + 모달 컨테이너뷰의 top offset
-    var topOffset: CGFloat { get }
+    var topOffset: CGFloat { get } // view의 safearea top inset + 모달 컨테이너뷰의 top offset
 
     var isShortFormEnabled: Bool { get }
     
-    var shortFormHeight: PanModalHeight { get }
+    var shortFormHeight: SheetHeight { get }
     
-    var longFormHeight: PanModalHeight { get }
+    var longFormHeight: SheetHeight { get }
 
-    //var cornerRadius: CGFloat { get }
+    var cornerRadius: CGFloat { get }
 
     var springDamping: CGFloat { get }
 
@@ -28,20 +27,19 @@ protocol CustomPanModalPresentable: AnyObject {
 
     var transitionAnimationOptions: UIView.AnimationOptions { get }
 
-    var panModalBackgroundColor: UIColor { get }
+    var sheetModalBackgroundColor: UIColor { get }
 
     var scrollIndicatorInsets: UIEdgeInsets { get }
 
     var anchorModalToLongForm: Bool { get }
 
-    var allowsExtendedPanScrolling: Bool { get }
+    var allowsExtendedSheetScrolling: Bool { get }
 
     var allowsDragToDismiss: Bool { get }
 
     var allowsTapToDismiss: Bool { get }
 
-    // False이면 presentingViewController에서 터치 불가능.
-    var isUserInteractionEnabled: Bool { get }
+    var isUserInteractionEnabled: Bool { get } // False이면 presentingViewController에서 터치 불가능.
 
     var shouldRoundTopCorners: Bool { get }
 
@@ -51,16 +49,16 @@ protocol CustomPanModalPresentable: AnyObject {
 
     func shouldPrioritize(panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool
 
-    func shouldTransition(to state: CustomPresentationController.PresentationState) -> Bool
+    func shouldTransition(to state: SheetPresentationController.PresentationState) -> Bool
 
-    func willTransition(to state: CustomPresentationController.PresentationState)
+    func willTransition(to state: SheetPresentationController.PresentationState)
 
-    func panModalWillDismiss()
+    func sheetModalWillDismiss()
 
-    func panModalDidDismiss()
+    func sheetModalDidDismiss()
 }
 
-enum PanModalHeight: Equatable {
+enum SheetHeight: Equatable {
 
     case maxHeight
     case maxHeightWithTopInset(CGFloat)

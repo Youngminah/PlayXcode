@@ -1,5 +1,5 @@
 //
-//  PanModalPresentable+Defaults.swift
+//  SheetModalPresentable+Defaults.swift
 //  PlayXcode
 //
 //  Created by Mint Kim on 2022/05/06.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension CustomPanModalPresentable where Self: UIViewController {
+extension SheetPresentable where Self: UIViewController {
 
     var topOffset: CGFloat {
         return topLayoutOffset + 21.0
@@ -17,13 +17,13 @@ extension CustomPanModalPresentable where Self: UIViewController {
         return true
     }
 
-    var shortFormHeight: PanModalHeight {
+    var shortFormHeight: SheetHeight {
         return longFormHeight
     }
 
-    var longFormHeight: PanModalHeight {
+    var longFormHeight: SheetHeight {
 
-        guard let scrollView = panScrollable else { return .maxHeight }
+        guard let scrollView = sheetScrollView else { return .maxHeight }
 
         scrollView.layoutIfNeeded()
         return .contentHeight(scrollView.contentSize.height)
@@ -38,14 +38,14 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 
     var transitionDuration: Double {
-        return PanModalAnimator.Constants.defaultTransitionDuration
+        return SheetPresentationAnimator.Constants.defaultTransitionDuration
     }
 
     var transitionAnimationOptions: UIView.AnimationOptions {
         return [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState]
     }
 
-    var panModalBackgroundColor: UIColor {
+    var sheetModalBackgroundColor: UIColor {
         return UIColor.black.withAlphaComponent(0.7)
     }
 
@@ -58,9 +58,9 @@ extension CustomPanModalPresentable where Self: UIViewController {
         return true
     }
 
-    var allowsExtendedPanScrolling: Bool {
+    var allowsExtendedSheetScrolling: Bool {
 
-        guard let scrollView = panScrollable else { return false }
+        guard let scrollView = sheetScrollView else { return false }
         scrollView.layoutIfNeeded()
 
         return scrollView.contentSize.height > (scrollView.frame.height - bottomLayoutOffset)
@@ -79,7 +79,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 
     var shouldRoundTopCorners: Bool {
-        return isPanModalPresented
+        return isSheetPresented
     }
 
     func shouldRespond(to panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
@@ -90,7 +90,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
 
     }
 
-    func shouldTransition(to state: CustomPresentationController.PresentationState) -> Bool {
+    func shouldTransition(to state: SheetPresentationController.PresentationState) -> Bool {
         return true
     }
 
@@ -98,23 +98,23 @@ extension CustomPanModalPresentable where Self: UIViewController {
         return false
     }
 
-    func willTransition(to state: CustomPresentationController.PresentationState) {
+    func willTransition(to state: SheetPresentationController.PresentationState) {
 
     }
 
-    func panModalWillDismiss() {
+    func sheetModalWillDismiss() {
         
     }
 
-    func panModalDidDismiss() {
+    func sheetModalDidDismiss() {
 
     }
 }
 
-extension CustomPanModalPresentable where Self: UIViewController {
+extension SheetPresentable where Self: UIViewController {
 
-    var presentedVC: CustomPresentationController? {
-        return presentationController as? CustomPresentationController
+    var presentedVC: SheetPresentationController? {
+        return presentationController as? SheetPresentationController
     }
     
     var topLayoutOffset: CGFloat {
@@ -145,7 +145,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
         return container.bounds.size.height - topOffset
     }
 
-    func topMargin(from: PanModalHeight) -> CGFloat {
+    func topMargin(from: SheetHeight) -> CGFloat {
         switch from {
         case .maxHeight:
             return 0.0
@@ -174,17 +174,17 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 }
 
-extension CustomPanModalPresentable where Self: UIViewController {
+extension SheetPresentable where Self: UIViewController {
 
     typealias AnimationBlockType = () -> Void
     typealias AnimationCompletionType = (Bool) -> Void
-    typealias LayoutType = UIViewController & CustomPanModalPresentable
+    typealias LayoutType = UIViewController & SheetPresentable
 
-    func panModalTransition(to state: CustomPresentationController.PresentationState) {
+    func panModalTransition(to state: SheetPresentationController.PresentationState) {
         presentedVC?.transition(to: state)
     }
 
-    func panModalSetNeedsLayoutUpdate() {
+    func sheetModalSetNeedsLayoutUpdate() {
         presentedVC?.setNeedsLayoutUpdate()
     }
 
@@ -193,6 +193,6 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 
     func panModalAnimate(_ animationBlock: @escaping AnimationBlockType, _ completion: AnimationCompletionType? = nil) {
-        PanModalAnimator.animate(animationBlock, config: self, completion)
+        SheetPresentationAnimator.animate(animationBlock, config: self, completion)
     }
 }

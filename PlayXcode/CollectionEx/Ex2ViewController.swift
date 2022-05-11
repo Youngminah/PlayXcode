@@ -9,7 +9,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-final class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
+final class Ex2ViewController: UICollectionViewController, SheetPresentable {
     
     private let array = ["Lemon🍋", "Orange🍊"]
     
@@ -32,11 +32,11 @@ final class Ex2ViewController: UICollectionViewController, CustomPanModalPresent
         return cell
     }
 
-    var panScrollable: UIScrollView? {
+    var sheetScrollView: UIScrollView? {
         return collectionView
     }
 
-    var longFormHeight: PanModalHeight {
+    var longFormHeight: SheetHeight {
         return .maxHeight
     }
 
@@ -44,7 +44,7 @@ final class Ex2ViewController: UICollectionViewController, CustomPanModalPresent
         return false
     }
 
-    var shortFormHeight: PanModalHeight {
+    var shortFormHeight: SheetHeight {
         return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
     }
 
@@ -52,10 +52,10 @@ final class Ex2ViewController: UICollectionViewController, CustomPanModalPresent
         return true
     }
 
-    func willTransition(to state: CustomPresentationController.PresentationState) {
+    func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
         //isShortFormEnabled = true
-        panModalSetNeedsLayoutUpdate()
+        sheetModalSetNeedsLayoutUpdate()
     }
 }
 

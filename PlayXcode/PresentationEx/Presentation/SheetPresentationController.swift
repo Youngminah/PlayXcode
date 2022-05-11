@@ -1,5 +1,5 @@
 //
-//  CustomPresentationController.swift
+//  SheetPresentationController.swift
 //  PlayXcode
 //
 //  Created by Mint Kim on 2022/04/28.
@@ -39,7 +39,7 @@ enum PresentationType {
  Presented VIew :
  */
 
-final class CustomPresentationController: UIPresentationController {
+final class SheetPresentationController: UIPresentationController {
     
     enum PresentationState {
         case shortForm
@@ -57,7 +57,7 @@ final class CustomPresentationController: UIPresentationController {
     private var fractionalHeight: CGFloat
     
     private var isPresentedViewAnimating = false
-    private var extendsPanScrolling = true
+    private var extendsSheetScrolling = true
     private var anchorModalToLongForm = true
     
     private var scrollViewYOffset: CGFloat = 0.0
@@ -75,19 +75,19 @@ final class CustomPresentationController: UIPresentationController {
         return anchorModalToLongForm ? longFormYPosition : defaultTopOffset
     }
     
-    // CustomPresentationController의 Configuration 객체
-    private var presentable: CustomPanModalPresentable? {
-        return presentedViewController as? CustomPanModalPresentable
+    // SheetPresentationController의 Configuration 객체
+    private var presentable: SheetPresentable? {
+        return presentedViewController as? SheetPresentable
     }
     
     override var presentedView: UIView {
-        return panContainerView
+        return sheetContainerView
     }
     
     // presented view를 래핑하는 뷰로, 원하는 대로 뷰의 모양 등등을 조정할 수 있게 함
-    private lazy var panContainerView: PanContainerView = {
+    private lazy var sheetContainerView: SheetContainerView = {
         let frame = containerView?.frame ?? .zero
-        return PanContainerView(
+        return SheetContainerView(
             presentedView: presentedViewController.view,
             frame: frame
         )
@@ -110,22 +110,7 @@ final class CustomPresentationController: UIPresentationController {
     }
     
     // MARK: - Lifecycle
-    
-    // 애니메이션이 끝난 뒤 presented view의 프레임
-//    override var frameOfPresentedViewInContainerView: CGRect {
-//        guard let containerView = containerView else { return .zero }
-//        var frame: CGRect = .zero
-//        frame.size = size(forChildContentContainer: presentedViewController,
-//                          withParentContainerSize: containerView.bounds.size)
-//        frame.origin.y = type.positionY
-//        return frame
-//    }
-//
-//    override func size(forChildContentContainer container: UIContentContainer,
-//                       withParentContainerSize parentSize: CGSize) -> CGSize {
-//        return CGSize(width: parentSize.width, height: parentSize.height)
-//    }
-    
+
     // 띄우는 화면 전환 애니메이션이 시작하려 할 때 실행되는 함수
     override func presentationTransitionWillBegin() {
         
@@ -159,7 +144,7 @@ final class CustomPresentationController: UIPresentationController {
     
     // 사라지는 화면 전환 애니메이션이 시작되려할 때 실행되는 함수
     override func dismissalTransitionWillBegin() {
-        presentable?.panModalWillDismiss()
+        presentable?.sheetModalWillDismiss()
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = 0.0
             return
@@ -173,7 +158,7 @@ final class CustomPresentationController: UIPresentationController {
     // 사라지는 화면 전환 애니메이션이 끝났을 때 실행되는 함수
     override func dismissalTransitionDidEnd(_ completed: Bool) {
         if !completed { return }
-        presentable?.panModalDidDismiss()
+        presentable?.sheetModalDidDismiss()
     }
     
     // 컨테이너의 루트 뷰의 크기가 변경되려고 하면 실행되는 함수.
@@ -197,7 +182,7 @@ final class CustomPresentationController: UIPresentationController {
 
 // MARK: - Common Layout Update Methods
 
-extension CustomPresentationController {
+extension SheetPresentationController {
     
     // PresentationState 값에 따른 전환
     func transition(to state: PresentationState) {
@@ -218,7 +203,7 @@ extension CustomPresentationController {
      */
     func performUpdates(_ updates: () -> Void) {
         
-        guard let scrollView = presentable?.panScrollable else { return }
+        guard let scrollView = presentable?.sheetScrollView else { return }
         scrollObserver?.invalidate()
         scrollObserver = nil
         updates()
@@ -227,25 +212,25 @@ extension CustomPresentationController {
     }
     
     /**
-     PanModalPresentable에 값을 가지고
-     CustomPresentationControllerdml 레이아웃을 업데이트 하기 위한 함수.
+     SheetModalPresentable에 값을 가지고
+     SheetPresentationControllerdml 레이아웃을 업데이트 하기 위한 함수.
      */
     func setNeedsLayoutUpdate() {
         configureViewLayout()
         adjustPresentedViewFrame()
-        observe(scrollView: presentable?.panScrollable)
+        observe(scrollView: presentable?.sheetScrollView)
         configureScrollViewInsets()
     }
 }
 
 // MARK: - Presented View Layout Configuration
 
-extension CustomPresentationController {
+extension SheetPresentationController {
     
     // presented view가 고정되어있는지 여부를 나타내는 Boolean 값
     var isPresentedViewAnchored: Bool {
         if !isPresentedViewAnimating
-            && extendsPanScrolling
+            && extendsSheetScrolling
             && presentedView.frame.minY.rounded() <= anchoredYPosition.rounded() {
             return true
         }
@@ -265,7 +250,7 @@ extension CustomPresentationController {
         containerView.addSubview(presentedView)
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self,
-                                                action: #selector(didPanScrollOnPresentedView(recognizer:)))
+                                                action: #selector(didSheetScrollOnPresentedView(recognizer:)))
         panGestureRecognizer.minimumNumberOfTouches = 1
         panGestureRecognizer.maximumNumberOfTouches = 1
         panGestureRecognizer.delaysTouchesBegan = false
@@ -274,7 +259,7 @@ extension CustomPresentationController {
         containerView.addGestureRecognizer(panGestureRecognizer)
 
         setNeedsLayoutUpdate()
-        adjustPanContainerBackgroundColor()
+        adjustSheetContainerBackgroundColor()
     }
     
     // 화면의 맨 아래에 위치하도록 presentView의 높이를 줄이는 함수.
@@ -283,13 +268,13 @@ extension CustomPresentationController {
         guard let frame = containerView?.frame else { return }
 
         let adjustedSize = CGSize(width: frame.size.width, height: frame.size.height - anchoredYPosition)
-        let panFrame = panContainerView.frame
-        panContainerView.frame.size = frame.size
-        if ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
-            let yPosition = panFrame.origin.y - panFrame.height + frame.height
+        let sheetFrame = sheetContainerView.frame
+        sheetContainerView.frame.size = frame.size
+        if ![shortFormYPosition, longFormYPosition].contains(sheetFrame.origin.y) {
+            let yPosition = sheetFrame.origin.y - sheetFrame.height + frame.height
             presentedView.frame.origin.y = max(yPosition, anchoredYPosition)
         }
-        panContainerView.frame.origin.x = frame.origin.x
+        sheetContainerView.frame.origin.x = frame.origin.x
         presentedViewController.view.frame = CGRect(origin: .zero, size: adjustedSize)
     }
     
@@ -298,9 +283,9 @@ extension CustomPresentationController {
      배경색을 줌으로써 바닥 부분에 갭이 보이지 않도록
      panContainerView의 배경색을 띄워질 뷰의 배경색과 맞춰줌.
      */
-    func adjustPanContainerBackgroundColor() {
-        panContainerView.backgroundColor = presentedViewController.view.backgroundColor
-            ?? presentable?.panScrollable?.backgroundColor
+    func adjustSheetContainerBackgroundColor() {
+        sheetContainerView.backgroundColor = presentedViewController.view.backgroundColor
+            ?? presentable?.sheetScrollView?.backgroundColor
     }
     
     
@@ -314,20 +299,20 @@ extension CustomPresentationController {
         dimmingView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }
     
-    // 레이아웃 고정 포인트 프로퍼티들에 CustomPanModalPresentable을 기반으로 값을 계산하고 저장하는 메소드.
+    // 레이아웃 고정 포인트 프로퍼티들에 SheetPresentable을 기반으로 값을 계산하고 저장하는 메소드.
     func configureViewLayout() {
-        guard let layoutPresentable = presentedViewController as? CustomPanModalPresentable.LayoutType else { return }
+        guard let layoutPresentable = presentedViewController as? SheetPresentable.LayoutType else { return }
         shortFormYPosition = layoutPresentable.shortFormYPos
         longFormYPosition = layoutPresentable.longFormYPos
         anchorModalToLongForm = layoutPresentable.anchorModalToLongForm
-        extendsPanScrolling = layoutPresentable.allowsExtendedPanScrolling
+        extendsSheetScrolling = layoutPresentable.allowsExtendedSheetScrolling
         presentedView.layer.cornerRadius = layoutPresentable.cornerRadius
         containerView?.isUserInteractionEnabled = layoutPresentable.isUserInteractionEnabled
     }
     
     // 스크롤 뷰의 인셋 값을 주는 메소드.
     func configureScrollViewInsets() {
-        guard let scrollView = presentable?.panScrollable, !scrollView.isScrolling
+        guard let scrollView = presentable?.sheetScrollView, !scrollView.isScrolling
             else { return }
         scrollView.showsVerticalScrollIndicator = false
         scrollView.scrollIndicatorInsets = presentable?.scrollIndicatorInsets ?? .zero
@@ -336,11 +321,11 @@ extension CustomPresentationController {
     }
 }
  
-// MARK: - Pan Gesture Event Handler
+// MARK: - Sheet Gesture Event Handler
 
-extension CustomPresentationController {
+extension SheetPresentationController {
     
-    @objc func didPanScrollOnPresentedView(recognizer: UIPanGestureRecognizer) {
+    @objc func didSheetScrollOnPresentedView(recognizer: UIPanGestureRecognizer) {
         
         guard shouldRespond(to: recognizer), let containerView = containerView else {
             recognizer.setTranslation(.zero, in: recognizer.view)
@@ -351,7 +336,7 @@ extension CustomPresentationController {
         case .began, .changed:
             respond(to: recognizer)
             
-            if presentedView.frame.origin.y == anchoredYPosition && extendsPanScrolling {
+            if presentedView.frame.origin.y == anchoredYPosition && extendsSheetScrolling {
                 presentable?.willTransition(to: .longForm)
             }
         
@@ -429,14 +414,14 @@ extension CustomPresentationController {
     func shouldFail(panGestureRecognizer: UIPanGestureRecognizer) -> Bool {
 
         guard !shouldPrioritize(panGestureRecognizer: panGestureRecognizer) else {
-            presentable?.panScrollable?.panGestureRecognizer.isEnabled = false
-            presentable?.panScrollable?.panGestureRecognizer.isEnabled = true
+            presentable?.sheetScrollView?.panGestureRecognizer.isEnabled = false
+            presentable?.sheetScrollView?.panGestureRecognizer.isEnabled = true
             return false
         }
 
         guard
             isPresentedViewAnchored,
-            let scrollView = presentable?.panScrollable,
+            let scrollView = presentable?.sheetScrollView,
             scrollView.contentOffset.y > 0
             else {
                 return false
@@ -445,7 +430,6 @@ extension CustomPresentationController {
         let loc = panGestureRecognizer.location(in: presentedView)
         return (scrollView.frame.contains(loc) || scrollView.isScrolling)
     }
-
 
     // Presented View의 팬 제스처가 스크롤뷰의 팬 제스처 보다 우선순위가 먼저되어야 하는지 결정하는 메소드.
     func shouldPrioritize(panGestureRecognizer: UIPanGestureRecognizer) -> Bool {
@@ -459,7 +443,7 @@ extension CustomPresentationController {
     }
 
     func snap(toYPosition yPos: CGFloat) {
-        PanModalAnimator.animate({ [weak self] in
+        SheetPresentationAnimator.animate({ [weak self] in
             self?.adjust(toYPosition: yPos)
             self?.isPresentedViewAnimating = true
         }, config: presentable) { [weak self] didComplete in
@@ -491,8 +475,7 @@ extension CustomPresentationController {
 
 // MARK: - UIScrollView Observer
 
-extension CustomPresentationController {
-
+extension SheetPresentationController {
     
     // 주어진 스크롤뷰의 콘텐츠 offest에 옵저버를 만들고 저장함. 스크롤뷰의 델리게이트없이 스크롤링을 추적할 수 있음.
     func observe(scrollView: UIScrollView?) {
@@ -581,7 +564,7 @@ extension CustomPresentationController {
 
 // MARK: - UIGestureRecognizerDelegate
 
-extension CustomPresentationController: UIGestureRecognizerDelegate {
+extension SheetPresentationController: UIGestureRecognizerDelegate {
 
     /**
      현재의 gesture recognizer가 다른 gesture recognizer가 제스처에 의해 인식이 실패해야 하는지. default값 false
@@ -596,7 +579,7 @@ extension CustomPresentationController: UIGestureRecognizerDelegate {
     // 두 개의 gestureRecognizer가 동시에 제스처를 인식해야하는지를 결정.
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return otherGestureRecognizer.view == presentable?.panScrollable
+        return otherGestureRecognizer.view == presentable?.sheetScrollView
     }
 }
 

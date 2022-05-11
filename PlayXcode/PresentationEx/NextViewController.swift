@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NextViewController: UIViewController, CustomPanModalPresentable, UICollectionViewDataSource {
+final class NextViewController: UIViewController, SheetPresentable, UICollectionViewDataSource {
     
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -34,11 +34,11 @@ final class NextViewController: UIViewController, CustomPanModalPresentable, UIC
         return cell
     }
 
-    var panScrollable: UIScrollView? {
+    var sheetScrollView: UIScrollView? {
         return collectionView
     }
 
-    var longFormHeight: PanModalHeight {
+    var longFormHeight: SheetHeight {
         return .maxHeight
     }
 
@@ -46,7 +46,7 @@ final class NextViewController: UIViewController, CustomPanModalPresentable, UIC
         return false
     }
 
-    var shortFormHeight: PanModalHeight {
+    var shortFormHeight: SheetHeight {
         return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
     }
 
@@ -54,10 +54,10 @@ final class NextViewController: UIViewController, CustomPanModalPresentable, UIC
         return true
     }
 
-    func willTransition(to state: CustomPresentationController.PresentationState) {
+    func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
         //isShortFormEnabled = true
-        panModalSetNeedsLayoutUpdate()
+        sheetModalSetNeedsLayoutUpdate()
     }
 }
 

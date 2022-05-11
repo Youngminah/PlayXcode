@@ -39,10 +39,10 @@ class CurrentViewController: UIViewController {
         self.present(vc, animated: true)
     }
     @IBAction func highButtonTap(_ sender: Any) {
-        guard let vc : CustomPanModalPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") as? NextViewController else {
+        guard let vc : SheetPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") as? NextViewController else {
             return
         }
-        self.presentPanModal(vc)
+        self.presentSheetModal(vc)
     }
     
     @IBAction func mediumButtonTap(_ sender: Any) {
@@ -50,15 +50,15 @@ class CurrentViewController: UIViewController {
             return
         }
         vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = PanModalPresentationDelegate.default
+        vc.transitioningDelegate = SheetPresentationDelegate.default
         self.present(vc, animated: true)
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
-        guard let vc : CustomPanModalPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "Ex2ViewController") as? Ex2ViewController else {
+        guard let vc : SheetPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "Ex2ViewController") as? Ex2ViewController else {
             return
         }
-        self.presentPanModal(vc)
+        self.presentSheetModal(vc)
     }
     
     @IBAction func minButtonTap(_ sender: Any) {

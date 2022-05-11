@@ -1,5 +1,5 @@
 //
-//  CustomPresentationAnimator.swift
+//  SheetPresentationAnimator.swift
 //  PlayXcode
 //
 //  Created by Mint Kim on 2022/04/29.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CustomPresentationAnimator: NSObject {
+final class SheetPresentationAnimatedTransitioning: NSObject {
     
     // MARK: - Properties
     let isPresentation: Bool
@@ -21,7 +21,7 @@ final class CustomPresentationAnimator: NSObject {
 
 // MARK: - UIViewControllerAnimatedTransitioning
 
-extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
+extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(
         using transitionContext: UIViewControllerContextTransitioning?
@@ -34,14 +34,14 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
         guard let controller = transitionContext.viewController(forKey: key) else { return }
         //controller.beginAppearanceTransition(true, animated: true)
         
-        let panView: UIView = transitionContext.containerView.panContainerView ?? controller.view
+        let sheetView: UIView = transitionContext.containerView.sheetContainerView ?? controller.view
         
-        let presentable = transitionContext.viewController(forKey: .to) as? CustomPanModalPresentable.LayoutType
+        let presentable = transitionContext.viewController(forKey: .to) as? SheetPresentable.LayoutType
         let yPos: CGFloat = presentable?.shortFormYPos ?? 0.0
         
         let presentedFrame = transitionContext.finalFrame(for: controller)
         var dismissedFrame = presentedFrame
-        dismissedFrame.origin.y = panView.frame.size.height
+        dismissedFrame.origin.y = sheetView.frame.size.height
         
         let initialFrame = isPresentation ? dismissedFrame : presentedFrame
         var finalFrame = isPresentation ? presentedFrame : dismissedFrame
@@ -49,7 +49,7 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
         let animationDuration = transitionDuration(using: transitionContext)
         
         if isPresentation {
-            panView.frame = initialFrame
+            sheetView.frame = initialFrame
             finalFrame.origin.y = yPos
         }
         
@@ -60,7 +60,7 @@ extension CustomPresentationAnimator: UIViewControllerAnimatedTransitioning {
             initialSpringVelocity: 0,
             options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
             animations: {
-                panView.frame = finalFrame
+                sheetView.frame = finalFrame
             }, completion: { finished in
                 if !self.isPresentation {
                     controller.view.removeFromSuperview()

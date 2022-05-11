@@ -1,5 +1,5 @@
 //
-//  CustomPresentationManager.swift
+//  SheetPresentationManager.swift
 //  PlayXcode
 //
 //  Created by Mint Kim on 2022/04/29.
@@ -8,6 +8,7 @@
 import UIKit
 
 final class CustomPresentationManager: NSObject {
+    
     // MARK: - Properties
     var type: PresentationType = .low
     var disableCompactHeight = false
@@ -29,7 +30,7 @@ extension CustomPresentationManager: UIViewControllerTransitioningDelegate {
         presenting: UIViewController?,
         source: UIViewController
     ) -> UIPresentationController? {
-        let presentationController = CustomPresentationController(
+        let presentationController = SheetPresentationController(
             presentedViewController: presented,
             presenting: presenting,
             type: type,
@@ -44,19 +45,20 @@ extension CustomPresentationManager: UIViewControllerTransitioningDelegate {
         presenting: UIViewController,
         source: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
-        return CustomPresentationAnimator(isPresentation: true)
+        return SheetPresentationAnimatedTransitioning(isPresentation: true)
     }
     
     func animationController(
         forDismissed dismissed: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
-        return CustomPresentationAnimator(isPresentation: false)
+        return SheetPresentationAnimatedTransitioning(isPresentation: false)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension CustomPresentationManager: UIAdaptivePresentationControllerDelegate {
+
     func adaptivePresentationStyle(
         for controller: UIPresentationController,
         traitCollection: UITraitCollection
