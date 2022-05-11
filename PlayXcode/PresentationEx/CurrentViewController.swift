@@ -39,14 +39,10 @@ class CurrentViewController: UIViewController {
         self.present(vc, animated: true)
     }
     @IBAction func highButtonTap(_ sender: Any) {
-        guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") else {
+        guard let vc : CustomPanModalPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") as? NextViewController else {
             return
         }
-        customTransitioningDelegate.type = .high
-        customTransitioningDelegate.disableCompactHeight = false
-        vc.transitioningDelegate = customTransitioningDelegate
-        vc.modalPresentationStyle = .custom
-        self.present(vc, animated: true)
+        self.presentPanModal(vc)
     }
     
     @IBAction func mediumButtonTap(_ sender: Any) {
@@ -62,9 +58,7 @@ class CurrentViewController: UIViewController {
         guard let vc : CustomPanModalPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "Ex2ViewController") as? Ex2ViewController else {
             return
         }
-        vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = PanModalPresentationDelegate.default
-        self.present(vc, animated: true)
+        self.presentPanModal(vc)
     }
     
     @IBAction func minButtonTap(_ sender: Any) {

@@ -84,7 +84,7 @@ final class CustomPresentationController: UIPresentationController {
         return panContainerView
     }
     
-    // presented view 를 래핑하는 뷰로, 원하는 대로 뷰의 모양 등등을 조정할 수 있게 함
+    // presented view를 래핑하는 뷰로, 원하는 대로 뷰의 모양 등등을 조정할 수 있게 함
     private lazy var panContainerView: PanContainerView = {
         let frame = containerView?.frame ?? .zero
         return PanContainerView(
@@ -97,10 +97,11 @@ final class CustomPresentationController: UIPresentationController {
         scrollObserver?.invalidate()
     }
     
-    init(presentedViewController: UIViewController,
-         presenting presentingViewController: UIViewController?,
-         type: PresentationType,
-         fractionalHeight: CGFloat
+    init(
+        presentedViewController: UIViewController,
+        presenting presentingViewController: UIViewController?,
+        type: PresentationType,
+        fractionalHeight: CGFloat
     ) {
         //self.type = type
         self.fractionalHeight = fractionalHeight
@@ -127,15 +128,12 @@ final class CustomPresentationController: UIPresentationController {
     
     // 띄우는 화면 전환 애니메이션이 시작하려 할 때 실행되는 함수
     override func presentationTransitionWillBegin() {
+        
         guard let containerView = containerView else { return }
         guard let dimmingView = dimmingView else { return }
-        
         layoutBackgroundView(in: containerView)
         layoutPresentedView(in: containerView)
         configureScrollViewInsets()
-        //shortFormYPosition = type.positionY
-        //longFormYPosition = type.positionY
-        //adjustPresentedViewFrame()
 
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = 1.0
@@ -156,10 +154,6 @@ final class CustomPresentationController: UIPresentationController {
     // 컨테이너뷰의 뷰들이 레이아웃을 시작하려할 때 실행되는 함수. containerViewDidLayoutSubviews도 있음.
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
-        //presentedView.frame = frameOfPresentedViewInContainerView
-        presentedView.layer.cornerRadius = 8
-        //shortFormYPosition = type.positionY
-        //longFormYPosition = type.positionY
         configureViewLayout()
     }
     
@@ -327,6 +321,7 @@ extension CustomPresentationController {
         longFormYPosition = layoutPresentable.longFormYPos
         anchorModalToLongForm = layoutPresentable.anchorModalToLongForm
         extendsPanScrolling = layoutPresentable.allowsExtendedPanScrolling
+        presentedView.layer.cornerRadius = layoutPresentable.cornerRadius
         containerView?.isUserInteractionEnabled = layoutPresentable.isUserInteractionEnabled
     }
     
@@ -355,6 +350,7 @@ extension CustomPresentationController {
         switch recognizer.state {
         case .began, .changed:
             respond(to: recognizer)
+            
             if presentedView.frame.origin.y == anchoredYPosition && extendsPanScrolling {
                 presentable?.willTransition(to: .longForm)
             }
@@ -409,17 +405,18 @@ extension CustomPresentationController {
         return !shouldFail(panGestureRecognizer: panGestureRecognizer)
     }
 
-    // 컨테이너뷰의 서브뷰들을 조정하고, 표시하기 위한 메소드.
+    // 유저가 스크롤하고 있을 때 컨테이너뷰의 서브뷰들을 조정하고, 표시하기 위한 메소드.
     func respond(to panGestureRecognizer: UIPanGestureRecognizer) {
         presentable?.willRespond(to: panGestureRecognizer)
 
         var yDisplacement = panGestureRecognizer.translation(in: presentedView).y
 
+        // long form에 presented View가 고정되지 않는다면, 한계점 이상에서 이동속도를 감소시킴.
         if presentedView.frame.origin.y < longFormYPosition {
             yDisplacement /= 2.0
         }
         adjust(toYPosition: presentedView.frame.origin.y + yDisplacement)
-
+        // yDisplacement를 초기화 해주기위한 함수
         panGestureRecognizer.setTranslation(.zero, in: presentedView)
     }
 
@@ -470,7 +467,7 @@ extension CustomPresentationController {
         }
     }
 
-    // Presented View의 Y포지션을 Dimming view를 기준으로 조정하는 메소드.
+    // Presented View의 Y포지션을 Dimming view를 기준으로 조정, Dimming View alpha 조정 메소드.
     func adjust(toYPosition yPos: CGFloat) {
         presentedView.frame.origin.y = max(yPos, anchoredYPosition)
         
@@ -512,7 +509,7 @@ extension CustomPresentationController {
      panContainerView에서 scrollView로 스크롤을 원활하게 전환할 수 있게 됨.
      */
     func didPanOnScrollView(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>) {
-
+        
         guard
             !presentedViewController.isBeingDismissed,
             !presentedViewController.isBeingPresented
@@ -532,8 +529,9 @@ extension CustomPresentationController {
 
         } else if presentedViewController.view.isKind(of: UIScrollView.self)
             && !isPresentedViewAnimating && scrollView.contentOffset.y <= 0 {
-
+            
             handleScrollViewTopBounce(scrollView: scrollView, change: change)
+            
         } else {
             trackScrolling(scrollView)
         }
@@ -543,16 +541,20 @@ extension CustomPresentationController {
     func haltScrolling(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(CGPoint(x: 0, y: scrollViewYOffset), animated: false)
         scrollView.showsVerticalScrollIndicator = false
+        
     }
 
-    // 유저가 스크롤 할 때, 스크롤의 Y offset값을 추적하는 메소드. 스크롤이 제자리에서 유지하고 있을 때, 스크롤을 멈추는데 도움이 됨.
+    // 유저가 스크롤 할 때, 스크롤의 Y offset값을 추적하는 메소드.
+    // 스크롤이 제자리에서 유지하고 있을 때, 스크롤을 멈춤.
     func trackScrolling(_ scrollView: UIScrollView) {
         scrollViewYOffset = max(scrollView.contentOffset.y, 0)
         scrollView.showsVerticalScrollIndicator = true
+        
     }
     
     /**
-     scrollView와 모달 사이의 스크롤 전환이 매끄럽게 되려면 콘텐츠 오프셋이 음수인 경우를 처리해야 함.
+     scrollView와 모달 사이에서 유저가 스크롤을 내릴 때
+     스크롤 전환이 매끄럽게 되려면 콘텐츠 오프셋이 음수인 경우를 처리해야 함.
      이 경우 스크롤 뷰의 감속 커브를 따라야함.
      이를 통해 스크롤 뷰와 모달 뷰가 완전히 하나라는 효과를 줄 수 있음.
      */

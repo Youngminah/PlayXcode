@@ -11,7 +11,10 @@ protocol CustomPanModalPresentable: AnyObject {
 
     var panScrollable: UIScrollView? { get }
 
+    // view의 safearea top inset + 모달 컨테이너뷰의 top offset
     var topOffset: CGFloat { get }
+
+    var isShortFormEnabled: Bool { get }
     
     var shortFormHeight: PanModalHeight { get }
     
@@ -37,6 +40,7 @@ protocol CustomPanModalPresentable: AnyObject {
 
     var allowsTapToDismiss: Bool { get }
 
+    // False이면 presentingViewController에서 터치 불가능.
     var isUserInteractionEnabled: Bool { get }
 
     var shouldRoundTopCorners: Bool { get }

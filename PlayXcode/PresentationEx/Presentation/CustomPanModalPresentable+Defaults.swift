@@ -13,6 +13,10 @@ extension CustomPanModalPresentable where Self: UIViewController {
         return topLayoutOffset + 21.0
     }
 
+    var isShortFormEnabled: Bool {
+        return true
+    }
+
     var shortFormHeight: PanModalHeight {
         return longFormHeight
     }
@@ -26,7 +30,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 
     var cornerRadius: CGFloat {
-        return 8.0
+        return 15.0
     }
 
     var springDamping: CGFloat {
@@ -57,8 +61,8 @@ extension CustomPanModalPresentable where Self: UIViewController {
     var allowsExtendedPanScrolling: Bool {
 
         guard let scrollView = panScrollable else { return false }
-
         scrollView.layoutIfNeeded()
+
         return scrollView.contentSize.height > (scrollView.frame.height - bottomLayoutOffset)
     }
 
@@ -124,19 +128,20 @@ extension CustomPanModalPresentable where Self: UIViewController {
     }
 
     var shortFormYPos: CGFloat {
-
         guard !UIAccessibility.isVoiceOverRunning else { return longFormYPos }
-
-        let shortFormYPos = topMargin(from: shortFormHeight) + topOffset
+        let topMarginOffset = isShortFormEnabled ? topMargin(from: shortFormHeight) : topMargin(from: longFormHeight)
+        let shortFormYPos = topMarginOffset + topOffset
         return max(shortFormYPos, longFormYPos)
     }
 
     var longFormYPos: CGFloat {
+
         return max(topMargin(from: longFormHeight), topMargin(from: .maxHeight)) + topOffset
     }
 
     var bottomYPos: CGFloat {
         guard let container = presentedVC?.containerView else { return view.bounds.height }
+
         return container.bounds.size.height - topOffset
     }
 
@@ -147,6 +152,7 @@ extension CustomPanModalPresentable where Self: UIViewController {
         case .maxHeightWithTopInset(let inset):
             return inset
         case .contentHeight(let height):
+            
             return bottomYPos - (height + bottomLayoutOffset)
         case .contentHeightIgnoringSafeArea(let height):
             return bottomYPos - height
@@ -189,43 +195,4 @@ extension CustomPanModalPresentable where Self: UIViewController {
     func panModalAnimate(_ animationBlock: @escaping AnimationBlockType, _ completion: AnimationCompletionType? = nil) {
         PanModalAnimator.animate(animationBlock, config: self, completion)
     }
-}
-
-
-protocol CustomPanModalPresenter: AnyObject {
-
-    var isPanModalPresented: Bool { get }
-
-//    func presentPanModal(_ viewControllerToPresent: CustomPanModalPresentable.LayoutType,
-//                         sourceView: UIView?,
-//                         sourceRect: CGRect,
-//                         completion: (() -> Void)?)
-
-}
-
-extension UIViewController: CustomPanModalPresenter {
-
-    public var isPanModalPresented: Bool {
-        return (transitioningDelegate as? CustomPresentationManager) != nil
-    }
-
-//    public func presentPanModal(_ viewControllerToPresent: CustomPanModalPresentable.LayoutType,
-//                                sourceView: UIView? = nil,
-//                                sourceRect: CGRect = .zero,
-//                                completion: (() -> Void)? = nil) {
-//
-//        if UIDevice.current.userInterfaceIdiom == .pad {
-//            viewControllerToPresent.modalPresentationStyle = .popover
-//            viewControllerToPresent.popoverPresentationController?.sourceRect = sourceRect
-//            viewControllerToPresent.popoverPresentationController?.sourceView = sourceView ?? view
-//            viewControllerToPresent.popoverPresentationController?.delegate = Cu.default
-//        } else {
-//            viewControllerToPresent.modalPresentationStyle = .custom
-//            viewControllerToPresent.modalPresentationCapturesStatusBarAppearance = true
-//            viewControllerToPresent.transitioningDelegate = PanModalPresentationDelegate.default
-//        }
-//
-//        present(viewControllerToPresent, animated: true, completion: completion)
-//    }
-
 }

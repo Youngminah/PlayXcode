@@ -9,14 +9,12 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
+final class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
     
     private let array = ["Lemon🍋", "Orange🍊"]
-    var isShortFormEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.bounce
     }
     
     // MARK: - UICollectionViewDataSource
@@ -33,13 +31,17 @@ class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
         cell.configure(with: array[indexPath.row])
         return cell
     }
-    
+
     var panScrollable: UIScrollView? {
         return collectionView
     }
-    
+
     var longFormHeight: PanModalHeight {
-        return .intrinsicHeight
+        return .maxHeight
+    }
+
+    var isShortFormEnabled: Bool {
+        return false
     }
 
     var shortFormHeight: PanModalHeight {
@@ -47,14 +49,12 @@ class Ex2ViewController: UICollectionViewController, CustomPanModalPresentable {
     }
 
     var anchorModalToLongForm: Bool {
-        return false
+        return true
     }
 
     func willTransition(to state: CustomPresentationController.PresentationState) {
-        guard isShortFormEnabled, case .longForm = state
-            else { return }
-
-        isShortFormEnabled = true
+        guard isShortFormEnabled, case .longForm = state else { return }
+        //isShortFormEnabled = true
         panModalSetNeedsLayoutUpdate()
     }
 }
