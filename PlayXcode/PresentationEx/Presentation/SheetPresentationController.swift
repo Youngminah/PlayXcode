@@ -53,8 +53,6 @@ final class SheetPresentationController: UIPresentationController {
     
     // MARK: - Properties
     private var dimmingView: DimmingView!
-    //private var type: PresentationType
-    private var fractionalHeight: CGFloat
     
     private var isPresentedViewAnimating = false
     private var extendsSheetScrolling = true
@@ -65,10 +63,6 @@ final class SheetPresentationController: UIPresentationController {
     
     private var shortFormYPosition: CGFloat = 0
     private var longFormYPosition: CGFloat = 0
-    
-    private var frameOfPresentedViewOriginY: CGFloat {
-        return (1.0 - self.fractionalHeight)
-    }
     
     private var anchoredYPosition: CGFloat {
         let defaultTopOffset = presentable?.topOffset ?? 0
@@ -97,14 +91,10 @@ final class SheetPresentationController: UIPresentationController {
         scrollObserver?.invalidate()
     }
     
-    init(
+    override init(
         presentedViewController: UIViewController,
-        presenting presentingViewController: UIViewController?,
-        type: PresentationType,
-        fractionalHeight: CGFloat
+        presenting presentingViewController: UIViewController?
     ) {
-        //self.type = type
-        self.fractionalHeight = fractionalHeight
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         setupDimmingView()
     }

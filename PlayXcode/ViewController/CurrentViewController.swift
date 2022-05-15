@@ -29,14 +29,8 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {
-        guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") else {
-            return
-        }
-        customTransitioningDelegate.type = .max
-        customTransitioningDelegate.disableCompactHeight = false
-        vc.transitioningDelegate = customTransitioningDelegate
-        vc.modalPresentationStyle = .custom
-        self.present(vc, animated: true)
+        let vc: SheetPresentable.LayoutType = SheetViewController()
+        self.presentSheetModal(vc)
     }
     @IBAction func highButtonTap(_ sender: Any) {
         guard let vc : SheetPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") as? NextViewController else {

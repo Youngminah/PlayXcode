@@ -32,9 +32,7 @@ extension CustomPresentationManager: UIViewControllerTransitioningDelegate {
     ) -> UIPresentationController? {
         let presentationController = SheetPresentationController(
             presentedViewController: presented,
-            presenting: presenting,
-            type: type,
-            fractionalHeight: fractionalHeight
+            presenting: presenting
         )
         presentationController.delegate = self
         return presentationController

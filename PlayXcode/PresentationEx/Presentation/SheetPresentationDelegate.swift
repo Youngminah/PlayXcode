@@ -13,9 +13,6 @@ import UIKit
 */
 
 final class SheetPresentationDelegate: NSObject {
-
-    var type: PresentationType = .medium
-    private var fractionalHeight: CGFloat = 0.9 / 1.0
     
     static var `default`: SheetPresentationDelegate = {
         return SheetPresentationDelegate()
@@ -37,7 +34,7 @@ extension SheetPresentationDelegate: UIViewControllerTransitioningDelegate {
 
     // 현재의 뷰컨에 모달로 뷰컨을 띄우기 위해 전환을 담당하는 presentation controller 리턴
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = SheetPresentationController(presentedViewController: presented, presenting: presenting, type: type, fractionalHeight: fractionalHeight)
+        let presentationController = SheetPresentationController(presentedViewController: presented, presenting: presenting)
         presentationController.delegate = self
         return presentationController
     }
