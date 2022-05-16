@@ -35,15 +35,15 @@ extension SheetPresentationDelegate: UIViewControllerTransitioningDelegate {
     // 현재의 뷰컨에 모달로 뷰컨을 띄우기 위해 전환을 담당하는 presentation controller 리턴
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController = SheetPresentationController(presentedViewController: presented, presenting: presenting)
-        presentationController.delegate = self
+        //presentationController.delegate = self
         return presentationController
     }
 }
 
-extension SheetPresentationDelegate: UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
-
-    // 아이패드에서 .popover 이나 .custom으로 화면 전환이 이루어지기 위해 필수적임.
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
-    }
-}
+//extension SheetPresentationDelegate: UIAdaptivePresentationControllerDelegate {
+//
+//    // 아이패드에서 .popover 이나 .custom으로 화면 전환이 이루어지기 위해 필수적임.
+//    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+//        return .none
+//    }
+//}

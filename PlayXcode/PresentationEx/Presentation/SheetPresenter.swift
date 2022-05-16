@@ -37,7 +37,6 @@ extension UIViewController: SheetPresenter {
             viewControllerToPresent.modalPresentationCapturesStatusBarAppearance = true
             viewControllerToPresent.transitioningDelegate = SheetPresentationDelegate.default
         }
-        
         present(viewControllerToPresent, animated: true, completion: completion)
     }
 

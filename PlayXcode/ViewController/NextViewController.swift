@@ -43,7 +43,7 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
     }
 
     var isShortFormEnabled: Bool {
-        return false
+        return true
     }
 
     var shortFormHeight: SheetHeight {

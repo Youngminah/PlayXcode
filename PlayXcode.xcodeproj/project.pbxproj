@@ -19,6 +19,7 @@
 		037DA7782824C03D00D065C0 /* SheetPresentable+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA7772824C03D00D065C0 /* SheetPresentable+Defaults.swift */; };
 		037DA77A282519C800D065C0 /* SheetPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA779282519C800D065C0 /* SheetPresentationDelegate.swift */; };
 		037DA77C282A522200D065C0 /* SheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA77B282A522200D065C0 /* SheetPresenter.swift */; };
+		037DA77F282BA02100D065C0 /* SelectionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */; };
 		0391051528163493001E129E /* ExViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051428163493001E129E /* ExViewController.swift */; };
 		03910517281634A3001E129E /* Ex2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03910516281634A3001E129E /* Ex2ViewController.swift */; };
 		0391051928165A1F001E129E /* ExCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051828165A1F001E129E /* ExCell.swift */; };
@@ -51,6 +52,7 @@
 		037DA7772824C03D00D065C0 /* SheetPresentable+Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetPresentable+Defaults.swift"; sourceTree = "<group>"; };
 		037DA779282519C800D065C0 /* SheetPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationDelegate.swift; sourceTree = "<group>"; };
 		037DA77B282A522200D065C0 /* SheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresenter.swift; sourceTree = "<group>"; };
+		037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCollectionView.swift; sourceTree = "<group>"; };
 		0391051428163493001E129E /* ExViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewController.swift; sourceTree = "<group>"; };
 		03910516281634A3001E129E /* Ex2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ex2ViewController.swift; sourceTree = "<group>"; };
 		0391051828165A1F001E129E /* ExCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExCell.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		037DA762281A548A00D065C0 /* PresentationEx */ = {
 			isa = PBXGroup;
 			children = (
+				037DA77D282B911E00D065C0 /* CollectionView */,
 				037DA76E281FBF0600D065C0 /* View */,
 				037DA767281A8AD200D065C0 /* Presentation */,
 			);
@@ -118,6 +121,14 @@
 				BB7AF965282D191700150961 /* LanguageCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		037DA77D282B911E00D065C0 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */,
+			);
+			path = CollectionView;
 			sourceTree = "<group>";
 		};
 		0391051228163452001E129E /* BasicEx */ = {
@@ -276,6 +287,7 @@
 				0391051528163493001E129E /* ExViewController.swift in Sources */,
 				037DA770281FBF2D00D065C0 /* DimmingView.swift in Sources */,
 				039EBBD02810E8B900F676A8 /* AppDelegate.swift in Sources */,
+				037DA77F282BA02100D065C0 /* SelectionCollectionView.swift in Sources */,
 				037DA76B281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift in Sources */,
 				BB7AF968282D1CF000150961 /* SheetViewController.swift in Sources */,
 				037DA772281FBF4600D065C0 /* SheetContainerView.swift in Sources */,

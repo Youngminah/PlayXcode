@@ -41,7 +41,7 @@ final class Ex2ViewController: UICollectionViewController, SheetPresentable {
     }
 
     var isShortFormEnabled: Bool {
-        return false
+        return true
     }
 
     var shortFormHeight: SheetHeight {

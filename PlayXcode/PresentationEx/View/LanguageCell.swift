@@ -31,19 +31,24 @@ final class LanguageCell: UICollectionViewCell {
         self.checkButton.isSelected = isChecked
     }
 
+    func setIsSelectedItem() {
+        print(self.checkButton.isSelected)
+        self.checkButton.isSelected = !self.checkButton.isSelected
+    }
+
     private func setConstraints() {
 
         self.addSubview(nameLabel)
-        self.addSubview(nameLocalizedLabel)
+//        self.addSubview(nameLocalizedLabel)
         self.addSubview(checkButton)
 
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -16).isActive = true
+        nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 
-        nameLocalizedLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLocalizedLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5).isActive = true
-        nameLocalizedLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+//        nameLocalizedLabel.translatesAutoresizingMaskIntoConstraints = false
+//        nameLocalizedLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5).isActive = true
+//        nameLocalizedLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
 
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true

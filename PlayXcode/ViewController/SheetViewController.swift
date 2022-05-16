@@ -9,7 +9,7 @@ import UIKit
 
 final class SheetViewController: UIViewController {
 
-    let items = [
+    var items = [
         CheckBoxItem(text: "한국어", isChecked: true),
         CheckBoxItem(text: "중국어", isChecked: false),
         CheckBoxItem(text: "중국어", isChecked: false),
@@ -31,13 +31,20 @@ final class SheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setConstraints()
+        self.configureDataSource()
+    }
+
+    @objc func dismissButtonTap() {
+        self.dismiss(animated: true)
     }
 
     private func setConstraints() {
-        
+
         contentCollectionView = ContentCollectionView(frame: self.view.bounds,
                                                         collectionViewLayout: createLayout())
         contentCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentCollectionView.register(LanguageCell.self, forCellWithReuseIdentifier: LanguageCell.identifier)
+        contentCollectionView.delegate = self
 
         view.addSubview(dismissButton)
         view.addSubview(contentCollectionView)
@@ -50,17 +57,14 @@ final class SheetViewController: UIViewController {
         dismissButton.addTarget(self, action: #selector(dismissButtonTap), for: .touchUpInside)
 
         contentCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        contentCollectionView.topAnchor.constraint(equalTo: dismissButton.topAnchor, constant: 16).isActive = true
+        contentCollectionView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 16).isActive = true
         contentCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        contentCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        contentCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         contentCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
-    @objc func dismissButtonTap() {
-        self.dismiss(animated: true)
-    }
-
     private func configureDataSource() {
+
         if #available(iOS 14.0, *) {
             let cellRegistration = UICollectionView.CellRegistration<LanguageCell, CheckBoxItem> { (cell, indexPath, item) in
                 cell.configure(text: item.text, isChecked: item.isChecked)
@@ -83,17 +87,23 @@ final class SheetViewController: UIViewController {
         // initial data
         var snapshot = NSDiffableDataSourceSnapshot<Section, CheckBoxItem>()
         snapshot.appendSections([.main])
+        snapshot.appendItems(items)
         dataSource.apply(snapshot, animatingDifferences: false)
+        //contentCollectionView.dataSource = dataSource
     }
 }
 
 extension SheetViewController {
 
     private func createLayout() -> UICollectionViewLayout {
+        
         if #available(iOS 14.0, *) {
-            let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+
+            let config = UICollectionLayoutListConfiguration(appearance: .grouped)
             return UICollectionViewCompositionalLayout.list(using: config)
+
         } else {
+
             let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
                 let itemInset: CGFloat = 5.0
@@ -114,8 +124,30 @@ extension SheetViewController {
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 return section
-            }()
+            }
+            return layout
         }
+    }
+
+    func updateSelectedStateCellConfiguration(at indexPath: IndexPath) {
+        let index = indexPath.row
+        for index in 0..<items.count {
+            items[index].isChecked = false
+        }
+        items[index].isChecked = !items[index].isChecked
+
+        var snapshot = NSDiffableDataSourceSnapshot<Section, CheckBoxItem>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(items)
+
+        dataSource.apply(snapshot)
+    }
+}
+
+extension SheetViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        updateSelectedStateCellConfiguration(at: indexPath)
     }
 }
 

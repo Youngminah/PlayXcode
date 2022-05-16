@@ -18,14 +18,8 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-        guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") else {
-            return
-        }
-        customTransitioningDelegate.setFractionalContainerViewHeight(height: 0.3/1.0)
-        customTransitioningDelegate.disableCompactHeight = false
-        vc.transitioningDelegate = customTransitioningDelegate
-        vc.modalPresentationStyle = .custom
-        self.present(vc, animated: true)
+        let vc: SheetPresentable.LayoutType = SheetViewController()
+        self.presentSheetModal(vc)
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {
@@ -40,12 +34,10 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func mediumButtonTap(_ sender: Any) {
-        guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "ExViewController") else {
+        guard let vc : SheetPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "ExViewController") as? ExViewController else {
             return
         }
-        vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = SheetPresentationDelegate.default
-        self.present(vc, animated: true)
+        self.presentSheetModal(vc)
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
@@ -56,13 +48,7 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func minButtonTap(_ sender: Any) {
-        guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "Ex2ViewController") else {
-            return
-        }
-        customTransitioningDelegate.type = .min
-        customTransitioningDelegate.disableCompactHeight = false
-        vc.transitioningDelegate = customTransitioningDelegate
-        vc.modalPresentationStyle = .custom
-        self.present(vc, animated: true)
+        let vc: SheetPresentable.LayoutType = SheetViewController()
+        self.presentSheetModal(vc)
     }
 }

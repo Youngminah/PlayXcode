@@ -52,7 +52,23 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
             sheetView.frame = initialFrame
             finalFrame.origin.y = yPos
         }
-        
+
+//        let animator = UIViewPropertyAnimator()
+//
+//        animator.addAnimations {
+//
+//        }
+//
+//        animator.addAnimations {
+//
+//        }
+//
+//        animator.fractionComplete = 0.3
+//
+//        animator.addCompletion { position in
+//            
+//        }
+
         UIView.animate(
             withDuration: animationDuration,
             delay: 0,
