@@ -10,17 +10,19 @@ import UIKit
 class ContentCollectionView: UICollectionView {
 
     var items = [
-        CheckBoxItem(text: "한국어", isChecked: true),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false)
+        SelectionItem(name: "한국어"),
+        SelectionItem(name: "중국어"),
+        SelectionItem(name: "중국어"),
+        SelectionItem(name: "중국어"),
+        SelectionItem(name: "중국어"),
+        SelectionItem(name: "중국어"),
+        SelectionItem(name: "중국어")
     ]
 
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
+        backgroundColor = .systemBackground
+        //sheetContainerView?.backgroundColor = .systemBackground
         //self.register(LanguageCell.self, forCellWithReuseIdentifier: LanguageCell.identifier)
         //self.dataSource = self
     }
@@ -40,14 +42,14 @@ class ContentCollectionView: UICollectionView {
 //}
 
 
-class BaseItem {
-
-    let text: String
-
-    init(text: String) {
-        self.text = text
-    }
-}
+//class BaseItem {
+//
+//    let text: String
+//
+//    init(text: String) {
+//        self.text = text
+//    }
+//}
 
 //final class CheckBoxItem: BaseItem, Hashable {
 //
@@ -60,10 +62,10 @@ class BaseItem {
 //    }
 //}
 
-struct CheckBoxItem: Hashable {
+class CheckBoxItem: Hashable {
 
-    let text: String
-    var isChecked: Bool
+    let text: String = ""
+    var isChecked: Bool = true
     private let identifier = UUID()
 
     func hash(into hasher: inout Hasher) {
@@ -71,6 +73,41 @@ struct CheckBoxItem: Hashable {
     }
 
     static func == (lhs: CheckBoxItem, rhs: CheckBoxItem) -> Bool {
+
         return lhs.identifier == rhs.identifier && lhs.isChecked == rhs.isChecked
     }
 }
+
+protocol HashableType: Hashable {
+
+    var identifier: String { get set }
+}
+
+extension HashableType {
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+}
+
+struct SelectionItem: HashableType {
+
+    let name: String
+    var identifier = UUID().uuidString
+}
+
+//final class ContentSelectionItem<T>: SelectionItem {
+//
+//    let content: T
+//
+//    init(name: String, isSelected: Bool, content: T) {
+//        self.content = content
+//        super.init(name: name, isSelected: isSelected)
+//    }
+//}
+
+

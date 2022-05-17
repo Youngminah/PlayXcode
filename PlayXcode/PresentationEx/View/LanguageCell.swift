@@ -6,13 +6,51 @@
 //
 
 import UIKit.UICollectionViewCell
-import UIKit
 
-final class LanguageCell: UICollectionViewCell {
+//protocol ReuseIdentifierType {
+//    static var identifier: String { get }
+//}
 
-    static let identifier = "SelectionCell"
+class SelectionCollectionViewCell: UICollectionViewCell {
 
-    private let nameLabel = UILabel()
+
+    class var identifier: String {
+        return "SelectionCollectionViewCell"
+    }
+    let textLabel = UILabel()
+
+    override var isSelected: Bool {
+        didSet {
+            self.didSelectConfigure()
+        }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(text: String) {
+        self.textLabel.text = text
+    }
+
+    func didSelectConfigure() { }
+
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        //self.backgroundColor = .yellow
+    }
+}
+
+final class LanguageCell: SelectionCollectionViewCell {
+
+    override class var identifier: String {
+        return "LanguageCell"
+    }
+
     private let nameLocalizedLabel = UILabel()
     private let checkButton = UIButton()
 
@@ -26,25 +64,19 @@ final class LanguageCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(text: String, isChecked: Bool) {
-        self.nameLabel.text = text
-        self.checkButton.isSelected = isChecked
-    }
-
-    func setIsSelectedItem() {
-        print(self.checkButton.isSelected)
-        self.checkButton.isSelected = !self.checkButton.isSelected
+    override func didSelectConfigure() {
+        self.checkButton.isSelected = self.isSelected
     }
 
     private func setConstraints() {
 
-        self.addSubview(nameLabel)
+        self.addSubview(textLabel)
 //        self.addSubview(nameLocalizedLabel)
         self.addSubview(checkButton)
 
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        textLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+        textLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 
 //        nameLocalizedLabel.translatesAutoresizingMaskIntoConstraints = false
 //        nameLocalizedLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5).isActive = true
@@ -57,11 +89,12 @@ final class LanguageCell: UICollectionViewCell {
 
     private func setConfiguration() {
 
-        nameLabel.textColor = .label
-        nameLabel.numberOfLines = 1
+        textLabel.textColor = .label
+        textLabel.numberOfLines = 1
 
         checkButton.setImage(UIImage(systemName: "square"), for: .normal)
         checkButton.setImage(UIImage(systemName: "checkmark.square"), for: .selected)
+        checkButton.isUserInteractionEnabled = false
         checkButton.tintColor = .label
     }
 }

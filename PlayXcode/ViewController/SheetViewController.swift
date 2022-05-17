@@ -7,29 +7,21 @@
 
 import UIKit
 
-final class SheetViewController: UIViewController {
+final class SheetViewController<T: SelectionCollectionViewCell>: UIViewController, UICollectionViewDelegate {
 
-    var items = [
-        CheckBoxItem(text: "한국어", isChecked: true),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false),
-        CheckBoxItem(text: "중국어", isChecked: false)
-    ]
+    private var items: [SelectionItem] = []
 
     enum Section {
         case main
     }
 
     private let dismissButton = XButton()
-
-    private var dataSource: UICollectionViewDiffableDataSource<Section, CheckBoxItem>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<Section, SelectionItem>! = nil
     private var contentCollectionView: ContentCollectionView! = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         self.setConstraints()
         self.configureDataSource()
     }
@@ -38,13 +30,18 @@ final class SheetViewController: UIViewController {
         self.dismiss(animated: true)
     }
 
+    func setItems(items: [SelectionItem]) {
+        self.items = items
+    }
+
     private func setConstraints() {
 
         contentCollectionView = ContentCollectionView(frame: self.view.bounds,
                                                         collectionViewLayout: createLayout())
         contentCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        contentCollectionView.register(LanguageCell.self, forCellWithReuseIdentifier: LanguageCell.identifier)
+        contentCollectionView.register(T.self, forCellWithReuseIdentifier: T.identifier)
         contentCollectionView.delegate = self
+        contentCollectionView.allowsMultipleSelection = true
 
         view.addSubview(dismissButton)
         view.addSubview(contentCollectionView)
@@ -66,30 +63,38 @@ final class SheetViewController: UIViewController {
     private func configureDataSource() {
 
         if #available(iOS 14.0, *) {
-            let cellRegistration = UICollectionView.CellRegistration<LanguageCell, CheckBoxItem> { (cell, indexPath, item) in
-                cell.configure(text: item.text, isChecked: item.isChecked)
+            let cellRegistration = UICollectionView.CellRegistration<T, SelectionItem> { (cell, indexPath, item) in
+
+                cell.configure(text: item.name)
             }
 
-            dataSource = UICollectionViewDiffableDataSource<Section, CheckBoxItem>(collectionView: contentCollectionView) {
-                (collectionView: UICollectionView, indexPath: IndexPath, item: CheckBoxItem) -> UICollectionViewCell? in
+            dataSource = UICollectionViewDiffableDataSource<Section, SelectionItem>(collectionView: contentCollectionView) {
+                (collectionView: UICollectionView, indexPath: IndexPath, item: SelectionItem) -> UICollectionViewCell? in
                 return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             }
         } else {
-            dataSource = UICollectionViewDiffableDataSource<Section, CheckBoxItem>(collectionView: contentCollectionView) {
-                [weak self] (collectionView: UICollectionView, indexPath: IndexPath, item: CheckBoxItem) -> UICollectionViewCell? in
+            dataSource = UICollectionViewDiffableDataSource<Section, SelectionItem>(collectionView: contentCollectionView) {
+                [weak self] (collectionView: UICollectionView, indexPath: IndexPath, item: SelectionItem) -> UICollectionViewCell? in
                 guard let self = self else { return nil }
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LanguageCell.identifier, for: indexPath as IndexPath) as! LanguageCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath as IndexPath) as! T
+
                 let item = self.items[indexPath.row]
-                cell.configure(text: item.text, isChecked: item.isChecked)
+                cell.configure(text: item.name)
                 return cell
             }
         }
         // initial data
-        var snapshot = NSDiffableDataSourceSnapshot<Section, CheckBoxItem>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, SelectionItem>()
         snapshot.appendSections([.main])
         snapshot.appendItems(items)
         dataSource.apply(snapshot, animatingDifferences: false)
         //contentCollectionView.dataSource = dataSource
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+        //print(collectionView.indexPathsForSelectedItems)
+        //updateSelectedStateCellConfiguration(at: indexPath)
     }
 }
 
@@ -114,15 +119,14 @@ extension SheetViewController {
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: itemInset, leading: itemInset, bottom: itemInset, trailing: itemInset)
                 let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(0.7),
-                    heightDimension: .absolute(44)
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(44.0)
                 )
                 let group = NSCollectionLayoutGroup.horizontal(
                     layoutSize: groupSize,
                     subitems: [item]
                 )
                 let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 return section
             }
             return layout
@@ -130,24 +134,19 @@ extension SheetViewController {
     }
 
     func updateSelectedStateCellConfiguration(at indexPath: IndexPath) {
-        let index = indexPath.row
-        for index in 0..<items.count {
-            items[index].isChecked = false
-        }
-        items[index].isChecked = !items[index].isChecked
+//        let index = indexPath.row
+//        let isSelected = items[index].isSelected
+//        for index in 0..<items.count {
+//            items[index].isSelected = false
+//        }
+//        items[index].isSelected = !isSelected
 
-        var snapshot = NSDiffableDataSourceSnapshot<Section, CheckBoxItem>()
+
+        var snapshot = NSDiffableDataSourceSnapshot<Section, SelectionItem>()
         snapshot.appendSections([.main])
         snapshot.appendItems(items)
 
         dataSource.apply(snapshot)
-    }
-}
-
-extension SheetViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        updateSelectedStateCellConfiguration(at: indexPath)
     }
 }
 
