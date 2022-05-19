@@ -10,24 +10,31 @@ import UIKit
 final class SheetViewController<T: SelectionCollectionViewCell>: UIViewController, UICollectionViewDelegate {
 
     private var items: [SelectionItem] = []
+    var selectionItemsHandler: (([SelectionItem]) -> Void)?
 
     enum Section {
         case main
     }
 
     private let dismissButton = XButton()
+    private let saveButton = UIButton()
     private var dataSource: UICollectionViewDiffableDataSource<Section, SelectionItem>! = nil
-    private var contentCollectionView: ContentCollectionView! = nil
+    private var contentCollectionView: UICollectionView! = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.setConstraints()
         self.configureDataSource()
+        self.setConfiguration()
     }
 
     @objc func dismissButtonTap() {
         self.dismiss(animated: true)
+    }
+
+    @objc func saveButtonTap() {
+        self.dismiss(animated: true)
+        self.selectionItemsHandler?(items)
     }
 
     func setItems(items: [SelectionItem]) {
@@ -39,12 +46,11 @@ final class SheetViewController<T: SelectionCollectionViewCell>: UIViewControlle
         contentCollectionView = ContentCollectionView(frame: self.view.bounds,
                                                         collectionViewLayout: createLayout())
         contentCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        contentCollectionView.register(T.self, forCellWithReuseIdentifier: T.identifier)
         contentCollectionView.delegate = self
-        contentCollectionView.allowsMultipleSelection = true
 
         view.addSubview(dismissButton)
         view.addSubview(contentCollectionView)
+        view.addSubview(saveButton)
 
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 16).isActive = true
@@ -53,18 +59,35 @@ final class SheetViewController<T: SelectionCollectionViewCell>: UIViewControlle
         dismissButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         dismissButton.addTarget(self, action: #selector(dismissButtonTap), for: .touchUpInside)
 
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+        saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
+        saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        saveButton.addTarget(self, action: #selector(saveButtonTap), for: .touchUpInside)
+
         contentCollectionView.translatesAutoresizingMaskIntoConstraints = false
         contentCollectionView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 16).isActive = true
         contentCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         contentCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        contentCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        contentCollectionView.bottomAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: -16).isActive = true
+    }
+
+    private func setConfiguration() {
+        contentCollectionView.allowsMultipleSelection = true
+        contentCollectionView.backgroundColor = .systemGroupedBackground
+
+        saveButton.setTitle("확인", for: .normal)
+        saveButton.setTitleColor(.white, for: .normal)
+        saveButton.backgroundColor = .orange
+        saveButton.layer.cornerRadius = 15
+        saveButton.layer.masksToBounds = true
     }
 
     private func configureDataSource() {
 
         if #available(iOS 14.0, *) {
             let cellRegistration = UICollectionView.CellRegistration<T, SelectionItem> { (cell, indexPath, item) in
-
                 cell.configure(text: item.name)
             }
 
@@ -73,11 +96,12 @@ final class SheetViewController<T: SelectionCollectionViewCell>: UIViewControlle
                 return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             }
         } else {
+            contentCollectionView.register(T.self, forCellWithReuseIdentifier: T.identifier)
             dataSource = UICollectionViewDiffableDataSource<Section, SelectionItem>(collectionView: contentCollectionView) {
                 [weak self] (collectionView: UICollectionView, indexPath: IndexPath, item: SelectionItem) -> UICollectionViewCell? in
+
                 guard let self = self else { return nil }
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath as IndexPath) as! T
-
                 let item = self.items[indexPath.row]
                 cell.configure(text: item.name)
                 return cell
@@ -93,7 +117,6 @@ final class SheetViewController<T: SelectionCollectionViewCell>: UIViewControlle
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-        //print(collectionView.indexPathsForSelectedItems)
         //updateSelectedStateCellConfiguration(at: indexPath)
     }
 }
@@ -104,7 +127,7 @@ extension SheetViewController {
         
         if #available(iOS 14.0, *) {
 
-            let config = UICollectionLayoutListConfiguration(appearance: .grouped)
+            let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
             return UICollectionViewCompositionalLayout.list(using: config)
 
         } else {
@@ -112,20 +135,13 @@ extension SheetViewController {
             let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
                 let itemInset: CGFloat = 5.0
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .fractionalHeight(1.0)
-                )
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: itemInset, leading: itemInset, bottom: itemInset, trailing: itemInset)
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(44.0)
-                )
-                let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize: groupSize,
-                    subitems: [item]
-                )
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .estimated(60.0))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
                 return section
             }
@@ -161,7 +177,7 @@ extension SheetViewController: SheetPresentable {
     }
 
     var isShortFormEnabled: Bool {
-        return false
+        return true
     }
 
     var shortFormHeight: SheetHeight {

@@ -12,15 +12,15 @@ import UIKit
  아래 예제에서 보자면 UIViewControllerTransitioningDelegate도 NSObjectProtocol임.
 */
 
-final class SheetPresentationDelegate: NSObject {
+final class SheetTransitioningDelegate: NSObject {
     
-    static var `default`: SheetPresentationDelegate = {
-        return SheetPresentationDelegate()
+    static var `default`: SheetTransitioningDelegate = {
+        return SheetTransitioningDelegate()
     }()
 
 }
 
-extension SheetPresentationDelegate: UIViewControllerTransitioningDelegate {
+extension SheetTransitioningDelegate: UIViewControllerTransitioningDelegate {
 
     // 모달 화면을 띄울 때 애니메이션 리턴
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {

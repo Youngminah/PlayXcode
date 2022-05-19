@@ -19,7 +19,6 @@ class CurrentViewController: UIViewController {
         SelectionItem(name: "포루투칼어")
     ]
 
-    lazy var customTransitioningDelegate = CustomPresentationManager()
     var isShortFormEnabled = true
     
     override func viewDidLoad() {
@@ -27,28 +26,16 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-        let vc: SheetPresentable.LayoutType = SheetViewController()
-//        vc.items = [
-//            한국어
-//            일어
-//            중국
-//        ]
-//
-//        vc.items = [
-//            3학년
-//            4학년
-//            5학년
-//        ]
-
-//        vc.cellType = UICollectionViewCell.self
-//        vc.cellType = WhiteCollectionViewCell.self
-        self.presentSheetModal(vc)
+//        let vc: SheetPresentable.LayoutType = SheetViewController()
+//        self.presentSheetModal(vc)
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {
-        let vc = SheetViewController<LanguageCell>()
+        let vc = SheetViewController<TitleSelectionCell>()
         vc.setItems(items: items)
-        
+        vc.selectionItemsHandler = { data in
+
+        }
         self.presentSheetModal(vc)
     }
     @IBAction func highButtonTap(_ sender: Any) {

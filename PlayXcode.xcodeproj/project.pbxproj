@@ -11,13 +11,12 @@
 		037DA766281A54EF00D065C0 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA765281A54EF00D065C0 /* NextViewController.swift */; };
 		037DA769281A8BB500D065C0 /* SheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA768281A8BB500D065C0 /* SheetPresentationController.swift */; };
 		037DA76B281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA76A281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift */; };
-		037DA76D281BA64F00D065C0 /* CustomPresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA76C281BA64F00D065C0 /* CustomPresentationManager.swift */; };
 		037DA770281FBF2D00D065C0 /* DimmingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA76F281FBF2D00D065C0 /* DimmingView.swift */; };
 		037DA772281FBF4600D065C0 /* SheetContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA771281FBF4600D065C0 /* SheetContainerView.swift */; };
 		037DA774281FC22000D065C0 /* SheetPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA773281FC22000D065C0 /* SheetPresentable.swift */; };
 		037DA776281FC6AF00D065C0 /* SheetPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA775281FC6AF00D065C0 /* SheetPresentationAnimator.swift */; };
 		037DA7782824C03D00D065C0 /* SheetPresentable+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA7772824C03D00D065C0 /* SheetPresentable+Defaults.swift */; };
-		037DA77A282519C800D065C0 /* SheetPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA779282519C800D065C0 /* SheetPresentationDelegate.swift */; };
+		037DA77A282519C800D065C0 /* SheetTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */; };
 		037DA77C282A522200D065C0 /* SheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA77B282A522200D065C0 /* SheetPresenter.swift */; };
 		037DA77F282BA02100D065C0 /* SelectionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */; };
 		0391051528163493001E129E /* ExViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051428163493001E129E /* ExViewController.swift */; };
@@ -35,7 +34,7 @@
 		BB7AF95F282CDABA00150961 /* XButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF95E282CDABA00150961 /* XButton.swift */; };
 		BB7AF962282CDFE400150961 /* TopHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF961282CDFE400150961 /* TopHeaderView.swift */; };
 		BB7AF964282CF12000150961 /* ContentCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF963282CF12000150961 /* ContentCollectionView.swift */; };
-		BB7AF966282D191700150961 /* LanguageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF965282D191700150961 /* LanguageCell.swift */; };
+		BB7AF966282D191700150961 /* TitleSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF965282D191700150961 /* TitleSelectionCell.swift */; };
 		BB7AF968282D1CF000150961 /* SheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF967282D1CF000150961 /* SheetViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,13 +43,12 @@
 		037DA765281A54EF00D065C0 /* NextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		037DA768281A8BB500D065C0 /* SheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationController.swift; sourceTree = "<group>"; };
 		037DA76A281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationAnimatedTransitioning.swift; sourceTree = "<group>"; };
-		037DA76C281BA64F00D065C0 /* CustomPresentationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationManager.swift; sourceTree = "<group>"; };
 		037DA76F281FBF2D00D065C0 /* DimmingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimmingView.swift; sourceTree = "<group>"; };
 		037DA771281FBF4600D065C0 /* SheetContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetContainerView.swift; sourceTree = "<group>"; };
 		037DA773281FC22000D065C0 /* SheetPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentable.swift; sourceTree = "<group>"; };
 		037DA775281FC6AF00D065C0 /* SheetPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationAnimator.swift; sourceTree = "<group>"; };
 		037DA7772824C03D00D065C0 /* SheetPresentable+Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetPresentable+Defaults.swift"; sourceTree = "<group>"; };
-		037DA779282519C800D065C0 /* SheetPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationDelegate.swift; sourceTree = "<group>"; };
+		037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetTransitioningDelegate.swift; sourceTree = "<group>"; };
 		037DA77B282A522200D065C0 /* SheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresenter.swift; sourceTree = "<group>"; };
 		037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCollectionView.swift; sourceTree = "<group>"; };
 		0391051428163493001E129E /* ExViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +68,7 @@
 		BB7AF95E282CDABA00150961 /* XButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XButton.swift; sourceTree = "<group>"; };
 		BB7AF961282CDFE400150961 /* TopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopHeaderView.swift; sourceTree = "<group>"; };
 		BB7AF963282CF12000150961 /* ContentCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionView.swift; sourceTree = "<group>"; };
-		BB7AF965282D191700150961 /* LanguageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCell.swift; sourceTree = "<group>"; };
+		BB7AF965282D191700150961 /* TitleSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSelectionCell.swift; sourceTree = "<group>"; };
 		BB7AF967282D1CF000150961 /* SheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,13 +96,12 @@
 		037DA767281A8AD200D065C0 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				037DA768281A8BB500D065C0 /* SheetPresentationController.swift */,
+				037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */,
 				037DA76A281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift */,
-				037DA76C281BA64F00D065C0 /* CustomPresentationManager.swift */,
+				037DA775281FC6AF00D065C0 /* SheetPresentationAnimator.swift */,
+				037DA768281A8BB500D065C0 /* SheetPresentationController.swift */,
 				037DA773281FC22000D065C0 /* SheetPresentable.swift */,
 				037DA7772824C03D00D065C0 /* SheetPresentable+Defaults.swift */,
-				037DA775281FC6AF00D065C0 /* SheetPresentationAnimator.swift */,
-				037DA779282519C800D065C0 /* SheetPresentationDelegate.swift */,
 				037DA77B282A522200D065C0 /* SheetPresenter.swift */,
 			);
 			path = Presentation;
@@ -118,7 +115,7 @@
 				037DA76F281FBF2D00D065C0 /* DimmingView.swift */,
 				037DA771281FBF4600D065C0 /* SheetContainerView.swift */,
 				BB7AF963282CF12000150961 /* ContentCollectionView.swift */,
-				BB7AF965282D191700150961 /* LanguageCell.swift */,
+				BB7AF965282D191700150961 /* TitleSelectionCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -267,13 +264,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB7AF962282CDFE400150961 /* TopHeaderView.swift in Sources */,
-				037DA76D281BA64F00D065C0 /* CustomPresentationManager.swift in Sources */,
 				BB7AF964282CF12000150961 /* ContentCollectionView.swift in Sources */,
 				037DA77C282A522200D065C0 /* SheetPresenter.swift in Sources */,
 				BB7AF95F282CDABA00150961 /* XButton.swift in Sources */,
-				037DA77A282519C800D065C0 /* SheetPresentationDelegate.swift in Sources */,
+				037DA77A282519C800D065C0 /* SheetTransitioningDelegate.swift in Sources */,
 				037DA764281A54E200D065C0 /* CurrentViewController.swift in Sources */,
-				BB7AF966282D191700150961 /* LanguageCell.swift in Sources */,
+				BB7AF966282D191700150961 /* TitleSelectionCell.swift in Sources */,
 				0391051928165A1F001E129E /* ExCell.swift in Sources */,
 				0391051B28178327001E129E /* BadgeView.swift in Sources */,
 				03910517281634A3001E129E /* Ex2ViewController.swift in Sources */,

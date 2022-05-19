@@ -17,6 +17,7 @@ class SelectionCollectionViewCell: UICollectionViewCell {
     class var identifier: String {
         return "SelectionCollectionViewCell"
     }
+    
     let textLabel = UILabel()
 
     override var isSelected: Bool {
@@ -38,17 +39,43 @@ class SelectionCollectionViewCell: UICollectionViewCell {
     }
 
     func didSelectConfigure() { }
+}
 
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        //self.backgroundColor = .yellow
+final class TitleCell: SelectionCollectionViewCell {
+
+    override class var identifier: String {
+        return "TitleCell"
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setConstraints()
+        setConfiguration()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func didSelectConfigure() {
+
+    }
+
+    private func setConstraints() {
+        self.addSubview(textLabel)
+    }
+
+    private func setConfiguration() {
+        textLabel.textColor = .label
+        textLabel.numberOfLines = 1
     }
 }
 
-final class LanguageCell: SelectionCollectionViewCell {
+
+final class TitleSelectionCell: SelectionCollectionViewCell {
 
     override class var identifier: String {
-        return "LanguageCell"
+        return "TitleSelectionCell"
     }
 
     private let nameLocalizedLabel = UILabel()

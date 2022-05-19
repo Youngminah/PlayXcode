@@ -73,7 +73,6 @@ class CheckBoxItem: Hashable {
     }
 
     static func == (lhs: CheckBoxItem, rhs: CheckBoxItem) -> Bool {
-
         return lhs.identifier == rhs.identifier && lhs.isChecked == rhs.isChecked
     }
 }

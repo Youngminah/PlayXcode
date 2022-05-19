@@ -7,33 +7,6 @@
 
 import UIKit
 
-enum PresentationType {
-    case none(CGFloat)
-    case max
-    case high
-    case medium
-    case low
-    case min
-    
-    var positionY: CGFloat {
-        let screenHeight = UIScreen.main.bounds.height
-        switch self {
-        case .none(let fractionY):
-            return screenHeight*(fractionY)
-        case .max:
-            return screenHeight*(0.1/1.0)
-        case .high:
-            return screenHeight*(0.25/1.0)
-        case .medium:
-            return screenHeight*(0.5/1.0)
-        case .low:
-            return screenHeight*(0.75/1.0)
-        case .min:
-            return screenHeight*(0.85/1.0)
-        }
-    }
-}
-
 /**
  ContainerView : UITransitionView
  Presented VIew :
@@ -489,7 +462,6 @@ extension SheetPresentationController {
             else { return }
 
         if !isPresentedViewAnchored && scrollView.contentOffset.y > 0 {
-
             haltScrolling(scrollView)
 
         } else if scrollView.isScrolling || isPresentedViewAnimating {
@@ -502,7 +474,7 @@ extension SheetPresentationController {
 
         } else if presentedViewController.view.isKind(of: UIScrollView.self)
             && !isPresentedViewAnimating && scrollView.contentOffset.y <= 0 {
-            
+
             handleScrollViewTopBounce(scrollView: scrollView, change: change)
             
         } else {
@@ -514,7 +486,6 @@ extension SheetPresentationController {
     func haltScrolling(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(CGPoint(x: 0, y: scrollViewYOffset), animated: false)
         scrollView.showsVerticalScrollIndicator = false
-        
     }
 
     // 유저가 스크롤 할 때, 스크롤의 Y offset값을 추적하는 메소드.
@@ -522,7 +493,6 @@ extension SheetPresentationController {
     func trackScrolling(_ scrollView: UIScrollView) {
         scrollViewYOffset = max(scrollView.contentOffset.y, 0)
         scrollView.showsVerticalScrollIndicator = true
-        
     }
     
     /**

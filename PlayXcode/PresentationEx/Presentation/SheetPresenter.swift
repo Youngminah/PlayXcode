@@ -21,7 +21,7 @@ protocol SheetPresenter: AnyObject {
 extension UIViewController: SheetPresenter {
 
     var isSheetPresented: Bool {
-        return (transitioningDelegate as? CustomPresentationManager) != nil
+        return (transitioningDelegate as? SheetTransitioningDelegate) != nil
     }
 
     func presentSheetModal(_ viewControllerToPresent: SheetPresentable.LayoutType,
@@ -31,11 +31,10 @@ extension UIViewController: SheetPresenter {
 
         if UIDevice.current.userInterfaceIdiom == .pad {
             viewControllerToPresent.modalPresentationStyle = .formSheet
-            //viewControllerToPresent.transitioningDelegate = SheetPresentationDelegate.default
         } else {
             viewControllerToPresent.modalPresentationStyle = .custom
             viewControllerToPresent.modalPresentationCapturesStatusBarAppearance = true
-            viewControllerToPresent.transitioningDelegate = SheetPresentationDelegate.default
+            viewControllerToPresent.transitioningDelegate = SheetTransitioningDelegate.default
         }
         present(viewControllerToPresent, animated: true, completion: completion)
     }
