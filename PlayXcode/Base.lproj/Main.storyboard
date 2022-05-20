@@ -57,6 +57,96 @@
             </objects>
             <point key="canvasLocation" x="4569.5652173913049" y="138.61607142857142"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="hF4-3h-vyX">
+            <objects>
+                <viewController id="Gui-J5-HMD" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="v0l-on-6sS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Jq9-6J-IIK">
+                                <rect key="frame" x="16" y="44" width="382" height="106.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="핼로우?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="04Z-zm-Evf">
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="33.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wl3-Pc-aM2">
+                                        <rect key="frame" x="0.0" y="45.5" width="382" height="61"/>
+                                        <string key="text">내 생각대로 정리하자면 데이터에 할당될 값
+setter을 사용해 그 기준에 맞
+그에 따라 getter은 필</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="250" id="SiS-fB-jVz"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBN-YA-2EV">
+                                <rect key="frame" x="0.0" y="150.5" width="414" height="31"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kfx-Ud-hXV">
+                                        <rect key="frame" x="0.0" y="0.0" width="67" height="31"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="250" id="4Js-Ri-pgC"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kfx-Ud-hXV" secondAttribute="trailing" constant="10" id="DdU-mR-z7Z"/>
+                                    <constraint firstItem="kfx-Ud-hXV" firstAttribute="top" secondItem="pBN-YA-2EV" secondAttribute="top" id="Fpy-Ah-weh"/>
+                                    <constraint firstItem="kfx-Ud-hXV" firstAttribute="leading" secondItem="pBN-YA-2EV" secondAttribute="leading" id="IB1-jg-oRc"/>
+                                    <constraint firstAttribute="bottom" secondItem="kfx-Ud-hXV" secondAttribute="bottom" id="g4V-WS-esw"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="K9V-MV-B9U">
+                                <rect key="frame" x="16" y="181.5" width="382" height="31"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qHZ-xJ-4O8">
+                                        <rect key="frame" x="0.0" y="0.0" width="185" height="31"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="화긴쓰"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QW8-2O-laz">
+                                        <rect key="frame" x="197" y="0.0" width="185" height="31"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="확인이이이이"/>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="250" id="WvW-tO-Ebb"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Xqu-JJ-xSV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Xqu-JJ-xSV" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="K9V-MV-B9U" secondAttribute="bottom" constant="16" id="1jK-X7-bdL"/>
+                            <constraint firstItem="pBN-YA-2EV" firstAttribute="leading" secondItem="Xqu-JJ-xSV" secondAttribute="leading" id="6oj-7v-Orh"/>
+                            <constraint firstItem="Xqu-JJ-xSV" firstAttribute="trailing" secondItem="K9V-MV-B9U" secondAttribute="trailing" constant="16" id="8wx-DK-Xxh"/>
+                            <constraint firstItem="K9V-MV-B9U" firstAttribute="leading" secondItem="Xqu-JJ-xSV" secondAttribute="leading" constant="16" id="B21-EI-uQR"/>
+                            <constraint firstItem="Jq9-6J-IIK" firstAttribute="top" secondItem="Xqu-JJ-xSV" secondAttribute="top" id="HlK-Og-QMb"/>
+                            <constraint firstItem="pBN-YA-2EV" firstAttribute="top" secondItem="Jq9-6J-IIK" secondAttribute="bottom" id="c25-1l-alf"/>
+                            <constraint firstItem="K9V-MV-B9U" firstAttribute="top" secondItem="pBN-YA-2EV" secondAttribute="bottom" id="h7b-QV-KAH"/>
+                            <constraint firstItem="Xqu-JJ-xSV" firstAttribute="trailing" secondItem="Jq9-6J-IIK" secondAttribute="trailing" constant="16" id="rNo-Kr-rlQ"/>
+                            <constraint firstItem="Xqu-JJ-xSV" firstAttribute="trailing" secondItem="pBN-YA-2EV" secondAttribute="trailing" id="wmS-1Q-gJ3"/>
+                            <constraint firstItem="Jq9-6J-IIK" firstAttribute="leading" secondItem="Xqu-JJ-xSV" secondAttribute="leading" constant="16" id="zc6-vO-jjY"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mC0-xU-Jvr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="382.60869565217394" y="89.732142857142847"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="W8H-zU-edD">
             <objects>

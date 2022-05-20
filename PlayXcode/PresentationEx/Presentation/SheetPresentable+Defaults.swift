@@ -152,7 +152,6 @@ extension SheetPresentable where Self: UIViewController {
         case .maxHeightWithTopInset(let inset):
             return inset
         case .contentHeight(let height):
-            
             return bottomYPos - (height + bottomLayoutOffset)
         case .contentHeightIgnoringSafeArea(let height):
             return bottomYPos - height
@@ -162,12 +161,12 @@ extension SheetPresentable where Self: UIViewController {
             let targetSize = CGSize(width: (presentedVC?.containerView?.bounds ?? UIScreen.main.bounds).width,
                                     height: UIView.layoutFittingCompressedSize.height)
             let intrinsicHeight = view.systemLayoutSizeFitting(targetSize).height
+            
             return bottomYPos - (intrinsicHeight + bottomLayoutOffset)
         }
     }
 
     private var rootViewController: UIViewController? {
-
         guard let application = UIApplication.value(forKeyPath: #keyPath(UIApplication.shared)) as? UIApplication
             else { return nil }
         return application.keyWindow?.rootViewController

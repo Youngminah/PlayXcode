@@ -21,7 +21,7 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
 
     // MARK: - UICollectionViewDataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 30
+        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -47,7 +47,7 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
     }
 
     var shortFormHeight: SheetHeight {
-        return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
+        return isShortFormEnabled ? .intrinsicHeight : longFormHeight
     }
 
     var anchorModalToLongForm: Bool {

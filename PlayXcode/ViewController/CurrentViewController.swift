@@ -26,8 +26,8 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-//        let vc: SheetPresentable.LayoutType = SheetViewController()
-//        self.presentSheetModal(vc)
+        let vc: SheetPresentable.LayoutType = Ex3ViewController()
+        self.presentSheetModal(vc)
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {
