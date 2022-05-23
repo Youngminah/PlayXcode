@@ -97,21 +97,25 @@ final class TitleSelectionCell: SelectionCollectionViewCell {
 
     private func setConstraints() {
 
-        self.addSubview(textLabel)
-//        self.addSubview(nameLocalizedLabel)
-        self.addSubview(checkButton)
-
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        textLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-
-//        nameLocalizedLabel.translatesAutoresizingMaskIntoConstraints = false
-//        nameLocalizedLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5).isActive = true
-//        nameLocalizedLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+        contentView.addSubview(checkButton)
+        contentView.addSubview(textLabel)
 
         checkButton.translatesAutoresizingMaskIntoConstraints = false
-        checkButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        checkButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                  constant: -16),
+            checkButton.widthAnchor.constraint(equalToConstant: 20),
+            checkButton.heightAnchor.constraint(equalToConstant: 20),
+
+            textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                               constant: 16),
+            textLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: checkButton.leadingAnchor,
+                                                constant: -16)
+        ])
     }
 
     private func setConfiguration() {

@@ -10,13 +10,20 @@ import UIKit
 class CurrentViewController: UIViewController {
 
     var items = [
-        SelectionItem(name: "한국어"),
-        SelectionItem(name: "중국어"),
-        SelectionItem(name: "일본어"),
-        SelectionItem(name: "태국어"),
-        SelectionItem(name: "영어"),
-        SelectionItem(name: "스페인어"),
-        SelectionItem(name: "포루투칼어")
+        SelectionItem(name: "딸기🍓"),
+        SelectionItem(name: "오렌지🍊"),
+        SelectionItem(name: "사과🍎"),
+        SelectionItem(name: "레몬🍋"),
+        SelectionItem(name: "꽃🌼"),
+        SelectionItem(name: "달🌙"),
+        SelectionItem(name: "물고기🐠"),
+        SelectionItem(name: "개구리🐸"),
+        SelectionItem(name: "긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다🦄"),
+        SelectionItem(name: "파란나비🦋"),
+        SelectionItem(name: "병아리🐥"),
+        SelectionItem(name: "페가수스🦄"),
+        SelectionItem(name: "새우🍤"),
+        SelectionItem(name: "새싹🌱")
     ]
 
     var isShortFormEnabled = true
@@ -26,8 +33,16 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-        let vc: SheetPresentable.LayoutType = Ex3ViewController()
-        self.presentSheetModal(vc)
+        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items))
+        bottomSheet.addHeaderSubview(TitleLabel(text: "설정하기"))
+        bottomSheet.addHeaderSubview(SubtitleLabel(text: """
+        이곳은 설정하기
+        페이지 입니다
+        낄낄
+        """))
+        bottomSheet.addBottomSheetAction(SelectionButton(title: "취소"))
+        bottomSheet.addBottomSheetAction(SelectionButton(title: "확인"))
+        self.presentSheetModal(bottomSheet)
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {

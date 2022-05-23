@@ -19,7 +19,7 @@
 		037DA77A282519C800D065C0 /* SheetTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */; };
 		037DA77C282A522200D065C0 /* SheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA77B282A522200D065C0 /* SheetPresenter.swift */; };
 		037DA77F282BA02100D065C0 /* SelectionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */; };
-		037DA78128372FBF00D065C0 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA78028372FBF00D065C0 /* BottomSheetViewController.swift */; };
+		037DA78128372FBF00D065C0 /* BottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA78028372FBF00D065C0 /* BottomSheetController.swift */; };
 		037DA78328376B9100D065C0 /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA78228376B9100D065C0 /* SelectionButton.swift */; };
 		037DA78528376C8D00D065C0 /* Ex3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA78428376C8D00D065C0 /* Ex3ViewController.swift */; };
 		0391051528163493001E129E /* ExViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391051428163493001E129E /* ExViewController.swift */; };
@@ -34,6 +34,7 @@
 		039EBBD72810E8B900F676A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD52810E8B900F676A8 /* Main.storyboard */; };
 		039EBBD92810E8BD00F676A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD82810E8BD00F676A8 /* Assets.xcassets */; };
 		039EBBDC2810E8BD00F676A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBDA2810E8BD00F676A8 /* LaunchScreen.storyboard */; };
+		03A3361C283B59B90058FE9E /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A3361B283B59B90058FE9E /* TitleLabel.swift */; };
 		BB7AF95F282CDABA00150961 /* XButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF95E282CDABA00150961 /* XButton.swift */; };
 		BB7AF962282CDFE400150961 /* TopHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF961282CDFE400150961 /* TopHeaderView.swift */; };
 		BB7AF964282CF12000150961 /* ContentCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF963282CF12000150961 /* ContentCollectionView.swift */; };
@@ -54,7 +55,7 @@
 		037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetTransitioningDelegate.swift; sourceTree = "<group>"; };
 		037DA77B282A522200D065C0 /* SheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresenter.swift; sourceTree = "<group>"; };
 		037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCollectionView.swift; sourceTree = "<group>"; };
-		037DA78028372FBF00D065C0 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		037DA78028372FBF00D065C0 /* BottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetController.swift; sourceTree = "<group>"; };
 		037DA78228376B9100D065C0 /* SelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; };
 		037DA78428376C8D00D065C0 /* Ex3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ex3ViewController.swift; sourceTree = "<group>"; };
 		0391051428163493001E129E /* ExViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewController.swift; sourceTree = "<group>"; };
@@ -71,6 +72,7 @@
 		039EBBD82810E8BD00F676A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		039EBBDB2810E8BD00F676A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		039EBBDD2810E8BD00F676A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03A3361B283B59B90058FE9E /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 		BB7AF95E282CDABA00150961 /* XButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XButton.swift; sourceTree = "<group>"; };
 		BB7AF961282CDFE400150961 /* TopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopHeaderView.swift; sourceTree = "<group>"; };
 		BB7AF963282CF12000150961 /* ContentCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionView.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				BB7AF963282CF12000150961 /* ContentCollectionView.swift */,
 				BB7AF965282D191700150961 /* TitleSelectionCell.swift */,
 				037DA78228376B9100D065C0 /* SelectionButton.swift */,
+				03A3361B283B59B90058FE9E /* TitleLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -195,7 +198,7 @@
 				037DA765281A54EF00D065C0 /* NextViewController.swift */,
 				037DA763281A54E200D065C0 /* CurrentViewController.swift */,
 				BB7AF967282D1CF000150961 /* SheetViewController.swift */,
-				037DA78028372FBF00D065C0 /* BottomSheetViewController.swift */,
+				037DA78028372FBF00D065C0 /* BottomSheetController.swift */,
 				037DA78428376C8D00D065C0 /* Ex3ViewController.swift */,
 			);
 			path = ViewController;
@@ -275,6 +278,7 @@
 				037DA78528376C8D00D065C0 /* Ex3ViewController.swift in Sources */,
 				BB7AF962282CDFE400150961 /* TopHeaderView.swift in Sources */,
 				BB7AF964282CF12000150961 /* ContentCollectionView.swift in Sources */,
+				03A3361C283B59B90058FE9E /* TitleLabel.swift in Sources */,
 				037DA77C282A522200D065C0 /* SheetPresenter.swift in Sources */,
 				BB7AF95F282CDABA00150961 /* XButton.swift in Sources */,
 				037DA77A282519C800D065C0 /* SheetTransitioningDelegate.swift in Sources */,
@@ -293,7 +297,7 @@
 				0391051528163493001E129E /* ExViewController.swift in Sources */,
 				037DA78328376B9100D065C0 /* SelectionButton.swift in Sources */,
 				037DA770281FBF2D00D065C0 /* DimmingView.swift in Sources */,
-				037DA78128372FBF00D065C0 /* BottomSheetViewController.swift in Sources */,
+				037DA78128372FBF00D065C0 /* BottomSheetController.swift in Sources */,
 				039EBBD02810E8B900F676A8 /* AppDelegate.swift in Sources */,
 				037DA77F282BA02100D065C0 /* SelectionCollectionView.swift in Sources */,
 				037DA76B281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift in Sources */,

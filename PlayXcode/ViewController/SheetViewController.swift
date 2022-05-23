@@ -102,7 +102,7 @@ final class SheetViewController<T: SelectionCollectionViewCell>: UIViewControlle
 
                 guard let self = self else { return nil }
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath as IndexPath) as! T
-                let item = self.items[indexPath.row]
+                //let item = self.items[indexPath.row]
                 cell.configure(text: item.name)
                 return cell
             }
