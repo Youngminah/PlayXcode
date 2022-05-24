@@ -127,18 +127,9 @@ final class SheetPresentationController: UIPresentationController {
     // 컨테이너의 루트 뷰의 크기가 변경되려고 하면 실행되는 함수.
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        print("viewWillTransition 실행!! ", viewWillTransition)
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
-//            guard
-//                let self = self,
-//                let presentable = self.presentable
-//                else { return }
-
             self.adjustPresentedViewFrame()
-//            if presentable.shouldRoundTopCorners {
-//                self.addRoundedCorners(to: self.presentedView)
-//            }
         })
     }
 }
@@ -227,7 +218,7 @@ extension SheetPresentationController {
     
     // 화면의 맨 아래에 위치하도록 presentView의 높이를 줄이는 함수.
     func adjustPresentedViewFrame() {
-        presentedView.isUserInteractionEnabled = true
+
         guard let frame = containerView?.frame else { return }
 
         let adjustedSize = CGSize(width: frame.size.width, height: frame.size.height - anchoredYPosition)
@@ -239,6 +230,7 @@ extension SheetPresentationController {
         }
         sheetContainerView.frame.origin.x = frame.origin.x
         presentedViewController.view.frame = CGRect(origin: .zero, size: adjustedSize)
+        
     }
     
     /**

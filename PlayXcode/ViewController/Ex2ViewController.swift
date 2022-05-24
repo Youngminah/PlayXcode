@@ -10,6 +10,8 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 final class Ex2ViewController: UICollectionViewController, SheetPresentable {
+
+    var isShortFormEnabled = true
     
     private let array = ["Lemon🍋", "Orange🍊"]
     
@@ -37,16 +39,16 @@ final class Ex2ViewController: UICollectionViewController, SheetPresentable {
     }
 
     var longFormHeight: SheetHeight {
-        return .maxHeight
+        return .intrinsicHeight
     }
 
-    var isShortFormEnabled: Bool {
-        return true
-    }
-
-    var shortFormHeight: SheetHeight {
-        return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
-    }
+//    var isShortFormEnabled: Bool {
+//        return true
+//    }
+//
+//    var shortFormHeight: SheetHeight {
+//        return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
+//    }
 
     var anchorModalToLongForm: Bool {
         return true

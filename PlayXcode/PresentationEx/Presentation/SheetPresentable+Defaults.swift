@@ -13,10 +13,6 @@ extension SheetPresentable where Self: UIViewController {
         return topLayoutOffset + 21.0
     }
 
-    var isShortFormEnabled: Bool {
-        return true
-    }
-
     var shortFormHeight: SheetHeight {
         return longFormHeight
     }
@@ -26,6 +22,7 @@ extension SheetPresentable where Self: UIViewController {
         guard let scrollView = sheetScrollView else { return .maxHeight }
 
         scrollView.layoutIfNeeded()
+
         return .contentHeight(scrollView.contentSize.height)
     }
 
@@ -129,19 +126,16 @@ extension SheetPresentable where Self: UIViewController {
 
     var shortFormYPos: CGFloat {
         guard !UIAccessibility.isVoiceOverRunning else { return longFormYPos }
-        let topMarginOffset = isShortFormEnabled ? topMargin(from: shortFormHeight) : topMargin(from: longFormHeight)
-        let shortFormYPos = topMarginOffset + topOffset
+        let shortFormYPos = topMargin(from: shortFormHeight) + topOffset
         return max(shortFormYPos, longFormYPos)
     }
 
     var longFormYPos: CGFloat {
-
         return max(topMargin(from: longFormHeight), topMargin(from: .maxHeight)) + topOffset
     }
 
     var bottomYPos: CGFloat {
         guard let container = presentedVC?.containerView else { return view.bounds.height }
-
         return container.bounds.size.height - topOffset
     }
 

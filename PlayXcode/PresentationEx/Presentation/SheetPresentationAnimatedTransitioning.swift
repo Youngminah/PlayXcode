@@ -81,7 +81,7 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
                 if !self.isPresentation {
                     controller.view.removeFromSuperview()
                 }
-                //controller.endAppearanceTransition()
+                controller.endAppearanceTransition()
                 transitionContext.completeTransition(finished)
             })
     }

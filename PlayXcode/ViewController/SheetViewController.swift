@@ -98,11 +98,8 @@ final class SheetViewController<T: SelectionCollectionViewCell>: UIViewControlle
         } else {
             contentCollectionView.register(T.self, forCellWithReuseIdentifier: T.identifier)
             dataSource = UICollectionViewDiffableDataSource<Section, SelectionItem>(collectionView: contentCollectionView) {
-                [weak self] (collectionView: UICollectionView, indexPath: IndexPath, item: SelectionItem) -> UICollectionViewCell? in
-
-                guard let self = self else { return nil }
+                (collectionView: UICollectionView, indexPath: IndexPath, item: SelectionItem) -> UICollectionViewCell? in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath as IndexPath) as! T
-                //let item = self.items[indexPath.row]
                 cell.configure(text: item.name)
                 return cell
             }
@@ -181,7 +178,7 @@ extension SheetViewController: SheetPresentable {
     }
 
     var shortFormHeight: SheetHeight {
-        return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
+        return isShortFormEnabled ? .contentHeight(500.0) : longFormHeight
     }
 
     var anchorModalToLongForm: Bool {

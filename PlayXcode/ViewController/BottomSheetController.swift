@@ -21,14 +21,15 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
     private let dismissButton = XButton()
     private let headerStackView = UIStackView()
     private let buttonStackView = UIStackView()
-
     private var dataSource: UICollectionViewDiffableDataSource<Section, SelectionItem>! = nil
     private var collectionView: DynamicCollectionView! = nil
 
-    let contentView = UIView()
-
+    private let contentView = UIView()
+    private var isShortFormEnabled = true
     private var items: [SelectionItem] = []
     private let style: Style
+
+    var allowsMultipleCollection = false
 
     init(preferredStyle: BottomSheetController.Style) {
         self.style = preferredStyle
@@ -41,12 +42,6 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         super.init(nibName: nil, bundle: nil)
     }
 
-//    init(style: BottomSheetController.Style, items: [SelectionItem]) {
-//        self.style =
-//        self.items = items
-//        super.init(nibName: nil, bundle: nil)
-//    }
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("BottomSheetController: fatal error")
     }
@@ -56,6 +51,16 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         self.setConstraints()
         self.configureDataSource()
         self.setConfiguration()
+    }
+
+    @objc func actionTap(_ sender: BottomSheetAction) {
+        let indexPaths = collectionView.indexPathsForSelectedItems ?? []
+        var selectionItems: [SelectionItem] = []
+        indexPaths.forEach { indexPath in
+            selectionItems.append(items[indexPath.row])
+        }
+        self.dismiss(animated: true)
+        sender.handler?(selectionItems)
     }
 
     @objc private func dismissButtonTap() {
@@ -74,6 +79,7 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
                                                collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.delegate = self
+        collectionView.allowsMultipleSelection = allowsMultipleCollection
 
         view.addSubview(dismissButton)
         view.addSubview(headerStackView)
@@ -92,7 +98,7 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         headerStackViewHeightConstraint.isActive = true
 
         let contentViewHeightConstraint = contentView.heightAnchor.constraint(equalToConstant: 1)
-        contentViewHeightConstraint.priority = UILayoutPriority(rawValue: 251) // 250
+        contentViewHeightConstraint.priority = UILayoutPriority(rawValue: 251) // 251
         contentViewHeightConstraint.isActive = true
 
         let buttonStackViewHeightConstraint = buttonStackView.heightAnchor.constraint(equalToConstant: 0)
@@ -100,35 +106,23 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         buttonStackViewHeightConstraint.isActive = true
 
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor,
-                                               constant: 16),
-            dismissButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                    constant: -16),
+            dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            dismissButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             dismissButton.widthAnchor.constraint(equalToConstant: 20),
             dismissButton.heightAnchor.constraint(equalToConstant: 20),
 
-            headerStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                                                     constant: 16),
-            headerStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                      constant: -16),
-            headerStackView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor,
-                                                 constant: 16),
+            headerStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            headerStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            headerStackView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor),
 
-            contentView.topAnchor.constraint(equalTo: headerStackView.bottomAnchor,
-                                             constant: 16),
-            contentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                                                 constant: 16),
-            contentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                  constant: -16),
+            contentView.topAnchor.constraint(equalTo: headerStackView.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            contentView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
-            buttonStackView.topAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                 constant: 16),
-            buttonStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                                                     constant: 16),
-            buttonStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                      constant: -16),
-            buttonStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    constant: -16),
+            buttonStackView.topAnchor.constraint(equalTo: contentView.bottomAnchor),
+            buttonStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            buttonStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            buttonStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor),
 
             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -142,7 +136,7 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         view.backgroundColor = .systemBackground
 
         headerStackView.axis = .vertical
-        headerStackView.spacing = 12
+        headerStackView.spacing = 5
         headerStackView.distribution = .fillProportionally
         headerStackView.alignment = .fill
 
@@ -214,7 +208,6 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-        //updateSelectedStateCellConfiguration(at: indexPath)
     }
 }
 
@@ -230,11 +223,12 @@ extension BottomSheetController {
         }
     }
 
-    func addBottomSheetAction(_ view: UIView) {
-        buttonStackView.addArrangedSubview(view)
+    func addBottomSheetAction(_ action: BottomSheetAction) {
+        buttonStackView.addArrangedSubview(action)
+        action.addTarget(self, action: #selector(self.actionTap(_:)), for: .touchUpInside)
     }
 
-    func addBottomButtonSubviews(_ views: [UIView]) {
+    func addBottomButtonSubviews(_ views: [BottomSheetAction]) {
         views.forEach { view in
             buttonStackView.addArrangedSubview(view)
         }
@@ -242,7 +236,7 @@ extension BottomSheetController {
 }
 
 extension BottomSheetController: SheetPresentable {
-    
+
     var sheetScrollView: UIScrollView? {
         return collectionView
     }
@@ -251,12 +245,13 @@ extension BottomSheetController: SheetPresentable {
         return .maxHeight
     }
 
-    var isShortFormEnabled: Bool {
-        return true
-    }
-
     var shortFormHeight: SheetHeight {
         return isShortFormEnabled ? .intrinsicHeight : longFormHeight
+    }
+
+    func shouldPrioritize(panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
+        let location = panModalGestureRecognizer.location(in: view)
+        return headerStackView.frame.contains(location) || buttonStackView.frame.contains(location)
     }
 
     var anchorModalToLongForm: Bool {
@@ -265,6 +260,7 @@ extension BottomSheetController: SheetPresentable {
 
     func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
+        //isShortFormEnabled = false
         sheetModalSetNeedsLayoutUpdate()
     }
 }
@@ -283,10 +279,56 @@ class DynamicCollectionView: UICollectionView {
     }
 }
 
-class d : UIAlertController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.addSubview(UIView())
-        title = "asdf"
+class BottomSheetAction: UIButton {
+
+    enum Style {
+        case `default`
+        case cancel
+        case destructive
+    }
+
+    private var title: String = ""
+    private var style: BottomSheetAction.Style = .default
+
+    var handler: (([SelectionItem]) -> Void)?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setConfiguration()
+    }
+
+    convenience init(title: String, style: BottomSheetAction.Style, handler: (([SelectionItem]) -> Void)? = nil) {
+        self.init()
+        self.title = title
+        self.style = style
+        self.handler = handler
+        self.setConfiguration()
+    }
+
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        self.frame.size.height = 100
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("BottomSheetAction: fatal Error Message")
+    }
+
+    private func setConfiguration() {
+
+        layer.masksToBounds = true
+        layer.cornerRadius = 8
+        titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        setTitle(title, for: .normal)
+        setTitleColor(.white, for: .normal)
+
+        switch style {
+        case .`default`:
+            backgroundColor = .orange
+        case .cancel:
+            backgroundColor = .lightGray
+        case .destructive:
+            backgroundColor = .red
+        }
     }
 }

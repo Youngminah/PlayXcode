@@ -8,7 +8,9 @@
 import UIKit
 
 final class NextViewController: UIViewController, SheetPresentable, UICollectionViewDataSource {
-    
+
+    var isShortFormEnabled = true
+
     @IBOutlet weak var collectionView: UICollectionView!
 
     private let array = ["Lemon🍋", "Orange🍊", "StrawBerry🍓", "Cherry🍒"]
@@ -21,7 +23,7 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
 
     // MARK: - UICollectionViewDataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 2
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -34,29 +36,32 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
         return cell
     }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+    }
+
     var sheetScrollView: UIScrollView? {
         return collectionView
     }
-
-    var longFormHeight: SheetHeight {
-        return .maxHeight
-    }
-
-    var isShortFormEnabled: Bool {
-        return true
-    }
-
+//
+//    var longFormHeight: SheetHeight {
+//        return .intrinsicHeight
+//    }
+//
+//    var isShortFormEnabled: Bool {
+//        return true
+//    }
+//
     var shortFormHeight: SheetHeight {
-        return isShortFormEnabled ? .intrinsicHeight : longFormHeight
+        return isShortFormEnabled ? .contentHeight(500) : longFormHeight
     }
 
     var anchorModalToLongForm: Bool {
-        return true
+        return false
     }
 
     func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
-        //isShortFormEnabled = true
         sheetModalSetNeedsLayoutUpdate()
     }
 }

@@ -33,16 +33,8 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items))
-        bottomSheet.addHeaderSubview(TitleLabel(text: "설정하기"))
-        bottomSheet.addHeaderSubview(SubtitleLabel(text: """
-        이곳은 설정하기
-        페이지 입니다
-        낄낄
-        """))
-        bottomSheet.addBottomSheetAction(SelectionButton(title: "취소"))
-        bottomSheet.addBottomSheetAction(SelectionButton(title: "확인"))
-        self.presentSheetModal(bottomSheet)
+        let vc: SheetPresentable.LayoutType = SheetViewController()
+        self.presentSheetModal(vc)
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {
@@ -68,28 +60,30 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
+        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items))
+        //bottomSheet.allowsMultipleCollection = true
+        bottomSheet.addHeaderSubview(SubtitleLabel(text: """
+        이곳은 설정하기
+        페이지 입니다
+        낄낄
+        """))
+        bottomSheet.addHeaderSubview(TitleLabel(text: "설정하기"))
+
+        let cancelAction = BottomSheetAction(title: "취소", style: .cancel)
+        let saveAction = BottomSheetAction(title: "확인", style: .default) { items in
+            print(items)
+        }
+
+        bottomSheet.addBottomSheetAction(cancelAction)
+        bottomSheet.addBottomSheetAction(saveAction)
+        self.presentSheetModal(bottomSheet)
+//        self.present(bottomSheet, animated: true, completion: nil)
+    }
+    
+    @IBAction func minButtonTap(_ sender: Any) {
         guard let vc : SheetPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "Ex2ViewController") as? Ex2ViewController else {
             return
         }
         self.presentSheetModal(vc)
     }
-    
-    @IBAction func minButtonTap(_ sender: Any) {
-        let vc: SheetPresentable.LayoutType = SheetViewController()
-        self.presentSheetModal(vc)
-    }
 }
-
-
-//class SheetTest<T>: UIViewController where T: SheetCell {
-//
-//    var cell: T!
-//
-//    func abc() {
-//        
-//    }
-//}
-//
-//protocol SheetCell {
-//    func configure()
-//}
