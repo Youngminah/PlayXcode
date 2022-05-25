@@ -94,16 +94,18 @@
 		037DA762281A548A00D065C0 /* PresentationEx */ = {
 			isa = PBXGroup;
 			children = (
+				BB7AF960282CDF8B00150961 /* ViewController */,
 				037DA77D282B911E00D065C0 /* CollectionView */,
 				037DA76E281FBF0600D065C0 /* View */,
-				037DA767281A8AD200D065C0 /* Presentation */,
 			);
 			path = PresentationEx;
 			sourceTree = "<group>";
 		};
-		037DA767281A8AD200D065C0 /* Presentation */ = {
+		037DA767281A8AD200D065C0 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
+				03A3361E283DC2AC0058FE9E /* ViewController */,
+				03A3361D283DC2600058FE9E /* View */,
 				037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */,
 				037DA76A281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift */,
 				037DA775281FC6AF00D065C0 /* SheetPresentationAnimator.swift */,
@@ -112,20 +114,15 @@
 				037DA7772824C03D00D065C0 /* SheetPresentable+Defaults.swift */,
 				037DA77B282A522200D065C0 /* SheetPresenter.swift */,
 			);
-			path = Presentation;
+			path = BottomSheet;
 			sourceTree = "<group>";
 		};
 		037DA76E281FBF0600D065C0 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				BB7AF95E282CDABA00150961 /* XButton.swift */,
 				BB7AF961282CDFE400150961 /* TopHeaderView.swift */,
-				037DA76F281FBF2D00D065C0 /* DimmingView.swift */,
-				037DA771281FBF4600D065C0 /* SheetContainerView.swift */,
 				BB7AF963282CF12000150961 /* ContentCollectionView.swift */,
-				BB7AF965282D191700150961 /* TitleSelectionCell.swift */,
 				037DA78228376B9100D065C0 /* SelectionButton.swift */,
-				03A3361B283B59B90058FE9E /* TitleLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -176,8 +173,8 @@
 		039EBBCE2810E8B900F676A8 /* PlayXcode */ = {
 			isa = PBXGroup;
 			children = (
-				BB7AF960282CDF8B00150961 /* ViewController */,
 				037DA762281A548A00D065C0 /* PresentationEx */,
+				037DA767281A8AD200D065C0 /* BottomSheet */,
 				0391051328163461001E129E /* CollectionEx */,
 				0391051228163452001E129E /* BasicEx */,
 				039EBBCF2810E8B900F676A8 /* AppDelegate.swift */,
@@ -190,6 +187,26 @@
 			path = PlayXcode;
 			sourceTree = "<group>";
 		};
+		03A3361D283DC2600058FE9E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				037DA771281FBF4600D065C0 /* SheetContainerView.swift */,
+				037DA76F281FBF2D00D065C0 /* DimmingView.swift */,
+				03A3361B283B59B90058FE9E /* TitleLabel.swift */,
+				BB7AF965282D191700150961 /* TitleSelectionCell.swift */,
+				BB7AF95E282CDABA00150961 /* XButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		03A3361E283DC2AC0058FE9E /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				037DA78028372FBF00D065C0 /* BottomSheetController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		BB7AF960282CDF8B00150961 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,7 +215,6 @@
 				037DA765281A54EF00D065C0 /* NextViewController.swift */,
 				037DA763281A54E200D065C0 /* CurrentViewController.swift */,
 				BB7AF967282D1CF000150961 /* SheetViewController.swift */,
-				037DA78028372FBF00D065C0 /* BottomSheetController.swift */,
 				037DA78428376C8D00D065C0 /* Ex3ViewController.swift */,
 			);
 			path = ViewController;
