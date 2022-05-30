@@ -9,9 +9,26 @@ import UIKit
 
 class BottomSheetController: UIViewController, UICollectionViewDelegate {
 
+    deinit {
+        print("deinit")
+    }
+
     enum Style {
-        case list(items: [SelectionItem])
+
+        case list
+        case grid2
         case custom
+
+        var columnCount: Int {
+            switch self {
+            case .list:
+                return 1
+            case .grid2:
+                return 2
+            default:
+                return 3
+            }
+        }
     }
 
     private enum Section {
@@ -21,26 +38,27 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
     private let dismissButton = XButton()
     private let headerStackView = UIStackView()
     private let buttonStackView = UIStackView()
-    private var dataSource: UICollectionViewDiffableDataSource<Section, SelectionItem>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
     private var collectionView: DynamicCollectionView! = nil
 
     private let contentView = UIView()
     private var isShortFormEnabled = true
-    private var items: [SelectionItem] = []
+    private var items: [ListItem]
     private let style: Style
+    //private let layout: BottomSheetLayout
 
     var allowsMultipleCollection = false
 
-    init(preferredStyle: BottomSheetController.Style) {
+    init(items: [ListItem], preferredStyle: BottomSheetController.Style) {
+        self.items = items
         self.style = preferredStyle
-        switch style {
-        case .list(let items):
-            self.items = items
-        default:
-            break
-        }
         super.init(nibName: nil, bundle: nil)
     }
+
+//    init(layout: BottomSheetLayout) {
+//        self.layout = layout
+//        super.init(nibName: nil, bundle: nil)
+//    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("BottomSheetController: fatal error")
@@ -55,7 +73,7 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
 
     @objc func actionTap(_ sender: BottomSheetAction) {
         let indexPaths = collectionView.indexPathsForSelectedItems ?? []
-        var selectionItems: [SelectionItem] = []
+        var selectionItems: [ListItem] = []
         indexPaths.forEach { indexPath in
             selectionItems.append(items[indexPath.row])
         }
@@ -67,7 +85,7 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         self.dismiss(animated: true)
     }
 
-    func setItems(items: [SelectionItem]) {
+    func setItems(items: [ListItem]) {
         self.items = items
     }
 
@@ -140,6 +158,8 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         headerStackView.distribution = .fillProportionally
         headerStackView.alignment = .fill
 
+        collectionView.backgroundColor = .systemBackground
+
         buttonStackView.axis = .horizontal
         buttonStackView.distribution = .fillEqually
         buttonStackView.alignment = .fill
@@ -147,62 +167,45 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
     }
 
     private func createLayout() -> UICollectionViewLayout {
-
-        if #available(iOS 14.0, *) {
-
-            var config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-            config.backgroundColor = .systemBackground
-            return UICollectionViewCompositionalLayout.list(using: config)
-
-        } else {
-
-            let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-                let itemInset: CGFloat = 5.0
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                      heightDimension: .fractionalHeight(1.0))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: itemInset,
-                                                             leading: itemInset,
-                                                             bottom: itemInset,
-                                                             trailing: itemInset)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                       heightDimension: .estimated(60.0))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                               subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                return section
-            }
-            return layout
-        }
+        return BottomSheetLayout.layout(layoutKind: style)
     }
 
     private func configureDataSource() {
 
         if #available(iOS 14.0, *) {
-            let cellRegistration = UICollectionView.CellRegistration<TitleSelectionCell, SelectionItem> { (cell, indexPath, item) in
-                cell.configure(text: item.name)
+            let cellRegistration = UICollectionView.CellRegistration<TitleSelectionCell, ListItem> { (cell, indexPath, item) in
+                cell.contentView.backgroundColor = .yellow
+                cell.contentView.layer.borderColor = UIColor.black.cgColor
+                cell.contentView.layer.borderWidth = 1
+                //cell.contentConfiguration
+                cell.configure(item: item)
             }
 
-            dataSource = UICollectionViewDiffableDataSource<Section, SelectionItem>(collectionView: collectionView) {
-                (collectionView: UICollectionView, indexPath: IndexPath, item: SelectionItem) -> UICollectionViewCell? in
+            dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
+                [weak self] (collectionView: UICollectionView, indexPath: IndexPath, identifier: String) -> UICollectionViewCell? in
+                guard let self = self else { return UICollectionViewCell() }
+                let item = self.items.first(where: { $0.id == identifier})
                 return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             }
         } else {
 
             collectionView.register(TitleSelectionCell.self,
                                     forCellWithReuseIdentifier: TitleSelectionCell.identifier)
-            dataSource = UICollectionViewDiffableDataSource<Section, SelectionItem>(collectionView: collectionView) {
-                (collectionView: UICollectionView, indexPath: IndexPath, item: SelectionItem) -> UICollectionViewCell? in
+            dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
+                [weak self] (collectionView: UICollectionView, indexPath: IndexPath, identifier: String) -> UICollectionViewCell? in
+                guard let self = self else { return UICollectionViewCell() }
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleSelectionCell.identifier, for: indexPath as IndexPath) as! TitleSelectionCell
-                cell.configure(text: item.name)
+                cell.contentView.backgroundColor = .yellow
+                cell.contentView.layer.borderColor = UIColor.black.cgColor
+                cell.contentView.layer.borderWidth = 1
+                cell.configure(item: self.items[indexPath.row])
                 return cell
             }
         }
         // initial data
-        var snapshot = NSDiffableDataSourceSnapshot<Section, SelectionItem>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(items)
+        snapshot.appendItems(items.map { $0.id })
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
@@ -290,14 +293,14 @@ class BottomSheetAction: UIButton {
     private var title: String = ""
     private var style: BottomSheetAction.Style = .default
 
-    var handler: (([SelectionItem]) -> Void)?
+    var handler: (([ListItem]) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setConfiguration()
     }
 
-    convenience init(title: String, style: BottomSheetAction.Style, handler: (([SelectionItem]) -> Void)? = nil) {
+    convenience init(title: String, style: BottomSheetAction.Style, handler: (([ListItem]) -> Void)? = nil) {
         self.init()
         self.title = title
         self.style = style

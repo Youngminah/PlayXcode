@@ -10,20 +10,20 @@ import UIKit
 class CurrentViewController: UIViewController {
 
     var items = [
-        SelectionItem(name: "딸기🍓"),
-        SelectionItem(name: "오렌지🍊"),
-        SelectionItem(name: "사과🍎"),
-        SelectionItem(name: "레몬🍋"),
-        SelectionItem(name: "꽃🌼"),
-        SelectionItem(name: "달🌙"),
-        SelectionItem(name: "물고기🐠"),
-        SelectionItem(name: "개구리🐸"),
-        SelectionItem(name: "긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다🦄"),
-        SelectionItem(name: "파란나비🦋"),
-        SelectionItem(name: "병아리🐥"),
-        SelectionItem(name: "페가수스🦄"),
-        SelectionItem(name: "새우🍤"),
-        SelectionItem(name: "새싹🌱")
+        ListItem(name: "딸기🍓"),
+        ListItem(name: "오렌지🍊"),
+        ListItem(name: "사과🍎"),
+        ListItem(name: "레몬🍋"),
+        ListItem(name: "꽃🌼"),
+        ListItem(name: "달🌙"),
+        ListItem(name: "물고기🐠"),
+        ListItem(name: "개구리🐸"),
+        ListItem(name: "긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다🦄"),
+        ListItem(name: "파란나비🦋"),
+        ListItem(name: "병아리🐥"),
+        ListItem(name: "페가수스🦄"),
+        ListItem(name: "새우🍤"),
+        ListItem(name: "새싹🌱")
     ]
 
     var isShortFormEnabled = true
@@ -33,17 +33,17 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-        let vc: SheetPresentable.LayoutType = SheetViewController()
-        self.presentSheetModal(vc)
+        //let vc: SheetPresentable.LayoutType = SheetViewController()
+        //self.presentSheetModal(vc)
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {
-        let vc = SheetViewController<TitleSelectionCell>()
-        vc.setItems(items: items)
-        vc.selectionItemsHandler = { data in
-
-        }
-        self.presentSheetModal(vc)
+//        let vc = SheetViewController<TitleSelectionCell>()
+//        vc.setItems(items: items)
+//        vc.selectionItemsHandler = { data in
+//
+//        }
+//        self.presentSheetModal(vc)
     }
     @IBAction func highButtonTap(_ sender: Any) {
         guard let vc : SheetPresentable.LayoutType = self.storyboard?.instantiateViewController(withIdentifier: "NextViewController") as? NextViewController else {
@@ -60,7 +60,7 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
-        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items))
+        let bottomSheet = BottomSheetController(items: items, preferredStyle: .list)
         //bottomSheet.allowsMultipleCollection = true
         bottomSheet.addHeaderSubview(SubtitleLabel(text: """
         이곳은 설정하기
@@ -69,12 +69,12 @@ class CurrentViewController: UIViewController {
         """))
         bottomSheet.addHeaderSubview(TitleLabel(text: "설정하기"))
 
-        let cancelAction = BottomSheetAction(title: "취소", style: .cancel)
+        //let cancelAction = BottomSheetAction(title: "취소", style: .cancel)
         let saveAction = BottomSheetAction(title: "확인", style: .default) { items in
             print(items)
         }
 
-        bottomSheet.addBottomSheetAction(cancelAction)
+        //bottomSheet.addBottomSheetAction(cancelAction)
         bottomSheet.addBottomSheetAction(saveAction)
         self.presentSheetModal(bottomSheet)
 //        self.present(bottomSheet, animated: true, completion: nil)

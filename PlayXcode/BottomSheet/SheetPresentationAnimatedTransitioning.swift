@@ -62,40 +62,40 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
 //                                              controlPoint2: CGPoint(x: 0.8, y: 0.2))
 
         // Spring curve
-        let animator = UIViewPropertyAnimator(duration: animationDuration,
-                                              dampingRatio: 0.8)
-
-        animator.addAnimations {
-            sheetView.frame = finalFrame
-        }
-
-        animator.addCompletion { position in
-            switch position {
-            case .end:
-                if !self.isPresentation {
-                    controller.view.removeFromSuperview()
-                }
-                transitionContext.completeTransition(true)
-            default: // 나중에 새로운 케이스가 생기면 실행됨
-                fatalError()
-            }
-        }
-
-        animator.startAnimation()
-
-//        UIView.animate(
-//            withDuration: animationDuration,
-//            delay: 0,
-//            usingSpringWithDamping: 1.0,
-//            initialSpringVelocity: 0,
-//            options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
-//            animations: {
-//                sheetView.frame = finalFrame
-//            }, completion: { finished in
+//        let animator = UIViewPropertyAnimator(duration: animationDuration,
+//                                              dampingRatio: 0.5)
+//
+//        animator.addAnimations {
+//            sheetView.frame = finalFrame
+//        }
+//
+//        animator.addCompletion { position in
+//            switch position {
+//            case .end:
 //                if !self.isPresentation {
 //                    controller.view.removeFromSuperview()
 //                }
-//                transitionContext.completeTransition(finished)
-//            })
+//                transitionContext.completeTransition(true)
+//            default: // 나중에 새로운 케이스가 생기면 실행됨
+//                fatalError()
+//            }
+//        }
+//
+//        animator.startAnimation()
+
+        UIView.animate(
+            withDuration: animationDuration,
+            delay: 0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 0,
+            options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
+            animations: {
+                sheetView.frame = finalFrame
+            }, completion: { finished in
+                if !self.isPresentation {
+                    controller.view.removeFromSuperview()
+                }
+                transitionContext.completeTransition(finished)
+            })
     }
 }

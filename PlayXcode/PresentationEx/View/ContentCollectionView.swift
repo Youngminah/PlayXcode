@@ -10,13 +10,13 @@ import UIKit
 class ContentCollectionView: UICollectionView {
 
     var items = [
-        SelectionItem(name: "한국어"),
-        SelectionItem(name: "중국어"),
-        SelectionItem(name: "중국어"),
-        SelectionItem(name: "중국어"),
-        SelectionItem(name: "중국어"),
-        SelectionItem(name: "중국어"),
-        SelectionItem(name: "중국어")
+        ListItem(name: "한국어"),
+        ListItem(name: "중국어"),
+        ListItem(name: "중국어"),
+        ListItem(name: "중국어"),
+        ListItem(name: "중국어"),
+        ListItem(name: "중국어"),
+        ListItem(name: "중국어")
     ]
 
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -77,36 +77,57 @@ class CheckBoxItem: Hashable {
     }
 }
 
-protocol HashableType: Hashable {
+class BottomSheetLayout {
 
-    var identifier: String { get set }
+    static func layout(layoutKind: BottomSheetController.Style) -> UICollectionViewCompositionalLayout {
+
+        if layoutKind == .list, #available(iOS 14.0, *) {
+
+            var config = UICollectionLayoutListConfiguration(appearance: .grouped)
+            config.backgroundColor = .systemBackground
+            return UICollectionViewCompositionalLayout.list(using: config)
+
+        } else {
+
+            let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+
+                let columns = layoutKind.columnCount
+
+//                let itemInset: CGFloat = 5.0
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//                item.contentInsets = NSDirectionalEdgeInsets(top: itemInset,
+//                                                             leading: itemInset,
+//                                                             bottom: itemInset,
+//                                                             trailing: itemInset)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .estimated(50))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                               subitem: item,
+                                                               count: columns)
+                let section = NSCollectionLayoutSection(group: group)
+                return section
+            }
+            return layout
+        }
+    }
 }
 
-extension HashableType {
+class BottomSheetListConfiguration {
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
+    enum Appearance {
+
+        case plain
+        case insetGrouped
+        case sideCheckBox
     }
 
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.identifier == rhs.identifier
+    private let appearance: Appearance
+
+    var backgroundColor: UIColor?
+
+    init(appearance: Appearance) {
+        self.appearance = appearance
     }
 }
-
-struct SelectionItem: HashableType {
-
-    let name: String
-    var identifier = UUID().uuidString
-}
-
-//final class ContentSelectionItem<T>: SelectionItem {
-//
-//    let content: T
-//
-//    init(name: String, isSelected: Bool, content: T) {
-//        self.content = content
-//        super.init(name: name, isSelected: isSelected)
-//    }
-//}
-
-
