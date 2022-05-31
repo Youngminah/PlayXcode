@@ -39,8 +39,8 @@ extension SheetTransitioningDelegate: UIViewControllerTransitioningDelegate {
         return presentationController
     }
 }
-
-//extension SheetPresentationDelegate: UIAdaptivePresentationControllerDelegate {
+//
+//extension SheetTransitioningDelegate: UIAdaptivePresentationControllerDelegate {
 //
 //    // 아이패드에서 .popover 이나 .custom으로 화면 전환이 이루어지기 위해 필수적임.
 //    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {

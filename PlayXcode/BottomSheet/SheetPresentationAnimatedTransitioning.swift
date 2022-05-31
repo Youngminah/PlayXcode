@@ -24,31 +24,34 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
     func transitionDuration(
         using transitionContext: UIViewControllerContextTransitioning?
     ) -> TimeInterval {
-        return 0.5
+        return 1.0
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
         let key: UITransitionContextViewControllerKey = isPresentation ? .to : .from
         guard let controller = transitionContext.viewController(forKey: key) else { return }
-        
+        guard let fromVC = transitionContext.viewController(forKey: .from) else { return }
         let sheetView: UIView = transitionContext.containerView.sheetContainerView ?? controller.view
-        
-        let presentable = transitionContext.viewController(forKey: .to) as? SheetPresentable.LayoutType
+
+        let presentable = transitionContext.viewController(forKey: key) as? SheetPresentable.LayoutType
+        fromVC.beginAppearanceTransition(false, animated: false)
+        print(controller.isViewLoaded)
         let yPos: CGFloat = presentable?.shortFormYPos ?? 0.0
         
-        let presentedFrame = transitionContext.finalFrame(for: controller)
+        var presentedFrame = transitionContext.finalFrame(for: controller)
+        presentedFrame.origin.y = yPos
+
         var dismissedFrame = presentedFrame
-        dismissedFrame.origin.y = sheetView.frame.size.height
+        dismissedFrame.origin.y = transitionContext.containerView.frame.height
         
         let initialFrame = isPresentation ? dismissedFrame : presentedFrame
-        var finalFrame = isPresentation ? presentedFrame : dismissedFrame
+        let finalFrame = isPresentation ? presentedFrame : dismissedFrame
         
         let animationDuration = transitionDuration(using: transitionContext)
         
         if isPresentation {
             sheetView.frame = initialFrame
-            finalFrame.origin.y = yPos
         }
 
         // UIKit Built-in curve
@@ -62,40 +65,26 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
 //                                              controlPoint2: CGPoint(x: 0.8, y: 0.2))
 
         // Spring curve
-//        let animator = UIViewPropertyAnimator(duration: animationDuration,
-//                                              dampingRatio: 0.5)
-//
-//        animator.addAnimations {
-//            sheetView.frame = finalFrame
-//        }
-//
-//        animator.addCompletion { position in
-//            switch position {
-//            case .end:
-//                if !self.isPresentation {
-//                    controller.view.removeFromSuperview()
-//                }
-//                transitionContext.completeTransition(true)
-//            default: // 나중에 새로운 케이스가 생기면 실행됨
-//                fatalError()
-//            }
-//        }
-//
-//        animator.startAnimation()
+        let animator = UIViewPropertyAnimator(duration: animationDuration,
+                                              dampingRatio: 0.5)
 
-        UIView.animate(
-            withDuration: animationDuration,
-            delay: 0,
-            usingSpringWithDamping: 1.0,
-            initialSpringVelocity: 0,
-            options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
-            animations: {
-                sheetView.frame = finalFrame
-            }, completion: { finished in
+        animator.addAnimations {
+            sheetView.frame = finalFrame
+        }
+
+        animator.addCompletion { position in
+            switch position {
+            case .end:
                 if !self.isPresentation {
                     controller.view.removeFromSuperview()
                 }
-                transitionContext.completeTransition(finished)
-            })
+                transitionContext.completeTransition(true)
+            default: // 나중에 새로운 케이스가 생기면 실행됨
+                fatalError()
+            }
+        }
+
+        animator.startAnimation()
+
     }
 }

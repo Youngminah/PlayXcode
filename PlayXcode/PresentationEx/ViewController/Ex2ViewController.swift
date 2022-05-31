@@ -10,6 +10,14 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 final class Ex2ViewController: UICollectionViewController, SheetPresentable {
+    var headerView: UIStackView? {
+        return nil
+    }
+
+    var footerButtonView: UIStackView? {
+        return nil
+    }
+
 
     var isShortFormEnabled = true
     
@@ -38,17 +46,17 @@ final class Ex2ViewController: UICollectionViewController, SheetPresentable {
         return collectionView
     }
 
-    var longFormHeight: SheetHeight {
-        return .intrinsicHeight
-    }
+//    var longFormHeight: SheetHeight {
+//        return .maxHeight
+//    }
 
 //    var isShortFormEnabled: Bool {
 //        return true
 //    }
 //
-//    var shortFormHeight: SheetHeight {
-//        return isShortFormEnabled ? .contentHeight(300.0) : longFormHeight
-//    }
+    var shortFormHeight: SheetHeight {
+        return isShortFormEnabled ? .contentHeight(500.0) : longFormHeight
+    }
 
     var anchorModalToLongForm: Bool {
         return true
@@ -56,7 +64,7 @@ final class Ex2ViewController: UICollectionViewController, SheetPresentable {
 
     func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
-        //isShortFormEnabled = true
+        isShortFormEnabled = false
         sheetModalSetNeedsLayoutUpdate()
     }
 }

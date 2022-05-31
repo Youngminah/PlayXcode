@@ -24,7 +24,7 @@ final class SheetPresentationController: UIPresentationController {
         static let snapMovementSensitivity = CGFloat(0.7)
     }
     
-    // MARK: - Properties
+    // MARK: - 프로퍼티
     private var dimmingView: DimmingView!
     
     private var isPresentedViewAnimating = false
@@ -91,18 +91,19 @@ final class SheetPresentationController: UIPresentationController {
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.dimmingView.alpha = 1.0
         })
+
+    }
+
+    // 컨테이너뷰의 뷰들이 레이아웃을 시작하려할 때 실행되는 함수. containerViewDidLayoutSubviews도 있음.
+    override func containerViewWillLayoutSubviews() {
+        super.containerViewWillLayoutSubviews()
+        configureViewLayout()
     }
     
     // 띄우는 화면 전환 애니메이션이 끝났을 때 실행되는 함수
     override public func presentationTransitionDidEnd(_ completed: Bool) {
         if completed { return }
         dimmingView.removeFromSuperview()
-    }
-    
-    // 컨테이너뷰의 뷰들이 레이아웃을 시작하려할 때 실행되는 함수. containerViewDidLayoutSubviews도 있음.
-    override func containerViewWillLayoutSubviews() {
-        super.containerViewWillLayoutSubviews()
-        configureViewLayout()
     }
     
     // 사라지는 화면 전환 애니메이션이 시작되려할 때 실행되는 함수
@@ -247,6 +248,7 @@ extension SheetPresentationController {
     // Dimming View를 뷰 계층에 추가하고, 오토레이아웃 잡아주는 메소드.
     func layoutBackgroundView(in containerView: UIView) {
         containerView.addSubview(dimmingView)
+        
         dimmingView.translatesAutoresizingMaskIntoConstraints = false
         dimmingView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         dimmingView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
@@ -261,7 +263,7 @@ extension SheetPresentationController {
         longFormYPosition = layoutPresentable.longFormYPos
         anchorModalToLongForm = layoutPresentable.anchorModalToLongForm
         extendsSheetScrolling = layoutPresentable.allowsExtendedSheetScrolling
-        presentedView.layer.cornerRadius = layoutPresentable.cornerRadius
+        //presentedView.layer.cornerRadius = layoutPresentable.cornerRadius
         containerView?.isUserInteractionEnabled = layoutPresentable.isUserInteractionEnabled
     }
     

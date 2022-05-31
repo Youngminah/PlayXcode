@@ -115,8 +115,8 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         headerStackViewHeightConstraint.priority = .defaultLow // 250
         headerStackViewHeightConstraint.isActive = true
 
-        let contentViewHeightConstraint = contentView.heightAnchor.constraint(equalToConstant: 1)
-        contentViewHeightConstraint.priority = UILayoutPriority(rawValue: 251) // 251
+        let contentViewHeightConstraint = contentView.heightAnchor.constraint(equalToConstant: 20)
+        contentViewHeightConstraint.priority = UILayoutPriority(rawValue: 255) // 251
         contentViewHeightConstraint.isActive = true
 
         let buttonStackViewHeightConstraint = buttonStackView.heightAnchor.constraint(equalToConstant: 0)
@@ -206,7 +206,7 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
         snapshot.appendSections([.main])
         snapshot.appendItems(items.map { $0.id })
-        dataSource.apply(snapshot, animatingDifferences: true)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -240,32 +240,40 @@ extension BottomSheetController {
 
 extension BottomSheetController: SheetPresentable {
 
+    var headerView: UIStackView? {
+        return headerStackView
+    }
+
+    var footerButtonView: UIStackView? {
+        return buttonStackView
+    }
+
     var sheetScrollView: UIScrollView? {
         return collectionView
     }
 
-    var longFormHeight: SheetHeight {
-        return .maxHeight
+//    var longFormHeight: SheetHeight {
+//        return .maxHeight
+//    }
+
+    var anchorModalToLongForm: Bool {
+        return false
     }
 
-    var shortFormHeight: SheetHeight {
-        return isShortFormEnabled ? .intrinsicHeight : longFormHeight
-    }
+//    var shortFormHeight: SheetHeight {
+//        return isShortFormEnabled ? .contentHeight(500) : longFormHeight
+//    }
 
     func shouldPrioritize(panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
         let location = panModalGestureRecognizer.location(in: view)
         return headerStackView.frame.contains(location) || buttonStackView.frame.contains(location)
     }
 
-    var anchorModalToLongForm: Bool {
-        return true
-    }
-
-    func willTransition(to state: SheetPresentationController.PresentationState) {
-        guard isShortFormEnabled, case .longForm = state else { return }
-        //isShortFormEnabled = false
-        sheetModalSetNeedsLayoutUpdate()
-    }
+//    func willTransition(to state: SheetPresentationController.PresentationState) {
+//        guard isShortFormEnabled, case .longForm = state else { return }
+//        //isShortFormEnabled = false
+//        sheetModalSetNeedsLayoutUpdate()
+//    }
 }
 
 class DynamicCollectionView: UICollectionView {

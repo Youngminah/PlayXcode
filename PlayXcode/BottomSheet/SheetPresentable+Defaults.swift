@@ -19,11 +19,13 @@ extension SheetPresentable where Self: UIViewController {
 
     var longFormHeight: SheetHeight {
 
-        guard let scrollView = sheetScrollView else { return .maxHeight }
+        guard let scrollView = sheetScrollView, let header = headerView, let footer = footerButtonView else { return .maxHeight }
 
         scrollView.layoutIfNeeded()
-
-        return .contentHeight(scrollView.contentSize.height)
+        header.layoutIfNeeded()
+        footer.layoutIfNeeded()
+        print(sheetScrollView)
+        return .contentHeight(scrollView.contentSize.height + header.bounds.height + footer.bounds.height + topLayoutOffset + bottomLayoutOffset)
     }
 
     var cornerRadius: CGFloat {

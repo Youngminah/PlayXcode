@@ -24,6 +24,14 @@ enum ExSection {
 }
 
 final class ExViewController: UIViewController, SheetPresentable {
+    var headerView: UIStackView? {
+        return nil
+    }
+
+    var footerButtonView: UIStackView? {
+        return nil
+    }
+
     
     var isShortFormEnabled = true
     

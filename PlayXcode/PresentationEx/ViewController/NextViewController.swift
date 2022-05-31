@@ -9,6 +9,15 @@ import UIKit
 
 final class NextViewController: UIViewController, SheetPresentable, UICollectionViewDataSource {
 
+    var headerView: UIStackView? {
+        return nil
+    }
+
+    var footerButtonView: UIStackView? {
+        return nil
+    }
+
+
     var isShortFormEnabled = true
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -43,17 +52,17 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
     var sheetScrollView: UIScrollView? {
         return collectionView
     }
-//
-//    var longFormHeight: SheetHeight {
-//        return .intrinsicHeight
-//    }
+
+    var longFormHeight: SheetHeight {
+        return .maxHeight
+    }
 //
 //    var isShortFormEnabled: Bool {
 //        return true
 //    }
 //
     var shortFormHeight: SheetHeight {
-        return isShortFormEnabled ? .contentHeight(500) : longFormHeight
+        return isShortFormEnabled ? .contentHeight(200) : longFormHeight
     }
 
     var anchorModalToLongForm: Bool {
@@ -69,6 +78,7 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
 extension NextViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width / 2, height: 60)
+        let width = (UIScreen.main.bounds.width - 10.0)/2
+        return CGSize(width: width, height: 60)
     }
 }

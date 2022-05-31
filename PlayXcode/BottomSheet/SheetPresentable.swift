@@ -11,6 +11,10 @@ protocol SheetPresentable: AnyObject {
 
     var sheetScrollView: UIScrollView? { get }
 
+    var headerView: UIStackView? { get }
+
+    var footerButtonView: UIStackView? { get }
+
     var topOffset: CGFloat { get } // view의 safearea top inset + 모달 컨테이너뷰의 top offset
     
     var shortFormHeight: SheetHeight { get }
