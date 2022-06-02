@@ -60,7 +60,7 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
-        let bottomSheet = BottomSheetController(items: items, preferredStyle: .list)
+        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items, layoutStyle: .checkBox))
         //bottomSheet.allowsMultipleCollection = true
         bottomSheet.addHeaderSubview(SubtitleLabel(text: """
         이곳은 설정하기

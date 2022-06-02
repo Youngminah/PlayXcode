@@ -81,7 +81,7 @@ class BottomSheetLayout {
 
     static func layout(layoutKind: BottomSheetController.Style) -> UICollectionViewCompositionalLayout {
 
-        if layoutKind == .list, #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *) {
 
             var config = UICollectionLayoutListConfiguration(appearance: .grouped)
             config.backgroundColor = .systemBackground
@@ -111,6 +111,16 @@ class BottomSheetLayout {
             }
             return layout
         }
+    }
+
+    static func dataSource(style: BottomSheetController.Style) {
+
+//        switch style {
+//        case .list(items: let items, layoutStyle: let layoutStyle):
+//
+//        case .grid2(items: let items, layoutStyle: let layoutStyle):
+//            <#code#>
+//        }
     }
 }
 

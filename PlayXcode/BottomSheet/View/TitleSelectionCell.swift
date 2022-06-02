@@ -27,13 +27,20 @@ extension HashableType {
     }
 }
 
-struct ListItem: Identifiable {
 
-    let name: String
+class BottomSheetItem: Identifiable {
+
     var id = UUID().uuidString
 }
 
+class ListItem: BottomSheetItem {
 
+    let name: String
+
+    init(name: String) {
+        self.name = name
+    }
+}
 
 class BottomSheetCell<Item: Identifiable>: UICollectionViewCell {
 
@@ -94,6 +101,10 @@ final class TitleCell: BottomSheetCell<ListItem> {
     private func setConfiguration() {
         textLabel.textColor = .label
         textLabel.numberOfLines = 1
+    }
+
+    override func configure(item: ListItem) {
+        self.textLabel.text = item.name
     }
 }
 
