@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import QDSBottomSheet
 
 class CurrentViewController: UIViewController {
 
@@ -60,7 +61,7 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
-        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items, layoutStyle: .checkBox))
+        let bottomSheet = BottomSheetController(preferredStyle: .grid2(items: items, appearance: .checkBox))
         //bottomSheet.allowsMultipleCollection = true
         bottomSheet.addHeaderSubview(SubtitleLabel(text: """
         이곳은 설정하기
@@ -69,12 +70,13 @@ class CurrentViewController: UIViewController {
         """))
         bottomSheet.addHeaderSubview(TitleLabel(text: "설정하기"))
 
-        //let cancelAction = BottomSheetAction(title: "취소", style: .cancel)
+        let cancelAction = BottomSheetAction(title: "취소", style: .cancel)
         let saveAction = BottomSheetAction(title: "확인", style: .default) { items in
-            print(items)
+            let item = items.first as! ListItem
+            print(item.name)
         }
 
-        //bottomSheet.addBottomSheetAction(cancelAction)
+        bottomSheet.addBottomSheetAction(cancelAction)
         bottomSheet.addBottomSheetAction(saveAction)
         self.presentSheetModal(bottomSheet)
 //        self.present(bottomSheet, animated: true, completion: nil)

@@ -12,7 +12,7 @@ import UIKit
  아래 예제에서 보자면 UIViewControllerTransitioningDelegate도 NSObjectProtocol임.
 */
 
-final class SheetTransitioningDelegate: NSObject {
+final public class SheetTransitioningDelegate: NSObject {
     
     static var `default`: SheetTransitioningDelegate = {
         return SheetTransitioningDelegate()
@@ -23,17 +23,17 @@ final class SheetTransitioningDelegate: NSObject {
 extension SheetTransitioningDelegate: UIViewControllerTransitioningDelegate {
 
     // 모달 화면을 띄울 때 애니메이션 리턴
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SheetPresentationAnimatedTransitioning(isPresentation: true)
     }
 
     // 모달 화면을 지울 때 애니메이션 리턴
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SheetPresentationAnimatedTransitioning(isPresentation: false)
     }
 
     // 현재의 뷰컨에 모달로 뷰컨을 띄우기 위해 전환을 담당하는 presentation controller 리턴
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController = SheetPresentationController(presentedViewController: presented, presenting: presenting)
         //presentationController.delegate = self
         return presentationController

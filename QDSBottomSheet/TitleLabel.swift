@@ -7,20 +7,20 @@
 
 import UIKit.UILabel
 
-class TextLabel: UILabel {
+open class TextLabel: UILabel {
 
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.setConfiguration()
     }
 
-    convenience init(text: String) {
+    public convenience init(text: String) {
         self.init()
         self.text = text
         self.setConfiguration()
     }
 
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("TextLabel: fatal Error Message")
     }
 
@@ -30,13 +30,13 @@ class TextLabel: UILabel {
     }
 }
 
-final class TitleLabel: TextLabel {
+public final class TitleLabel: TextLabel {
 
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("TitleLabel: fatal Error Message")
     }
 
@@ -47,7 +47,7 @@ final class TitleLabel: TextLabel {
     }
 }
 
-final class SubtitleLabel: TextLabel {
+public final class SubtitleLabel: TextLabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)

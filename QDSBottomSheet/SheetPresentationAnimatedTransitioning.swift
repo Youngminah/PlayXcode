@@ -36,7 +36,7 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
 
         let presentable = transitionContext.viewController(forKey: key) as? SheetPresentable.LayoutType
         fromVC.beginAppearanceTransition(false, animated: false)
-        print(controller.isViewLoaded)
+        //print(controller.isViewLoaded)
         let yPos: CGFloat = presentable?.shortFormYPos ?? 0.0
         
         var presentedFrame = transitionContext.finalFrame(for: controller)

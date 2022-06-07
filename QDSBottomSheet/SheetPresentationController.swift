@@ -12,9 +12,9 @@ import UIKit
  Presented VIew :
  */
 
-final class SheetPresentationController: UIPresentationController {
+final public class SheetPresentationController: UIPresentationController {
     
-    enum PresentationState {
+    public enum PresentationState {
         case shortForm
         case longForm
     }
@@ -47,7 +47,7 @@ final class SheetPresentationController: UIPresentationController {
         return presentedViewController as? SheetPresentable
     }
     
-    override var presentedView: UIView {
+    public override var presentedView: UIView {
         return sheetContainerView
     }
     
@@ -75,7 +75,7 @@ final class SheetPresentationController: UIPresentationController {
     // MARK: - Lifecycle
 
     // 띄우는 화면 전환 애니메이션이 시작하려 할 때 실행되는 함수
-    override func presentationTransitionWillBegin() {
+    public override func presentationTransitionWillBegin() {
         
         guard let containerView = containerView else { return }
         guard let dimmingView = dimmingView else { return }
@@ -95,7 +95,7 @@ final class SheetPresentationController: UIPresentationController {
     }
 
     // 컨테이너뷰의 뷰들이 레이아웃을 시작하려할 때 실행되는 함수. containerViewDidLayoutSubviews도 있음.
-    override func containerViewWillLayoutSubviews() {
+    public override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
         configureViewLayout()
     }
@@ -107,7 +107,7 @@ final class SheetPresentationController: UIPresentationController {
     }
     
     // 사라지는 화면 전환 애니메이션이 시작되려할 때 실행되는 함수
-    override func dismissalTransitionWillBegin() {
+    public override func dismissalTransitionWillBegin() {
         presentable?.sheetModalWillDismiss()
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = 0.0
@@ -120,13 +120,13 @@ final class SheetPresentationController: UIPresentationController {
     }
     
     // 사라지는 화면 전환 애니메이션이 끝났을 때 실행되는 함수
-    override func dismissalTransitionDidEnd(_ completed: Bool) {
+    public override func dismissalTransitionDidEnd(_ completed: Bool) {
         if !completed { return }
         presentable?.sheetModalDidDismiss()
     }
     
     // 컨테이너의 루트 뷰의 크기가 변경되려고 하면 실행되는 함수.
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
@@ -531,7 +531,7 @@ extension SheetPresentationController: UIGestureRecognizerDelegate {
 //    }
 
     // 두 개의 gestureRecognizer가 동시에 제스처를 인식해야하는지를 결정.
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return otherGestureRecognizer.view == presentable?.sheetScrollView
     }

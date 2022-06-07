@@ -11,22 +11,22 @@ import UIKit
 //    var cellType: BottomSheetCell<ListItem>.Type { get }
 //}
 
-class BottomSheetController: UIViewController, UICollectionViewDelegate {
+open class BottomSheetController: UIViewController, UICollectionViewDelegate {
 
     deinit {
         print("deinit")
     }
 
-    enum Style {
+    public enum Style {
 
-        enum ListLayoutStyle {
+        public enum ListLayoutStyle {
 
             case plain
             case checkBox
         }
 
-        case list(items: [ListItem], layoutStyle: ListLayoutStyle)
-        case grid2(items: [ListItem], layoutStyle: ListLayoutStyle)
+        case list(items: [ListItem], appearance: ListLayoutStyle)
+        case grid2(items: [ListItem], appearance: ListLayoutStyle)
         //case custom
 
         var columnCount: Int {
@@ -59,33 +59,49 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
 
     var allowsMultipleCollection = false
 
-    init(preferredStyle: BottomSheetController.Style) {
+    public init(preferredStyle: BottomSheetController.Style) {
         self.style = preferredStyle
         switch style {
 
-        case .list(let items, let layoutStyle),
-             .grid2(let items, let layoutStyle):
+        case .list(let items, _),
+             .grid2(let items, _):
             self.items = items
         }
 
         super.init(nibName: nil, bundle: nil)
     }
 
-//    init(layout: BottomSheetLayout) {
-//        self.layout = layout
-//        super.init(nibName: nil, bundle: nil)
-//    }
-
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("BottomSheetController: fatal error")
     }
 
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         self.setConstraints()
-        self.configureDataSource(Ttype: ListItem.self,
-                                 Dtype: TitleSelectionCell.self,
-                                 items: items)
+        switch style {
+        case .list(let items, let appearance):
+            switch appearance {
+            case .plain:
+                self.configureDataSource(Ttype: ListItem.self,
+                                         Dtype: TitleCell.self,
+                                         items: items)
+            case .checkBox:
+                self.configureDataSource(Ttype: ListItem.self,
+                                         Dtype: TitleSelectionCell.self,
+                                         items: items)
+            }
+        case .grid2(let items, let appearance):
+            switch appearance {
+            case .plain:
+                self.configureDataSource(Ttype: ListItem.self,
+                                         Dtype: TitleCell.self,
+                                         items: items)
+            case .checkBox:
+                self.configureDataSource(Ttype: ListItem.self,
+                                         Dtype: TitleSelectionCell.self,
+                                         items: items)
+            }
+        }
         self.setConfiguration()
     }
 
@@ -102,10 +118,6 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
     @objc private func dismissButtonTap() {
         self.dismiss(animated: true)
     }
-
-//    func setItems(items: [ListItem]) {
-//        self.items = items
-//    }
 
     private func setConstraints() {
         dismissButton.addTarget(self,
@@ -185,7 +197,7 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
     }
 
     private func createLayout() -> UICollectionViewLayout {
-        return BottomSheetLayout.layout(layoutKind: style)
+        return SheetLayout.layout(layoutKind: style)
     }
 
     private func configureDataSource<T: BottomSheetItem, D: BottomSheetCell<T>>(
@@ -229,29 +241,29 @@ class BottomSheetController: UIViewController, UICollectionViewDelegate {
         dataSource.apply(snapshot, animatingDifferences: false)
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
     }
 }
 
 extension BottomSheetController {
 
-    func addHeaderSubview(_ view: UIView) {
+    public func addHeaderSubview(_ view: UIView) {
         headerStackView.addArrangedSubview(view)
     }
 
-    func addHeaderSubviews(_ views: [UIView]) {
+    public func addHeaderSubviews(_ views: [UIView]) {
         views.forEach { view in
             headerStackView.addArrangedSubview(view)
         }
     }
 
-    func addBottomSheetAction(_ action: BottomSheetAction) {
+    public func addBottomSheetAction(_ action: BottomSheetAction) {
         buttonStackView.addArrangedSubview(action)
         action.addTarget(self, action: #selector(self.actionTap(_:)), for: .touchUpInside)
     }
 
-    func addBottomButtonSubviews(_ views: [BottomSheetAction]) {
+    public func addBottomButtonSubviews(_ views: [BottomSheetAction]) {
         views.forEach { view in
             buttonStackView.addArrangedSubview(view)
         }
@@ -260,31 +272,31 @@ extension BottomSheetController {
 
 extension BottomSheetController: SheetPresentable {
 
-    var headerView: UIStackView? {
+    public var headerView: UIStackView? {
         return headerStackView
     }
 
-    var footerButtonView: UIStackView? {
+    public var footerButtonView: UIStackView? {
         return buttonStackView
     }
 
-    var sheetScrollView: UIScrollView? {
+    public var sheetScrollView: UIScrollView? {
         return collectionView
     }
 
-    var longFormHeight: SheetHeight {
-        return .maxHeight
-    }
+//    var longFormHeight: SheetHeight {
+//        return .maxHeight
+//    }
 
-    var anchorModalToLongForm: Bool {
+    public var anchorModalToLongForm: Bool {
         return false
     }
 
-//    var shortFormHeight: SheetHeight {
-//        return isShortFormEnabled ? .contentHeight(500) : longFormHeight
-//    }
+    public var shortFormHeight: SheetHeight {
+        return isShortFormEnabled ? .contentHeight(500) : longFormHeight
+    }
 
-    func shouldPrioritize(panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
+    public func shouldPrioritize(panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
         let location = panModalGestureRecognizer.location(in: view)
         return headerStackView.frame.contains(location) || buttonStackView.frame.contains(location)
     }
@@ -310,9 +322,9 @@ class DynamicCollectionView: UICollectionView {
     }
 }
 
-class BottomSheetAction: UIButton {
+open class BottomSheetAction: UIButton {
 
-    enum Style {
+    public enum Style {
         case `default`
         case cancel
         case destructive
@@ -323,12 +335,12 @@ class BottomSheetAction: UIButton {
 
     var handler: (([BottomSheetItem]) -> Void)?
 
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.setConfiguration()
     }
 
-    convenience init(title: String, style: BottomSheetAction.Style, handler: (([BottomSheetItem]) -> Void)? = nil) {
+    public convenience init(title: String, style: BottomSheetAction.Style, handler: (([BottomSheetItem]) -> Void)? = nil) {
         self.init()
         self.title = title
         self.style = style
@@ -336,12 +348,12 @@ class BottomSheetAction: UIButton {
         self.setConfiguration()
     }
 
-    override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         super.draw(rect)
         self.frame.size.height = 100
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("BottomSheetAction: fatal Error Message")
     }
 

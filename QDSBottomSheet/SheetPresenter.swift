@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SheetPresenter: AnyObject {
+public protocol SheetPresenter: AnyObject {
 
     var isSheetPresented: Bool { get }
 
@@ -20,11 +20,11 @@ protocol SheetPresenter: AnyObject {
 
 extension UIViewController: SheetPresenter {
 
-    var isSheetPresented: Bool {
+    public var isSheetPresented: Bool {
         return (transitioningDelegate as? SheetTransitioningDelegate) != nil
     }
 
-    func presentSheetModal(_ viewControllerToPresent: SheetPresentable.LayoutType,
+    public func presentSheetModal(_ viewControllerToPresent: SheetPresentable.LayoutType,
                                 sourceView: UIView? = nil,
                                 sourceRect: CGRect = .zero,
                                 completion: (() -> Void)? = nil) {

@@ -28,16 +28,16 @@ extension HashableType {
 }
 
 
-class BottomSheetItem: Identifiable {
+open class BottomSheetItem: Identifiable {
 
-    var id = UUID().uuidString
+    public var id = UUID().uuidString
 }
 
-class ListItem: BottomSheetItem {
+open class ListItem: BottomSheetItem {
 
-    let name: String
+    public let name: String
 
-    init(name: String) {
+    public init(name: String) {
         self.name = name
     }
 }

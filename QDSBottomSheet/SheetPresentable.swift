@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SheetPresentable: AnyObject {
+public protocol SheetPresentable: AnyObject {
 
     var sheetScrollView: UIScrollView? { get }
 
@@ -60,7 +60,7 @@ protocol SheetPresentable: AnyObject {
     func sheetModalDidDismiss()
 }
 
-enum SheetHeight: Equatable {
+public enum SheetHeight: Equatable {
 
     case maxHeight
     case maxHeightWithTopInset(CGFloat)

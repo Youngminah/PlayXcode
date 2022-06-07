@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension SheetPresentable where Self: UIViewController {
+public extension SheetPresentable where Self: UIViewController {
 
     var topOffset: CGFloat {
         return topLayoutOffset + 21.0
@@ -24,7 +24,6 @@ extension SheetPresentable where Self: UIViewController {
         scrollView.layoutIfNeeded()
         header.layoutIfNeeded()
         footer.layoutIfNeeded()
-        print(sheetScrollView)
         return .contentHeight(scrollView.contentSize.height + header.bounds.height + footer.bounds.height + topLayoutOffset + bottomLayoutOffset)
     }
 
@@ -171,23 +170,23 @@ extension SheetPresentable where Self: UIViewController {
 
 extension SheetPresentable where Self: UIViewController {
 
-    typealias AnimationBlockType = () -> Void
-    typealias AnimationCompletionType = (Bool) -> Void
-    typealias LayoutType = UIViewController & SheetPresentable
+    public typealias AnimationBlockType = () -> Void
+    public typealias AnimationCompletionType = (Bool) -> Void
+    public typealias LayoutType = UIViewController & SheetPresentable
 
-    func panModalTransition(to state: SheetPresentationController.PresentationState) {
+    public func panModalTransition(to state: SheetPresentationController.PresentationState) {
         presentedVC?.transition(to: state)
     }
 
-    func sheetModalSetNeedsLayoutUpdate() {
+    public func sheetModalSetNeedsLayoutUpdate() {
         presentedVC?.setNeedsLayoutUpdate()
     }
 
-    func panModalPerformUpdates(_ updates: () -> Void) {
+    public func panModalPerformUpdates(_ updates: () -> Void) {
         presentedVC?.performUpdates(updates)
     }
 
-    func panModalAnimate(_ animationBlock: @escaping AnimationBlockType, _ completion: AnimationCompletionType? = nil) {
+    public func panModalAnimate(_ animationBlock: @escaping AnimationBlockType, _ completion: AnimationCompletionType? = nil) {
         SheetPresentationAnimator.animate(animationBlock, config: self, completion)
     }
 }
