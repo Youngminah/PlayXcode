@@ -27,6 +27,12 @@ extension HashableType {
     }
 }
 
+//protocol ListIdentifiableType: Identifiable {
+//
+//    var id: String { get }
+//    var name: String { get }
+//}
+
 
 open class BottomSheetItem: Identifiable {
 
@@ -34,6 +40,8 @@ open class BottomSheetItem: Identifiable {
 }
 
 open class ListItem: BottomSheetItem {
+
+//    public var id = UUID().uuidString
 
     public let name: String
 
@@ -80,7 +88,7 @@ final class TitleCell: BottomSheetCell<ListItem> {
     }
 
     override func didSelectConfigure() {
-        contentView.backgroundColor = .gray
+        contentView.backgroundColor = self.isSelected ? .red : .white
     }
 
     private func setConstraints() {
@@ -93,12 +101,16 @@ final class TitleCell: BottomSheetCell<ListItem> {
             textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                constant: 16),
             textLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            textLabel.trailingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            textLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                 constant: -16)
         ])
     }
 
     private func setConfiguration() {
+        contentView.layer.borderColor = UIColor.black.cgColor
+        contentView.layer.borderWidth = 1
+        contentView.backgroundColor = .white
+        
         textLabel.textColor = .label
         textLabel.numberOfLines = 1
     }
@@ -156,6 +168,9 @@ final class TitleSelectionCell: BottomSheetCell<ListItem> {
     }
 
     private func setConfiguration() {
+        contentView.layer.borderColor = UIColor.black.cgColor
+        contentView.layer.borderWidth = 1
+        contentView.backgroundColor = .yellow
 
         textLabel.textColor = .label
         textLabel.numberOfLines = 1

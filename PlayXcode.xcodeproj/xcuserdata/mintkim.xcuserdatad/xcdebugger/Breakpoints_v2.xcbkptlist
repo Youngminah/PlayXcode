@@ -500,5 +500,53 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "885DE9B9-B435-4B05-A9C2-3733AEB12404"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QDSBottomSheet/BottomSheetCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "didSelectConfigure()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "885DE9B9-B435-4B05-A9C2-3733AEB12404 - d28f62df309d3a85"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "QDSBottomSheet.TitleSelectionCell.didSelectConfigure() -&gt; ()"
+                  moduleName = "QDSBottomSheet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mintkim/Desktop/PlayXcode/QDSBottomSheet/BottomSheetCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  uuid = "885DE9B9-B435-4B05-A9C2-3733AEB12404 - d28f62df309d3a09"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "QDSBottomSheet.TitleSelectionCell.didSelectConfigure() -&gt; ()"
+                  moduleName = "QDSBottomSheet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mintkim/Desktop/PlayXcode/QDSBottomSheet/BottomSheetCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "144"
+                  endingLineNumber = "144"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

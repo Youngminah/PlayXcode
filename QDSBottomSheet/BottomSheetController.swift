@@ -21,12 +21,14 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
 
         public enum ListLayoutStyle {
 
-            case plain
+            case plain 
             case checkBox
         }
 
         case list(items: [ListItem], appearance: ListLayoutStyle)
         case grid2(items: [ListItem], appearance: ListLayoutStyle)
+//        case list(items: [T], appearance: ListLayoutStyle)
+//        case grid2(items: [T], appearance: ListLayoutStyle)
         //case custom
 
         var columnCount: Int {
@@ -55,6 +57,7 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
     private var isShortFormEnabled = true
     private var items: [ListItem]
     private let style: Style
+    //private var items: [T]
     //private let layout: BottomSheetLayout
 
     var allowsMultipleCollection = false
@@ -82,23 +85,23 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
         case .list(let items, let appearance):
             switch appearance {
             case .plain:
-                self.configureDataSource(Ttype: ListItem.self,
-                                         Dtype: TitleCell.self,
+                self.configureDataSource(itemType: ListItem.self,
+                                         cellType: TitleCell.self,
                                          items: items)
             case .checkBox:
-                self.configureDataSource(Ttype: ListItem.self,
-                                         Dtype: TitleSelectionCell.self,
+                self.configureDataSource(itemType: ListItem.self,
+                                         cellType: TitleSelectionCell.self,
                                          items: items)
             }
         case .grid2(let items, let appearance):
             switch appearance {
             case .plain:
-                self.configureDataSource(Ttype: ListItem.self,
-                                         Dtype: TitleCell.self,
+                self.configureDataSource(itemType: ListItem.self,
+                                         cellType: TitleCell.self,
                                          items: items)
             case .checkBox:
-                self.configureDataSource(Ttype: ListItem.self,
-                                         Dtype: TitleSelectionCell.self,
+                self.configureDataSource(itemType: ListItem.self,
+                                         cellType: TitleSelectionCell.self,
                                          items: items)
             }
         }
@@ -114,6 +117,20 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
         self.dismiss(animated: true)
         sender.handler?(selectionItems)
     }
+
+//    @objc func actionTap(_ sender: BottomSheetAction) {
+//
+//        guard let abc = sender as? SheetActionItem else { return }
+//        abc.handle(item: items[index])
+//        let indexPaths = collectionView.indexPathsForSelectedItems ?? []
+//        var selectionItems: [BottomSheetItem] = []
+//        indexPaths.forEach { indexPath in
+//
+//            selectionItems.append(items[indexPath.row])
+//        }
+//        self.dismiss(animated: true)
+//        sender.handler?(selectionItems)
+//    }
 
     @objc private func dismissButtonTap() {
         self.dismiss(animated: true)
@@ -200,17 +217,14 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
         return SheetLayout.layout(layoutKind: style)
     }
 
-    private func configureDataSource<T: BottomSheetItem, D: BottomSheetCell<T>>(
-        Ttype: T.Type,
-        Dtype: D.Type,
-        items: [T]
+    private func configureDataSource<Item: BottomSheetItem, Cell: BottomSheetCell<Item>>(
+        itemType: Item.Type,
+        cellType: Cell.Type,
+        items: [Item]
     ) {
 
-        if style.columnCount == 1, #available(iOS 14.0, *) {
-            let cellRegistration = UICollectionView.CellRegistration<D, T> { (cell, indexPath, item) in
-                cell.contentView.backgroundColor = .yellow
-                cell.contentView.layer.borderColor = UIColor.black.cgColor
-                cell.contentView.layer.borderWidth = 1
+        if #available(iOS 14.0, *) {
+            let cellRegistration = UICollectionView.CellRegistration<Cell, Item> { (cell, indexPath, item) in
                 cell.configure(item: item)
             }
 
@@ -221,14 +235,11 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
             }
         } else {
 
-            collectionView.register(D.self,
-                                    forCellWithReuseIdentifier: D.identifier)
+            collectionView.register(Cell.self,
+                                    forCellWithReuseIdentifier: Cell.identifier)
             dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
                 (collectionView: UICollectionView, indexPath: IndexPath, identifier: String) -> UICollectionViewCell? in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: D.identifier, for: indexPath as IndexPath) as! D
-                cell.contentView.backgroundColor = .yellow
-                cell.contentView.layer.borderColor = UIColor.black.cgColor
-                cell.contentView.layer.borderWidth = 1
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Cell.identifier, for: indexPath as IndexPath) as! Cell
                 cell.configure(item: items[indexPath.row])
                 return cell
             }
@@ -284,16 +295,16 @@ extension BottomSheetController: SheetPresentable {
         return collectionView
     }
 
-//    var longFormHeight: SheetHeight {
-//        return .maxHeight
-//    }
+    public var longFormHeight: SheetHeight {
+        return .maxHeight
+    }
 
     public var anchorModalToLongForm: Bool {
         return false
     }
 
     public var shortFormHeight: SheetHeight {
-        return isShortFormEnabled ? .contentHeight(500) : longFormHeight
+        return isShortFormEnabled ? .intrinsicHeight : longFormHeight
     }
 
     public func shouldPrioritize(panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
@@ -322,6 +333,14 @@ class DynamicCollectionView: UICollectionView {
     }
 }
 
+//
+//protocol SheetActionItem {
+//    associatedtype Item
+//    func handle(item: Item)
+//}
+
+//open class BottomSheetAction<T>: UIButton, SheetActionItem {
+
 open class BottomSheetAction: UIButton {
 
     public enum Style {
@@ -329,6 +348,11 @@ open class BottomSheetAction: UIButton {
         case cancel
         case destructive
     }
+
+//    typealias Item = T
+//    func handle(item: T) {
+//
+//    }
 
     private var title: String = ""
     private var style: BottomSheetAction.Style = .default

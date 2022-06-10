@@ -11,7 +11,7 @@ open class SheetLayout {
 
     static func layout(layoutKind: BottomSheetController.Style) -> UICollectionViewCompositionalLayout {
 
-        if #available(iOS 14.0, *) {
+        if layoutKind.columnCount == 1, #available(iOS 14.0, *) {
 
             var config = UICollectionLayoutListConfiguration(appearance: .grouped)
             config.backgroundColor = .systemBackground
