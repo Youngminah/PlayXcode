@@ -32,11 +32,13 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
         let key: UITransitionContextViewControllerKey = isPresentation ? .to : .from
         guard let controller = transitionContext.viewController(forKey: key) else { return }
         guard let fromVC = transitionContext.viewController(forKey: .from) else { return }
+
+        fromVC.beginAppearanceTransition(!isPresentation, animated: false)
+        
         let sheetView: UIView = transitionContext.containerView.sheetContainerView ?? controller.view
 
         let presentable = transitionContext.viewController(forKey: key) as? SheetPresentable.LayoutType
-        fromVC.beginAppearanceTransition(false, animated: false)
-        //print(controller.isViewLoaded)
+
         let yPos: CGFloat = presentable?.shortFormYPos ?? 0.0
         
         var presentedFrame = transitionContext.finalFrame(for: controller)
@@ -61,6 +63,7 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
                 if !self.isPresentation {
                     controller.view.removeFromSuperview()
                 }
+                fromVC.endAppearanceTransition()
                 transitionContext.completeTransition(true)
             default:
                 fatalError()

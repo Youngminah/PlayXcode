@@ -130,21 +130,17 @@ final public class SheetPresentationController: UIPresentationController {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { [weak self] _ in
-
             guard let self = self else { return }
-
             if UIDevice.current.orientation.isPortrait {
                 self.transition(to: .shortForm)
             }
-
             self.adjustPresentedViewFrame()
         }, completion: { [weak self] _ in
             if let collectionView = self?.presentable?.sheetScrollView as? DynamicCollectionView {
-                collectionView.setContentOffset(.zero, animated: true)
+                collectionView.setContentOffset(.zero, animated: false)
             }
         })
     }
-
 }
 
 // MARK: - Common Layout Update Methods
@@ -235,6 +231,7 @@ extension SheetPresentationController {
         guard let frame = containerView?.frame else { return }
 
         let adjustedSize = CGSize(width: frame.size.width, height: frame.size.height - anchoredYPosition)
+
         let sheetFrame = sheetContainerView.frame
         sheetContainerView.frame.size = frame.size
         if ![shortFormYPosition, longFormYPosition].contains(sheetFrame.origin.y) {

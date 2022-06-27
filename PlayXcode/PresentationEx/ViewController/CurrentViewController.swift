@@ -13,18 +13,7 @@ class CurrentViewController: UIViewController {
     var items = [
         ListItem(name: "딸기🍓"),
         ListItem(name: "오렌지🍊"),
-        ListItem(name: "사과🍎"),
-        ListItem(name: "레몬🍋"),
-        ListItem(name: "꽃🌼"),
-        ListItem(name: "달🌙"),
-        ListItem(name: "물고기🐠"),
-        ListItem(name: "개구리🐸"),
-        ListItem(name: "긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다긴글입니다🦄"),
-        ListItem(name: "파란나비🦋"),
-        ListItem(name: "병아리🐥"),
-        ListItem(name: "페가수스🦄"),
-        ListItem(name: "새우🍤"),
-        ListItem(name: "새싹🌱")
+        ListItem(name: "사과🍎")
     ]
 
     var isShortFormEnabled = true

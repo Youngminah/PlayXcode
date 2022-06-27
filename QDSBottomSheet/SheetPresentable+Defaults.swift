@@ -137,6 +137,7 @@ extension SheetPresentable where Self: UIViewController {
 
     var bottomYPos: CGFloat {
         guard let container = presentedVC?.containerView else { return view.bounds.height }
+
         return container.bounds.size.height - topOffset
     }
 

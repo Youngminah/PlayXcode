@@ -253,7 +253,7 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
     }
 }
 
