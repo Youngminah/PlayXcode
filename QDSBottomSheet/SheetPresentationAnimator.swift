@@ -15,18 +15,28 @@ struct SheetPresentationAnimator {
 
     static func animate(_ animations: @escaping () -> Void,
                         config: SheetPresentable?,
-                        _ completion: ((Bool) -> Void)? = nil) {
+                        _ completion: @escaping ((UIViewAnimatingPosition) -> Void)) {
 
         let transitionDuration = config?.transitionDuration ?? Constants.defaultTransitionDuration
         let springDamping = config?.springDamping ?? 1.0
-        let animationOptions = config?.transitionAnimationOptions ?? []
 
-        UIView.animate(withDuration: transitionDuration,
-                       delay: 0,
-                       usingSpringWithDamping: springDamping,
-                       initialSpringVelocity: 0,
-                       options: animationOptions,
-                       animations: animations,
-                       completion: completion)
+        // UIKit Built-in curve
+//        let animator = UIViewPropertyAnimator(
+//            duration: animationDuration,
+//            curve: .easeInOut)
+
+        // Cubic Bezier curve
+//        let animator = UIViewPropertyAnimator(duration: animationDuration,
+//                                              controlPoint1: CGPoint(x: 0.1, y: 0.9),
+//                                              controlPoint2: CGPoint(x: 0.8, y: 0.2))
+
+        // Spring curve
+        let animator = UIViewPropertyAnimator(duration: transitionDuration,
+                                              dampingRatio: springDamping)
+
+        animator.addAnimations (animations)
+        animator.addCompletion (completion)
+
+        animator.startAnimation()
     }
 }

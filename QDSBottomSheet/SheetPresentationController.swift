@@ -128,11 +128,23 @@ final public class SheetPresentationController: UIPresentationController {
     // 컨테이너의 루트 뷰의 크기가 변경되려고 하면 실행되는 함수.
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
         coordinator.animate(alongsideTransition: { [weak self] _ in
+
             guard let self = self else { return }
+
+            if UIDevice.current.orientation.isPortrait {
+                self.transition(to: .shortForm)
+            }
+
             self.adjustPresentedViewFrame()
+        }, completion: { [weak self] _ in
+            if let collectionView = self?.presentable?.sheetScrollView as? DynamicCollectionView {
+                collectionView.setContentOffset(.zero, animated: true)
+            }
         })
     }
+
 }
 
 // MARK: - Common Layout Update Methods
@@ -403,8 +415,13 @@ extension SheetPresentationController {
         SheetPresentationAnimator.animate({ [weak self] in
             self?.adjust(toYPosition: yPos)
             self?.isPresentedViewAnimating = true
-        }, config: presentable) { [weak self] didComplete in
-            self?.isPresentedViewAnimating = !didComplete
+        }, config: presentable) { [weak self] position in
+            switch position {
+            case .end:
+                self?.isPresentedViewAnimating = false
+            default: // 나중에 새로운 케이스가 생기면 실행됨
+                fatalError()
+            }
         }
     }
 

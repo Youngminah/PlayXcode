@@ -61,7 +61,7 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
-        let bottomSheet = BottomSheetController(preferredStyle: .grid2(items: items, appearance: .plain))
+        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items, appearance: .plain))
         //bottomSheet.allowsMultipleCollection = true
         bottomSheet.addHeaderSubview(SubtitleLabel(text: """
         이곳은 설정하기
@@ -72,8 +72,8 @@ class CurrentViewController: UIViewController {
 
         let cancelAction = BottomSheetAction(title: "취소", style: .cancel)
         let saveAction = BottomSheetAction(title: "확인", style: .default) { items in
-            let item = items.first as! ListItem
-            print(item.name)
+            let item = items.compactMap{ $0 as? ListItem }.first
+            print(item?.name)
         }
 
         bottomSheet.addBottomSheetAction(cancelAction)

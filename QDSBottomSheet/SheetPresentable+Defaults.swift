@@ -32,7 +32,7 @@ public extension SheetPresentable where Self: UIViewController {
     }
 
     var springDamping: CGFloat {
-        return 0.8
+        return 0.5
     }
 
     var transitionDuration: Double {
@@ -171,7 +171,7 @@ extension SheetPresentable where Self: UIViewController {
 extension SheetPresentable where Self: UIViewController {
 
     public typealias AnimationBlockType = () -> Void
-    public typealias AnimationCompletionType = (Bool) -> Void
+    public typealias AnimationCompletionType = (UIViewAnimatingPosition) -> Void
     public typealias LayoutType = UIViewController & SheetPresentable
 
     public func panModalTransition(to state: SheetPresentationController.PresentationState) {
@@ -186,7 +186,7 @@ extension SheetPresentable where Self: UIViewController {
         presentedVC?.performUpdates(updates)
     }
 
-    public func panModalAnimate(_ animationBlock: @escaping AnimationBlockType, _ completion: AnimationCompletionType? = nil) {
+    public func panModalAnimate(_ animationBlock: @escaping AnimationBlockType, _ completion: @escaping AnimationCompletionType) {
         SheetPresentationAnimator.animate(animationBlock, config: self, completion)
     }
 }

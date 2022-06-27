@@ -48,43 +48,23 @@ extension SheetPresentationAnimatedTransitioning: UIViewControllerAnimatedTransi
         let initialFrame = isPresentation ? dismissedFrame : presentedFrame
         let finalFrame = isPresentation ? presentedFrame : dismissedFrame
         
-        let animationDuration = transitionDuration(using: transitionContext)
-        
         if isPresentation {
             sheetView.frame = initialFrame
         }
 
-        // UIKit Built-in curve
-//        let animator = UIViewPropertyAnimator(
-//            duration: animationDuration,
-//            curve: .easeInOut)
-
-        // Cubic Bezier curve
-//        let animator = UIViewPropertyAnimator(duration: animationDuration,
-//                                              controlPoint1: CGPoint(x: 0.1, y: 0.9),
-//                                              controlPoint2: CGPoint(x: 0.8, y: 0.2))
-
-        // Spring curve
-        let animator = UIViewPropertyAnimator(duration: animationDuration,
-                                              dampingRatio: 0.5)
-
-        animator.addAnimations {
+        SheetPresentationAnimator.animate({
             sheetView.frame = finalFrame
-        }
-
-        animator.addCompletion { position in
+        }, config: presentable) { [weak self] position in
+            guard let self = self else { return }
             switch position {
             case .end:
                 if !self.isPresentation {
                     controller.view.removeFromSuperview()
                 }
                 transitionContext.completeTransition(true)
-            default: // 나중에 새로운 케이스가 생기면 실행됨
+            default:
                 fatalError()
             }
         }
-
-        animator.startAnimation()
-
     }
 }

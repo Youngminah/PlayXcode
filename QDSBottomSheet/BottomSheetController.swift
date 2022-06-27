@@ -312,7 +312,7 @@ extension BottomSheetController: SheetPresentable {
         return headerStackView.frame.contains(location) || buttonStackView.frame.contains(location)
     }
 
-//    func willTransition(to state: SheetPresentationController.PresentationState) {
+//    public func willTransition(to state: SheetPresentationController.PresentationState) {
 //        guard isShortFormEnabled, case .longForm = state else { return }
 //        //isShortFormEnabled = false
 //        sheetModalSetNeedsLayoutUpdate()
