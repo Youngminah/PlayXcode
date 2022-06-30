@@ -29,7 +29,11 @@
 		039EBBD72810E8B900F676A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD52810E8B900F676A8 /* Main.storyboard */; };
 		039EBBD92810E8BD00F676A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD82810E8BD00F676A8 /* Assets.xcassets */; };
 		039EBBDC2810E8BD00F676A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBDA2810E8BD00F676A8 /* LaunchScreen.storyboard */; };
-		03FEC5E2284EF3C000FFE000 /* BottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA78028372FBF00D065C0 /* BottomSheetController.swift */; };
+		03E68CE1286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E68CE0286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift */; };
+		03E68CE4286DA21100AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE3286DA21100AC11A6 /* QDSKit */; };
+		03E68CE7286DAC0300AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE6286DAC0300AC11A6 /* QDSKit */; };
+		03E68CE9286DAC4800AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE8286DAC4800AC11A6 /* QDSKit */; };
+		03FEC5E2284EF3C000FFE000 /* BottomSheetAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA78028372FBF00D065C0 /* BottomSheetAlertController.swift */; };
 		03FEC5E3284EF42E00FFE000 /* XButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF95E282CDABA00150961 /* XButton.swift */; };
 		03FEC5E4284EF43000FFE000 /* BottomSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7AF965282D191700150961 /* BottomSheetCell.swift */; };
 		03FEC5E5284EF43200FFE000 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A3361B283B59B90058FE9E /* TitleLabel.swift */; };
@@ -72,7 +76,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0378B72D284EEE12003A685F /* project */ = {isa = PBXFileReference; lastKnownFileType = folder; name = project; path = "../../Library/Developer/Xcode/DerivedData/QDSBottomSheet-dmhlrkogotoxxkhjxognlgjdogky/Build/Intermediates.noindex/XCBuildData/PIFCache/project"; sourceTree = "<group>"; };
 		0378B735284EEFAE003A685F /* QDSBottomSheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QDSBottomSheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0378B737284EEFAE003A685F /* QDSBottomSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QDSBottomSheet.h; sourceTree = "<group>"; };
 		0378B738284EEFAE003A685F /* QDSBottomSheet.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = QDSBottomSheet.docc; sourceTree = "<group>"; };
@@ -89,7 +92,7 @@
 		037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetTransitioningDelegate.swift; sourceTree = "<group>"; };
 		037DA77B282A522200D065C0 /* SheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresenter.swift; sourceTree = "<group>"; };
 		037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCollectionView.swift; sourceTree = "<group>"; };
-		037DA78028372FBF00D065C0 /* BottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetController.swift; sourceTree = "<group>"; };
+		037DA78028372FBF00D065C0 /* BottomSheetAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetAlertController.swift; sourceTree = "<group>"; };
 		037DA78228376B9100D065C0 /* SelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; };
 		037DA78428376C8D00D065C0 /* Ex3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ex3ViewController.swift; sourceTree = "<group>"; };
 		0391051428163493001E129E /* ExViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 		039EBBDB2810E8BD00F676A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		039EBBDD2810E8BD00F676A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03A3361B283B59B90058FE9E /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
+		03E68CE0286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetNoButtonViewController.swift; sourceTree = "<group>"; };
 		BB7AF95E282CDABA00150961 /* XButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XButton.swift; sourceTree = "<group>"; };
 		BB7AF961282CDFE400150961 /* TopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopHeaderView.swift; sourceTree = "<group>"; };
 		BB7AF963282CF12000150961 /* ContentCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionView.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03E68CE9286DAC4800AC11A6 /* QDSKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +131,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03E68CE4286DA21100AC11A6 /* QDSKit in Frameworks */,
+				03E68CE7286DAC0300AC11A6 /* QDSKit in Frameworks */,
 				0378B73D284EEFAE003A685F /* QDSBottomSheet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,7 +143,6 @@
 		0378B72C284EEE12003A685F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0378B72D284EEE12003A685F /* project */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -145,7 +151,6 @@
 			isa = PBXGroup;
 			children = (
 				03A3361E283DC2AC0058FE9E /* ViewController */,
-				037DA78028372FBF00D065C0 /* BottomSheetController.swift */,
 				0378B745284EF07E003A685F /* SheetLayout.swift */,
 				BB7AF95E282CDABA00150961 /* XButton.swift */,
 				BB7AF965282D191700150961 /* BottomSheetCell.swift */,
@@ -266,6 +271,8 @@
 		03A3361E283DC2AC0058FE9E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				037DA78028372FBF00D065C0 /* BottomSheetAlertController.swift */,
+				03E68CE0286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -311,6 +318,9 @@
 			dependencies = (
 			);
 			name = QDSBottomSheet;
+			packageProductDependencies = (
+				03E68CE8286DAC4800AC11A6 /* QDSKit */,
+			);
 			productName = QDSBottomSheet;
 			productReference = 0378B735284EEFAE003A685F /* QDSBottomSheet.framework */;
 			productType = "com.apple.product-type.framework";
@@ -330,6 +340,10 @@
 				0378B73C284EEFAE003A685F /* PBXTargetDependency */,
 			);
 			name = PlayXcode;
+			packageProductDependencies = (
+				03E68CE3286DA21100AC11A6 /* QDSKit */,
+				03E68CE6286DAC0300AC11A6 /* QDSKit */,
+			);
 			productName = PlayXcode;
 			productReference = 039EBBCC2810E8B900F676A8 /* PlayXcode.app */;
 			productType = "com.apple.product-type.application";
@@ -361,6 +375,10 @@
 				Base,
 			);
 			mainGroup = 039EBBC32810E8B900F676A8;
+			packageReferences = (
+				03E68CE2286DA21100AC11A6 /* XCRemoteSwiftPackageReference "ios-frameworks-QDSKit" */,
+				03E68CE5286DAC0300AC11A6 /* XCRemoteSwiftPackageReference "ios-frameworks-QDSKit" */,
+			);
 			productRefGroup = 039EBBCD2810E8B900F676A8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -397,13 +415,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				03FEC5E3284EF42E00FFE000 /* XButton.swift in Sources */,
-				03FEC5E2284EF3C000FFE000 /* BottomSheetController.swift in Sources */,
+				03FEC5E2284EF3C000FFE000 /* BottomSheetAlertController.swift in Sources */,
 				03FEC5EE284EF45300FFE000 /* SheetPresenter.swift in Sources */,
 				03FEC5E9284EF44C00FFE000 /* SheetPresentationAnimatedTransitioning.swift in Sources */,
 				03FEC5E7284EF43500FFE000 /* SheetContainerView.swift in Sources */,
 				03FEC5E8284EF44800FFE000 /* SheetTransitioningDelegate.swift in Sources */,
 				03FEC5EA284EF44D00FFE000 /* SheetPresentationAnimator.swift in Sources */,
 				0378B746284EF07E003A685F /* SheetLayout.swift in Sources */,
+				03E68CE1286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift in Sources */,
 				03FEC5EB284EF44F00FFE000 /* SheetPresentationController.swift in Sources */,
 				03FEC5E5284EF43200FFE000 /* TitleLabel.swift in Sources */,
 				03FEC5ED284EF45200FFE000 /* SheetPresentable+Defaults.swift in Sources */,
@@ -739,6 +758,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		03E68CE2286DA21100AC11A6 /* XCRemoteSwiftPackageReference "ios-frameworks-QDSKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mathpresso/ios-frameworks-QDSKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		03E68CE5286DAC0300AC11A6 /* XCRemoteSwiftPackageReference "ios-frameworks-QDSKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mathpresso/ios-frameworks-QDSKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		03E68CE3286DA21100AC11A6 /* QDSKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 03E68CE2286DA21100AC11A6 /* XCRemoteSwiftPackageReference "ios-frameworks-QDSKit" */;
+			productName = QDSKit;
+		};
+		03E68CE6286DAC0300AC11A6 /* QDSKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 03E68CE2286DA21100AC11A6 /* XCRemoteSwiftPackageReference "ios-frameworks-QDSKit" */;
+			productName = QDSKit;
+		};
+		03E68CE8286DAC4800AC11A6 /* QDSKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 03E68CE5286DAC0300AC11A6 /* XCRemoteSwiftPackageReference "ios-frameworks-QDSKit" */;
+			productName = QDSKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 039EBBC42810E8B900F676A8 /* Project object */;
 }

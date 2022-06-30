@@ -11,36 +11,36 @@ import UIKit
 //    var cellType: BottomSheetCell<ListItem>.Type { get }
 //}
 
-open class BottomSheetController: UIViewController, UICollectionViewDelegate {
+public enum BottomSheetCollectionViewStyle {
+
+    public enum ListLayoutStyle {
+
+        case plain
+        case checkBox
+    }
+
+    case list(items: [ListItem], appearance: ListLayoutStyle)
+    case grid2(items: [ListItem], appearance: ListLayoutStyle)
+//        case list(items: [T], appearance: ListLayoutStyle)
+//        case grid2(items: [T], appearance: ListLayoutStyle)
+    //case custom
+
+    var columnCount: Int {
+        switch self {
+        case .list:
+            return 1
+        case .grid2:
+            return 2
+//            default:
+//                return 3
+        }
+    }
+}
+
+open class BottomSheetAlertController: UIViewController, UICollectionViewDelegate {
 
     deinit {
         print("deinit")
-    }
-
-    public enum Style {
-
-        public enum ListLayoutStyle {
-
-            case plain 
-            case checkBox
-        }
-
-        case list(items: [ListItem], appearance: ListLayoutStyle)
-        case grid2(items: [ListItem], appearance: ListLayoutStyle)
-//        case list(items: [T], appearance: ListLayoutStyle)
-//        case grid2(items: [T], appearance: ListLayoutStyle)
-        //case custom
-
-        var columnCount: Int {
-            switch self {
-            case .list:
-                return 1
-            case .grid2:
-                return 2
-//            default:
-//                return 3
-            }
-        }
     }
 
     private enum Section {
@@ -56,13 +56,13 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
     private let contentView = UIView()
     private var isShortFormEnabled = true
     private var items: [ListItem]
-    private let style: Style
+    private let style: BottomSheetCollectionViewStyle
     //private var items: [T]
     //private let layout: BottomSheetLayout
 
     var allowsMultipleCollection = false
 
-    public init(preferredStyle: BottomSheetController.Style) {
+    public init(preferredStyle: BottomSheetCollectionViewStyle) {
         self.style = preferredStyle
         switch style {
 
@@ -257,7 +257,7 @@ open class BottomSheetController: UIViewController, UICollectionViewDelegate {
     }
 }
 
-extension BottomSheetController {
+extension BottomSheetAlertController {
 
     public func addHeaderSubview(_ view: UIView) {
         headerStackView.addArrangedSubview(view)
@@ -281,7 +281,7 @@ extension BottomSheetController {
     }
 }
 
-extension BottomSheetController: SheetPresentable {
+extension BottomSheetAlertController: SheetPresentable {
 
     public var headerView: UIStackView? {
         return headerStackView

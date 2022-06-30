@@ -9,7 +9,7 @@ import UIKit
 
 open class SheetLayout {
 
-    static func layout(layoutKind: BottomSheetController.Style) -> UICollectionViewCompositionalLayout {
+    static func layout(layoutKind: BottomSheetCollectionViewStyle) -> UICollectionViewCompositionalLayout {
 
         if layoutKind.columnCount == 1, #available(iOS 14.0, *) {
 
@@ -43,7 +43,7 @@ open class SheetLayout {
         }
     }
 
-    static func dataSource(style: BottomSheetController.Style) {
+    static func dataSource(style: BottomSheetCollectionViewStyle) {
 
 //        switch style {
 //        case .list(items: let items, layoutStyle: let layoutStyle):
