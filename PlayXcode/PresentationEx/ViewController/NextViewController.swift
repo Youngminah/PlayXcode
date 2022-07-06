@@ -57,11 +57,7 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
     var longFormHeight: SheetHeight {
         return .maxHeight
     }
-//
-//    var isShortFormEnabled: Bool {
-//        return true
-//    }
-//
+
     var shortFormHeight: SheetHeight {
         return isShortFormEnabled ? .contentHeight(200) : longFormHeight
     }
@@ -72,7 +68,7 @@ final class NextViewController: UIViewController, SheetPresentable, UICollection
 
     func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
-        sheetModalSetNeedsLayoutUpdate()
+        //sheetModalSetNeedsLayoutUpdate()
     }
 }
 

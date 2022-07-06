@@ -6,76 +6,31 @@
 //
 
 import UIKit.UICollectionViewCell
+import QDSKit
 
-//protocol ReuseIdentifierType {
-//    static var identifier: String { get }
-//}
+protocol BottomSheetCell: UICollectionViewCell {
 
-protocol HashableType: Hashable {
+    associatedtype Item: BottomSheetItem
 
-    var identifier: String { get set }
+    static var identifier: String { get }
+
+    func configure(item: Item)
+    func didSelectConfigure()
 }
 
-extension HashableType {
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
-    }
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.identifier == rhs.identifier
-    }
-}
-
-//protocol ListIdentifiableType: Identifiable {
-//
-//    var id: String { get }
-//    var name: String { get }
-//}
-
-
-open class BottomSheetItem: Identifiable {
-
-    public var id = UUID().uuidString
-}
-
-open class ListItem: BottomSheetItem {
-
-//    public var id = UUID().uuidString
-
-    public let name: String
-
-    public init(name: String) {
-        self.name = name
-    }
-}
-
-class BottomSheetCell<Item: Identifiable>: UICollectionViewCell {
+final class TitleCell: UICollectionViewCell, BottomSheetCell {
 
     class var identifier: String {
-        return "BottomSheetCell"
+        return "TitleCell"
     }
+
+    private let textLabel = UILabel()
 
     override var isSelected: Bool {
         didSet {
             self.didSelectConfigure()
         }
     }
-
-    var configuration: BottomSheetListConfiguration?
-
-    func configure(item: Item) { }
-
-    func didSelectConfigure() { }
-}
-
-final class TitleCell: BottomSheetCell<ListItem> {
-
-    override class var identifier: String {
-        return "TitleCell"
-    }
-
-    private let textLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,8 +42,9 @@ final class TitleCell: BottomSheetCell<ListItem> {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func didSelectConfigure() {
-        contentView.backgroundColor = self.isSelected ? .red : .white
+    func didSelectConfigure() {
+        contentView.backgroundColor = isSelected ? QDS.Color.orangeOffwhite : .systemBackground
+        textLabel.font = isSelected ? QDS.Font.b2 : QDS.Font.b3
     }
 
     private func setConstraints() {
@@ -107,28 +63,34 @@ final class TitleCell: BottomSheetCell<ListItem> {
     }
 
     private func setConfiguration() {
-        contentView.layer.borderColor = UIColor.black.cgColor
-        contentView.layer.borderWidth = 1
-        contentView.backgroundColor = .white
-        
-        textLabel.textColor = .label
+        contentView.backgroundColor = .systemBackground
+
+        textLabel.font = QDS.Font.b3
+        textLabel.highlightedTextColor = QDS.Color.orange
+        textLabel.textColor = QDS.Color.gray100
         textLabel.numberOfLines = 1
     }
 
-    override func configure(item: ListItem) {
+    func configure(item: ListItem) {
         self.textLabel.text = item.name
     }
 }
 
 
-final class TitleSelectionCell: BottomSheetCell<ListItem> {
+final class TitleSelectionCell: UICollectionViewCell, BottomSheetCell {
 
-    override class var identifier: String {
+    static var identifier: String {
         return "TitleSelectionCell"
     }
 
     private let textLabel = UILabel()
     private let checkButton = UIButton()
+
+    override var isSelected: Bool {
+        didSet {
+            self.didSelectConfigure()
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -140,7 +102,7 @@ final class TitleSelectionCell: BottomSheetCell<ListItem> {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func didSelectConfigure() {
+    func didSelectConfigure() {
         self.checkButton.isSelected = self.isSelected
     }
 
@@ -181,25 +143,10 @@ final class TitleSelectionCell: BottomSheetCell<ListItem> {
         checkButton.tintColor = .label
     }
 
-    override func configure(item: ListItem) {
+    func configure(item: ListItem) {
         self.textLabel.text = item.name
     }
 }
-
-
-//class SelecCollectionViewCell: BottomSheetCell<ListItem> {
-//
-//    override class var identifier: String {
-//        return "SelectionCollectionViewCell"
-//    }
-//
-//    let textLabel = UILabel()
-//
-//    override func configure(item: ListItem) {
-//        self.textLabel.text = item.name
-//    }
-//}
-//
 
 class SelectionCollectionViewCell: UICollectionViewCell {
 

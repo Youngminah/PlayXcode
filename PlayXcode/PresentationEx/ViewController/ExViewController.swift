@@ -252,7 +252,7 @@ final class ExViewController: UIViewController, SheetPresentable {
     func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
         isShortFormEnabled = true
-        sheetModalSetNeedsLayoutUpdate()
+        //sheetModalSetNeedsLayoutUpdate()
     }
 }
 

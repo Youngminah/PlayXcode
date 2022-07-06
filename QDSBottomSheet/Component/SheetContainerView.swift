@@ -11,6 +11,7 @@ final class SheetContainerView: UIView {
 
     init(presentedView: UIView, frame: CGRect) {
         super.init(frame: frame)
+        layer.cornerRadius = 15
         layer.masksToBounds = true
         addSubview(presentedView)
     }

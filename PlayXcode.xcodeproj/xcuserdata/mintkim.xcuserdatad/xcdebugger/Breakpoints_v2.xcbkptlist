@@ -510,8 +510,8 @@
             filePath = "QDSBottomSheet/BottomSheetCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "didSelectConfigure()"
             landmarkType = "7">
             <Locations>

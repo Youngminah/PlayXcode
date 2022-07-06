@@ -8,12 +8,27 @@
 import UIKit
 import QDSBottomSheet
 
-class CurrentViewController: UIViewController {
+class CurrentViewController: UIViewController, BottomSheetViewControllerDelegate {
+
+    func bottomSheetDidSelect(indexPath: IndexPath) {
+        print(indexPath)
+    }
+
+
+//    var items = [
+//        ListItem(name: "딸기🍓"),
+//        ListItem(name: "오렌지🍊"),
+//        ListItem(name: "사과🍎")
+//    ]
 
     var items = [
-        ListItem(name: "딸기🍓"),
-        ListItem(name: "오렌지🍊"),
-        ListItem(name: "사과🍎")
+        ListItem(name: "0.5 배"),
+        ListItem(name: "0.75 배"),
+        ListItem(name: "기본 배속"),
+        ListItem(name: "1.25 배"),
+        ListItem(name: "1.5 배"),
+        ListItem(name: "1.75 배속"),
+        ListItem(name: "2.0 배")
     ]
 
     var isShortFormEnabled = true
@@ -23,8 +38,9 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-        //let vc: SheetPresentable.LayoutType = SheetViewController()
-        //self.presentSheetModal(vc)
+        let vc = BottomSheetSelectionViewController(preferredStyle: .list(items: items, appearance: .plain))
+        vc.delegate = self
+        self.presentSheetModal(vc)
     }
     
     @IBAction func maxButtonTap(_ sender: Any) {
@@ -50,14 +66,14 @@ class CurrentViewController: UIViewController {
     }
     
     @IBAction func lowButtonTap(_ sender: Any) {
-        let bottomSheet = BottomSheetController(preferredStyle: .list(items: items, appearance: .plain))
+        let bottomSheet = BottomSheetAlertController(preferredStyle: .list(items: items, appearance: .plain))
         //bottomSheet.allowsMultipleCollection = true
-        bottomSheet.addHeaderSubview(SubtitleLabel(text: """
+        bottomSheet.addHeaderLabelSubview(SubtitleLabel(text: """
         이곳은 설정하기
         페이지 입니다
         낄낄
         """))
-        bottomSheet.addHeaderSubview(TitleLabel(text: "설정하기"))
+        bottomSheet.addHeaderLabelSubview(TitleLabel(text: "설정하기"))
 
         let cancelAction = BottomSheetAction(title: "취소", style: .cancel)
         let saveAction = BottomSheetAction(title: "확인", style: .default) { items in

@@ -66,7 +66,7 @@ final class Ex2ViewController: UICollectionViewController, SheetPresentable {
     func willTransition(to state: SheetPresentationController.PresentationState) {
         guard isShortFormEnabled, case .longForm = state else { return }
         isShortFormEnabled = false
-        sheetModalSetNeedsLayoutUpdate()
+        //sheetModalSetNeedsLayoutUpdate()
     }
 }
 

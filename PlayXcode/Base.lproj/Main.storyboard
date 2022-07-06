@@ -64,6 +64,37 @@
                     <view key="view" contentMode="scaleToFill" id="vpM-Dx-dis">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5zm-Ea-9qo">
+                                <rect key="frame" x="132" y="133" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="I5G-Nw-PQX">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="l3r-gA-cSX">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="IPY-19-lmQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="VIW-aP-Wjb">
+                                        <rect key="frame" x="138" y="39" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="cid-GH-J64">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="fiX-VU-NBa"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -247,7 +278,7 @@ setter을 사용해 그 기준에 맞
                             <constraint firstItem="e3d-hG-dlY" firstAttribute="centerX" secondItem="Byl-Z3-BLX" secondAttribute="centerX" id="clf-5r-eOq"/>
                             <constraint firstItem="0r2-M0-Iof" firstAttribute="top" secondItem="CkB-4f-eLn" secondAttribute="bottom" constant="130.5" id="cuZ-Uc-3qZ"/>
                             <constraint firstItem="0r2-M0-Iof" firstAttribute="centerY" secondItem="Byl-Z3-BLX" secondAttribute="centerY" id="dQk-iT-Ikn"/>
-                            <constraint firstItem="e3d-hG-dlY" firstAttribute="top" secondItem="iiD-lb-sx1" secondAttribute="bottom" constant="62" id="fLq-5W-3L6"/>
+                            <constraint firstItem="e3d-hG-dlY" firstAttribute="top" secondItem="iiD-lb-sx1" secondAttribute="bottom" id="fLq-5W-3L6"/>
                             <constraint firstItem="CkB-4f-eLn" firstAttribute="centerX" secondItem="Byl-Z3-BLX" secondAttribute="centerX" id="vT8-4z-NY3"/>
                             <constraint firstItem="iiD-lb-sx1" firstAttribute="centerX" secondItem="Byl-Z3-BLX" secondAttribute="centerX" id="xF0-mf-M7F"/>
                         </constraints>

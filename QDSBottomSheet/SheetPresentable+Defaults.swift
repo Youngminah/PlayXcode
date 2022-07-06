@@ -19,12 +19,17 @@ public extension SheetPresentable where Self: UIViewController {
 
     var longFormHeight: SheetHeight {
 
-        guard let scrollView = sheetScrollView, let header = headerView, let footer = footerButtonView else { return .maxHeight }
+        guard let scrollView = sheetScrollView, let header = headerView else { return .maxHeight }
+
 
         scrollView.layoutIfNeeded()
         header.layoutIfNeeded()
-        footer.layoutIfNeeded()
-        return .contentHeight(scrollView.contentSize.height + header.bounds.height + footer.bounds.height + topLayoutOffset + bottomLayoutOffset)
+        footerButtonView?.layoutIfNeeded()
+        return .contentHeight(scrollView.contentSize.height +
+                              header.bounds.height +
+                              (footerButtonView?.bounds.height ?? 0) +
+                              topLayoutOffset +
+                              bottomLayoutOffset)
     }
 
     var cornerRadius: CGFloat {
@@ -171,23 +176,9 @@ extension SheetPresentable where Self: UIViewController {
 
 extension SheetPresentable where Self: UIViewController {
 
-    public typealias AnimationBlockType = () -> Void
-    public typealias AnimationCompletionType = (UIViewAnimatingPosition) -> Void
     public typealias LayoutType = UIViewController & SheetPresentable
 
-    public func panModalTransition(to state: SheetPresentationController.PresentationState) {
-        presentedVC?.transition(to: state)
-    }
-
-    public func sheetModalSetNeedsLayoutUpdate() {
+    func sheetSetNeedsLayoutUpdate() {
         presentedVC?.setNeedsLayoutUpdate()
-    }
-
-    public func panModalPerformUpdates(_ updates: () -> Void) {
-        presentedVC?.performUpdates(updates)
-    }
-
-    public func panModalAnimate(_ animationBlock: @escaping AnimationBlockType, _ completion: @escaping AnimationCompletionType) {
-        SheetPresentationAnimator.animate(animationBlock, config: self, completion)
     }
 }

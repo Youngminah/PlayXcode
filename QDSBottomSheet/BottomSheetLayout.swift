@@ -7,14 +7,15 @@
 
 import UIKit
 
-open class SheetLayout {
+open class BottomSheetLayout {
 
-    static func layout(layoutKind: BottomSheetCollectionViewStyle) -> UICollectionViewCompositionalLayout {
+    static func layout(layoutKind: BottomSheetStyle) -> UICollectionViewCompositionalLayout {
 
         if layoutKind.columnCount == 1, #available(iOS 14.0, *) {
 
-            var config = UICollectionLayoutListConfiguration(appearance: .grouped)
+            var config = UICollectionLayoutListConfiguration(appearance: .plain)
             config.backgroundColor = .systemBackground
+            config.showsSeparators = false
             return UICollectionViewCompositionalLayout.list(using: config)
 
         } else {
@@ -23,14 +24,9 @@ open class SheetLayout {
 
                 let columns = layoutKind.columnCount
 
-//                let itemInset: CGFloat = 5.0
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                       heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//                item.contentInsets = NSDirectionalEdgeInsets(top: itemInset,
-//                                                             leading: itemInset,
-//                                                             bottom: itemInset,
-//                                                             trailing: itemInset)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                        heightDimension: .estimated(50))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
@@ -39,35 +35,8 @@ open class SheetLayout {
                 let section = NSCollectionLayoutSection(group: group)
                 return section
             }
+    
             return layout
         }
-    }
-
-    static func dataSource(style: BottomSheetCollectionViewStyle) {
-
-//        switch style {
-//        case .list(items: let items, layoutStyle: let layoutStyle):
-//
-//        case .grid2(items: let items, layoutStyle: let layoutStyle):
-//            <#code#>
-//        }
-    }
-}
-
-class BottomSheetListConfiguration {
-
-    enum Appearance {
-
-        case plain
-        case insetGrouped
-        case sideCheckBox
-    }
-
-    private let appearance: Appearance
-
-    var backgroundColor: UIColor?
-
-    init(appearance: Appearance) {
-        self.appearance = appearance
     }
 }

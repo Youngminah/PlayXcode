@@ -11,7 +11,9 @@
 		0378B73A284EEFAE003A685F /* QDSBottomSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 0378B737284EEFAE003A685F /* QDSBottomSheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0378B73D284EEFAE003A685F /* QDSBottomSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0378B735284EEFAE003A685F /* QDSBottomSheet.framework */; };
 		0378B73E284EEFAE003A685F /* QDSBottomSheet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0378B735284EEFAE003A685F /* QDSBottomSheet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0378B746284EF07E003A685F /* SheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0378B745284EF07E003A685F /* SheetLayout.swift */; };
+		0378B746284EF07E003A685F /* BottomSheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0378B745284EF07E003A685F /* BottomSheetLayout.swift */; };
+		037A44372874304600C4A79A /* BottomSheetStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037A44362874304600C4A79A /* BottomSheetStyle.swift */; };
+		037A4439287430C700C4A79A /* BottomSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037A4438287430C700C4A79A /* BottomSheetItem.swift */; };
 		037DA764281A54E200D065C0 /* CurrentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA763281A54E200D065C0 /* CurrentViewController.swift */; };
 		037DA766281A54EF00D065C0 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA765281A54EF00D065C0 /* NextViewController.swift */; };
 		037DA77F282BA02100D065C0 /* SelectionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DA77E282BA02100D065C0 /* SelectionCollectionView.swift */; };
@@ -29,7 +31,7 @@
 		039EBBD72810E8B900F676A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD52810E8B900F676A8 /* Main.storyboard */; };
 		039EBBD92810E8BD00F676A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD82810E8BD00F676A8 /* Assets.xcassets */; };
 		039EBBDC2810E8BD00F676A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBDA2810E8BD00F676A8 /* LaunchScreen.storyboard */; };
-		03E68CE1286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E68CE0286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift */; };
+		03E68CE1286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E68CE0286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift */; };
 		03E68CE4286DA21100AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE3286DA21100AC11A6 /* QDSKit */; };
 		03E68CE7286DAC0300AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE6286DAC0300AC11A6 /* QDSKit */; };
 		03E68CE9286DAC4800AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE8286DAC4800AC11A6 /* QDSKit */; };
@@ -79,7 +81,9 @@
 		0378B735284EEFAE003A685F /* QDSBottomSheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QDSBottomSheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0378B737284EEFAE003A685F /* QDSBottomSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QDSBottomSheet.h; sourceTree = "<group>"; };
 		0378B738284EEFAE003A685F /* QDSBottomSheet.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = QDSBottomSheet.docc; sourceTree = "<group>"; };
-		0378B745284EF07E003A685F /* SheetLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetLayout.swift; sourceTree = "<group>"; };
+		0378B745284EF07E003A685F /* BottomSheetLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetLayout.swift; sourceTree = "<group>"; };
+		037A44362874304600C4A79A /* BottomSheetStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetStyle.swift; sourceTree = "<group>"; };
+		037A4438287430C700C4A79A /* BottomSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetItem.swift; sourceTree = "<group>"; };
 		037DA763281A54E200D065C0 /* CurrentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentViewController.swift; sourceTree = "<group>"; };
 		037DA765281A54EF00D065C0 /* NextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		037DA768281A8BB500D065C0 /* SheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationController.swift; sourceTree = "<group>"; };
@@ -110,7 +114,7 @@
 		039EBBDB2810E8BD00F676A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		039EBBDD2810E8BD00F676A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03A3361B283B59B90058FE9E /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
-		03E68CE0286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetNoButtonViewController.swift; sourceTree = "<group>"; };
+		03E68CE0286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetSelectionViewController.swift; sourceTree = "<group>"; };
 		BB7AF95E282CDABA00150961 /* XButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XButton.swift; sourceTree = "<group>"; };
 		BB7AF961282CDFE400150961 /* TopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopHeaderView.swift; sourceTree = "<group>"; };
 		BB7AF963282CF12000150961 /* ContentCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionView.swift; sourceTree = "<group>"; };
@@ -150,13 +154,12 @@
 		0378B736284EEFAE003A685F /* QDSBottomSheet */ = {
 			isa = PBXGroup;
 			children = (
+				037A443A287431B100C4A79A /* Component */,
 				03A3361E283DC2AC0058FE9E /* ViewController */,
-				0378B745284EF07E003A685F /* SheetLayout.swift */,
-				BB7AF95E282CDABA00150961 /* XButton.swift */,
+				0378B745284EF07E003A685F /* BottomSheetLayout.swift */,
+				037A4438287430C700C4A79A /* BottomSheetItem.swift */,
+				037A44362874304600C4A79A /* BottomSheetStyle.swift */,
 				BB7AF965282D191700150961 /* BottomSheetCell.swift */,
-				03A3361B283B59B90058FE9E /* TitleLabel.swift */,
-				037DA76F281FBF2D00D065C0 /* DimmingView.swift */,
-				037DA771281FBF4600D065C0 /* SheetContainerView.swift */,
 				037DA779282519C800D065C0 /* SheetTransitioningDelegate.swift */,
 				037DA76A281BA42600D065C0 /* SheetPresentationAnimatedTransitioning.swift */,
 				037DA775281FC6AF00D065C0 /* SheetPresentationAnimator.swift */,
@@ -170,6 +173,17 @@
 				0378B738284EEFAE003A685F /* QDSBottomSheet.docc */,
 			);
 			path = QDSBottomSheet;
+			sourceTree = "<group>";
+		};
+		037A443A287431B100C4A79A /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				037DA771281FBF4600D065C0 /* SheetContainerView.swift */,
+				037DA76F281FBF2D00D065C0 /* DimmingView.swift */,
+				BB7AF95E282CDABA00150961 /* XButton.swift */,
+				03A3361B283B59B90058FE9E /* TitleLabel.swift */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 		037DA762281A548A00D065C0 /* PresentationEx */ = {
@@ -271,8 +285,8 @@
 		03A3361E283DC2AC0058FE9E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				03E68CE0286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift */,
 				037DA78028372FBF00D065C0 /* BottomSheetAlertController.swift */,
-				03E68CE0286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -280,10 +294,10 @@
 		BB7AF960282CDF8B00150961 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				037DA763281A54E200D065C0 /* CurrentViewController.swift */,
 				0391051428163493001E129E /* ExViewController.swift */,
 				03910516281634A3001E129E /* Ex2ViewController.swift */,
 				037DA765281A54EF00D065C0 /* NextViewController.swift */,
-				037DA763281A54E200D065C0 /* CurrentViewController.swift */,
 				BB7AF967282D1CF000150961 /* SheetViewController.swift */,
 				037DA78428376C8D00D065C0 /* Ex3ViewController.swift */,
 			);
@@ -421,11 +435,13 @@
 				03FEC5E7284EF43500FFE000 /* SheetContainerView.swift in Sources */,
 				03FEC5E8284EF44800FFE000 /* SheetTransitioningDelegate.swift in Sources */,
 				03FEC5EA284EF44D00FFE000 /* SheetPresentationAnimator.swift in Sources */,
-				0378B746284EF07E003A685F /* SheetLayout.swift in Sources */,
-				03E68CE1286DA1A900AC11A6 /* BottomSheetNoButtonViewController.swift in Sources */,
+				0378B746284EF07E003A685F /* BottomSheetLayout.swift in Sources */,
+				03E68CE1286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift in Sources */,
 				03FEC5EB284EF44F00FFE000 /* SheetPresentationController.swift in Sources */,
+				037A44372874304600C4A79A /* BottomSheetStyle.swift in Sources */,
 				03FEC5E5284EF43200FFE000 /* TitleLabel.swift in Sources */,
 				03FEC5ED284EF45200FFE000 /* SheetPresentable+Defaults.swift in Sources */,
+				037A4439287430C700C4A79A /* BottomSheetItem.swift in Sources */,
 				03FEC5EC284EF45000FFE000 /* SheetPresentable.swift in Sources */,
 				03FEC5E6284EF43400FFE000 /* DimmingView.swift in Sources */,
 				0378B739284EEFAE003A685F /* QDSBottomSheet.docc in Sources */,
