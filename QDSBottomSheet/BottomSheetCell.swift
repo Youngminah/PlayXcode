@@ -148,6 +148,82 @@ final class TitleSelectionCell: UICollectionViewCell, BottomSheetCell {
     }
 }
 
+final class SubTitleSelectionCell: UICollectionViewCell, BottomSheetCell {
+
+    static var identifier: String {
+        return "SubTitleSelectionCell"
+    }
+
+    private let titleLabel = UILabel()
+    private let subTitleLabel = UILabel()
+    private let checkButton = UIButton()
+
+    override var isSelected: Bool {
+        didSet {
+            self.didSelectConfigure()
+        }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setConstraints()
+        setConfiguration()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func didSelectConfigure() {
+        self.checkButton.isSelected = self.isSelected
+    }
+
+    private func setConstraints() {
+
+        contentView.addSubview(checkButton)
+        contentView.addSubview(titleLabel)
+
+        checkButton.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                  constant: -16),
+            checkButton.widthAnchor.constraint(equalToConstant: 20),
+            checkButton.heightAnchor.constraint(equalToConstant: 20),
+
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                               constant: 16),
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: checkButton.leadingAnchor,
+                                                constant: -16)
+        ])
+    }
+
+    private func setConfiguration() {
+        contentView.backgroundColor = QDS.Color.gray005
+
+        titleLabel.font = QDS.Font.h6
+        titleLabel.textColor = QDS.Color.gray090
+        titleLabel.numberOfLines = 1
+
+        subTitleLabel.font = QDS.Font.b5
+        subTitleLabel.textColor = QDS.Color.gray070
+
+        checkButton.setImage(UIImage(systemName: "square"), for: .normal)
+        checkButton.setImage(UIImage(systemName: "checkmark.square"), for: .selected)
+        checkButton.isUserInteractionEnabled = false
+        checkButton.tintColor = .label
+    }
+
+    func configure(item: ListItem) {
+        self.titleLabel.text = item.name
+    }
+}
+
+
+
 class SelectionCollectionViewCell: UICollectionViewCell {
 
 

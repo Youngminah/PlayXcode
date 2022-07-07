@@ -40,13 +40,14 @@ open class BottomSheetSelectionViewController: UIViewController, UICollectionVie
     private var collectionView: DynamicCollectionView! = nil
 
     private let style: BottomSheetStyle
-
+    private var defaultSelectionItem: Int
     private var isShortFormEnabled = true
 
     public weak var delegate: BottomSheetViewControllerDelegate?
 
-    public init(preferredStyle: BottomSheetStyle) {
+    public init(preferredStyle: BottomSheetStyle, defaultSelectionItem: Int = 0) {
         self.style = preferredStyle
+        self.defaultSelectionItem = defaultSelectionItem
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -159,7 +160,7 @@ extension BottomSheetSelectionViewController {
                 self.configureDataSource(cellType: TitleCell.self,
                                          items: items)
             case .checkBox:
-                self.configureDataSource(cellType: TitleSelectionCell.self,
+                self.configureDataSource(cellType: SubTitleSelectionCell.self,
                                          items: items)
             }
         case .grid2(let items, let appearance):
@@ -210,7 +211,9 @@ extension BottomSheetSelectionViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems( items.map { $0.id } )
         dataSource.apply(snapshot, animatingDifferences: false) { [weak self] in
-            self?.collectionView.selectItem(at: IndexPath(row: 2, section: 0), animated: false, scrollPosition: [])
+            guard let self = self else { return }
+            let indexPath = IndexPath(row: self.defaultSelectionItem, section: 0)
+            self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         }
     }
 }

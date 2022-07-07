@@ -38,7 +38,7 @@ class CurrentViewController: UIViewController, BottomSheetViewControllerDelegate
     }
     
     @IBAction func customButtonTap(_ sender: Any) {
-        let vc = BottomSheetSelectionViewController(preferredStyle: .list(items: items, appearance: .plain))
+        let vc = BottomSheetSelectionViewController(preferredStyle: .list(items: items, appearance: .checkBox))
         vc.delegate = self
         self.presentSheetModal(vc)
     }

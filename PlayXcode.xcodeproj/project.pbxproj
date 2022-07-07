@@ -31,6 +31,7 @@
 		039EBBD72810E8B900F676A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD52810E8B900F676A8 /* Main.storyboard */; };
 		039EBBD92810E8BD00F676A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBD82810E8BD00F676A8 /* Assets.xcassets */; };
 		039EBBDC2810E8BD00F676A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039EBBDA2810E8BD00F676A8 /* LaunchScreen.storyboard */; };
+		03D0BCA428767B7A002D861A /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0BCA328767B7A002D861A /* BottomSheetViewController.swift */; };
 		03E68CE1286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E68CE0286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift */; };
 		03E68CE4286DA21100AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE3286DA21100AC11A6 /* QDSKit */; };
 		03E68CE7286DAC0300AC11A6 /* QDSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 03E68CE6286DAC0300AC11A6 /* QDSKit */; };
@@ -114,6 +115,7 @@
 		039EBBDB2810E8BD00F676A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		039EBBDD2810E8BD00F676A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03A3361B283B59B90058FE9E /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
+		03D0BCA328767B7A002D861A /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		03E68CE0286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetSelectionViewController.swift; sourceTree = "<group>"; };
 		BB7AF95E282CDABA00150961 /* XButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XButton.swift; sourceTree = "<group>"; };
 		BB7AF961282CDFE400150961 /* TopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopHeaderView.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 		03A3361E283DC2AC0058FE9E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				03D0BCA328767B7A002D861A /* BottomSheetViewController.swift */,
 				03E68CE0286DA1A900AC11A6 /* BottomSheetSelectionViewController.swift */,
 				037DA78028372FBF00D065C0 /* BottomSheetAlertController.swift */,
 			);
@@ -441,6 +444,7 @@
 				037A44372874304600C4A79A /* BottomSheetStyle.swift in Sources */,
 				03FEC5E5284EF43200FFE000 /* TitleLabel.swift in Sources */,
 				03FEC5ED284EF45200FFE000 /* SheetPresentable+Defaults.swift in Sources */,
+				03D0BCA428767B7A002D861A /* BottomSheetViewController.swift in Sources */,
 				037A4439287430C700C4A79A /* BottomSheetItem.swift in Sources */,
 				03FEC5EC284EF45000FFE000 /* SheetPresentable.swift in Sources */,
 				03FEC5E6284EF43400FFE000 /* DimmingView.swift in Sources */,
